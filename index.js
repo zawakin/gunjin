@@ -16,10 +16,43 @@ app.get("/", function (req, res) {
 
 var clients = [];
 
+function GetClientList() {
+    var list = [];
+    for (var i = 0; i < clients.length; i++) {
+        list.push(clients[i].name);
+    }
+    return list;
+}
+
 io.on("connection", function (socket) {
+
+    console.log("client connected");
+    io.emit("change clients", clients);
+
 
     socket.on("disconnect", function () {
         console.log("client disconnected");
+
+    });
+
+    socket.on("taisen", function (name) {
+        if (name == "") name = "noname";
+        var client = { id: socket.id, name: name };
+        var frag = false;
+        for (var i = 0; i < clients.length; i++) {
+            if (client.id == clients[i].id) {
+                frag = true;
+                clients[i].name = name;
+                break;
+            }
+        }
+        if (!frag) {
+            clients.push(client);
+        }
+
+        console.log("debug");
+        io.emit("change clients", GetClientList());
+
     });
 
 });
