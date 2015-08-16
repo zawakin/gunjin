@@ -1,0 +1,22 @@
+{
+  "name": "gunjin",
+  "version": "0.1.0",
+  "description": "軍人将棋対戦サイト",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zawawahoge/gunjin.git"
+  },
+  "keywords": [
+    "軍人将棋"
+  ],
+  "author": "Y.M.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zawawahoge/gunjin/issues"
+  },
+  "homepage": "https://github.com/zawawahoge/gunjin#readme"
+}
