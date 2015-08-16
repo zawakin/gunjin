@@ -1,0 +1,933 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        (function () {
+            var board = [
+            [64, 64, 64, 64, 64, 64, 64, 64],
+            [64, 13, 13, 0, 0, 0, 0, 64],
+            [64, 13, 13, 0, 0, 0, 0, 64],
+            [64, 8, 9, 14, 14, 0, 11, 64],
+            [64, 3, 0, 39, 1, 6, 10, 64],
+            [64, 0, 36, 44, 45, 46, 40, 64],
+            [64, 12, 0, 12, 12, 12, 12, 64],
+            [64, 0, 9, 14, 14, 14, 11, 64],
+            [64, 0, 0, 1, 0, 6, 10, 64],
+            [64, 64, 64, 64, 64, 64, 64, 64]
+            ];
+
+            var turn = 1;
+            var inirule = {};
+            var b = [];
+            var domain = [];
+
+
+
+            function GetIniRule() {
+                inirule.classnum = 16;
+                inirule.height = 8;
+                inirule.width = 6;
+
+                inirule.unit = [];
+                for (var i = 0; i <= inirule.classnum; i++) {
+                    inirule.unit[i] = {};
+                    for (var j = 0; j < 4; j++) {
+                        inirule.unit[i].direction = [];
+                    }
+                    for (var j = 0; j < inirule.classnum; j++) {
+                        inirule.unit[i].strength = [];
+                    }
+                }
+
+                /* Null */
+
+                inirule.unit[0].direction[0] = 0;
+                inirule.unit[0].direction[1] = 0;
+                inirule.unit[0].direction[2] = 0;
+                inirule.unit[0].direction[3] = 0;
+
+                inirule.unit[0].strength[0] = 0;
+                inirule.unit[0].strength[1] = -1;
+                inirule.unit[0].strength[2] = -1;
+                inirule.unit[0].strength[3] = -1;
+                inirule.unit[0].strength[4] = -1;
+                inirule.unit[0].strength[5] = -1;
+                inirule.unit[0].strength[6] = -1;
+                inirule.unit[0].strength[7] = -1;
+                inirule.unit[0].strength[8] = -1;
+                inirule.unit[0].strength[9] = -1;
+                inirule.unit[0].strength[10] = -1;
+                inirule.unit[0].strength[11] = -1;
+                inirule.unit[0].strength[12] = -1;
+                inirule.unit[0].strength[13] = -1;
+                inirule.unit[0].strength[14] = -1;
+                inirule.unit[0].strength[15] = -1;
+                inirule.unit[0].strength[16] = -1;
+
+                inirule.unit[0].number = 0;
+
+                /* 大将 */
+
+                inirule.unit[1].direction[0] = 1;
+                inirule.unit[1].direction[1] = 1;
+                inirule.unit[1].direction[2] = 1;
+                inirule.unit[1].direction[3] = 1;
+
+                inirule.unit[1].strength[0] = 1;
+                inirule.unit[1].strength[1] = 0;
+                inirule.unit[1].strength[2] = 1;
+                inirule.unit[1].strength[3] = 1;
+                inirule.unit[1].strength[4] = 1;
+                inirule.unit[1].strength[5] = 1;
+                inirule.unit[1].strength[6] = 1;
+                inirule.unit[1].strength[7] = 1;
+                inirule.unit[1].strength[8] = 1;
+                inirule.unit[1].strength[9] = 1;
+                inirule.unit[1].strength[10] = 1;
+                inirule.unit[1].strength[11] = 1;
+                inirule.unit[1].strength[12] = 0;
+                inirule.unit[1].strength[13] = 1;
+                inirule.unit[1].strength[14] = 1;
+                inirule.unit[1].strength[15] = -1;
+                inirule.unit[1].strength[16] = 1;
+
+                inirule.unit[1].number = 1;
+
+                /* 中将 */
+
+                inirule.unit[2].direction[0] = 1;
+                inirule.unit[2].direction[1] = 1;
+                inirule.unit[2].direction[2] = 1;
+                inirule.unit[2].direction[3] = 1;
+
+                inirule.unit[2].strength[0] = 1;
+                inirule.unit[2].strength[1] = -1;
+                inirule.unit[2].strength[2] = 0;
+                inirule.unit[2].strength[3] = 1;
+                inirule.unit[2].strength[4] = 1;
+                inirule.unit[2].strength[5] = 1;
+                inirule.unit[2].strength[6] = 1;
+                inirule.unit[2].strength[7] = 1;
+                inirule.unit[2].strength[8] = 1;
+                inirule.unit[2].strength[9] = 1;
+                inirule.unit[2].strength[10] = 1;
+                inirule.unit[2].strength[11] = 1;
+                inirule.unit[2].strength[12] = 0;
+                inirule.unit[2].strength[13] = 1;
+                inirule.unit[2].strength[14] = 1;
+                inirule.unit[2].strength[15] = 1;
+                inirule.unit[2].strength[16] = 1;
+
+                inirule.unit[2].number = 1;
+
+                /* 少将 */
+
+                inirule.unit[3].direction[0] = 1;
+                inirule.unit[3].direction[1] = 1;
+                inirule.unit[3].direction[2] = 1;
+                inirule.unit[3].direction[3] = 1;
+
+                inirule.unit[3].strength[0] = 1;
+                inirule.unit[3].strength[1] = -1;
+                inirule.unit[3].strength[2] = -1;
+                inirule.unit[3].strength[3] = 0;
+                inirule.unit[3].strength[4] = 1;
+                inirule.unit[3].strength[5] = 1;
+                inirule.unit[3].strength[6] = 1;
+                inirule.unit[3].strength[7] = 1;
+                inirule.unit[3].strength[8] = 1;
+                inirule.unit[3].strength[9] = 1;
+                inirule.unit[3].strength[10] = 1;
+                inirule.unit[3].strength[11] = 1;
+                inirule.unit[3].strength[12] = 0;
+                inirule.unit[3].strength[13] = 1;
+                inirule.unit[3].strength[14] = 1;
+                inirule.unit[3].strength[15] = 1;
+                inirule.unit[3].strength[16] = 1;
+
+                inirule.unit[3].number = 1;
+
+                /* 大佐 */
+
+                inirule.unit[4].direction[0] = 1;
+                inirule.unit[4].direction[1] = 1;
+                inirule.unit[4].direction[2] = 1;
+                inirule.unit[4].direction[3] = 1;
+
+                inirule.unit[4].strength[0] = 1;
+                inirule.unit[4].strength[1] = -1;
+                inirule.unit[4].strength[2] = -1;
+                inirule.unit[4].strength[3] = -1;
+                inirule.unit[4].strength[4] = 0;
+                inirule.unit[4].strength[5] = 1;
+                inirule.unit[4].strength[6] = 1;
+                inirule.unit[4].strength[7] = 1;
+                inirule.unit[4].strength[8] = 1;
+                inirule.unit[4].strength[9] = 1;
+                inirule.unit[4].strength[10] = 1;
+                inirule.unit[4].strength[11] = 1;
+                inirule.unit[4].strength[12] = 0;
+                inirule.unit[4].strength[13] = -1;
+                inirule.unit[4].strength[14] = -1;
+                inirule.unit[4].strength[15] = 1;
+                inirule.unit[4].strength[16] = 1;
+
+                inirule.unit[4].number = 1;
+
+                /* 中佐 */
+
+                inirule.unit[5].direction[0] = 1;
+                inirule.unit[5].direction[1] = 1;
+                inirule.unit[5].direction[2] = 1;
+                inirule.unit[5].direction[3] = 1;
+
+                inirule.unit[5].strength[0] = 1;
+                inirule.unit[5].strength[1] = -1;
+                inirule.unit[5].strength[2] = -1;
+                inirule.unit[5].strength[3] = -1;
+                inirule.unit[5].strength[4] = -1;
+                inirule.unit[5].strength[5] = 0;
+                inirule.unit[5].strength[6] = 1;
+                inirule.unit[5].strength[7] = 1;
+                inirule.unit[5].strength[8] = 1;
+                inirule.unit[5].strength[9] = 1;
+                inirule.unit[5].strength[10] = 1;
+                inirule.unit[5].strength[11] = 1;
+                inirule.unit[5].strength[12] = 0;
+                inirule.unit[5].strength[13] = -1;
+                inirule.unit[5].strength[14] = -1;
+                inirule.unit[5].strength[15] = 1;
+                inirule.unit[5].strength[16] = 1;
+
+                inirule.unit[5].number = 1;
+
+                /* 少佐 */
+
+                inirule.unit[6].direction[0] = 1;
+                inirule.unit[6].direction[1] = 1;
+                inirule.unit[6].direction[2] = 1;
+                inirule.unit[6].direction[3] = 1;
+
+                inirule.unit[6].strength[0] = 1;
+                inirule.unit[6].strength[1] = -1;
+                inirule.unit[6].strength[2] = -1;
+                inirule.unit[6].strength[3] = -1;
+                inirule.unit[6].strength[4] = -1;
+                inirule.unit[6].strength[5] = -1;
+                inirule.unit[6].strength[6] = 0;
+                inirule.unit[6].strength[7] = 1;
+                inirule.unit[6].strength[8] = 1;
+                inirule.unit[6].strength[9] = 1;
+                inirule.unit[6].strength[10] = 1;
+                inirule.unit[6].strength[11] = 1;
+                inirule.unit[6].strength[12] = 0;
+                inirule.unit[6].strength[13] = -1;
+                inirule.unit[6].strength[14] = -1;
+                inirule.unit[6].strength[15] = 1;
+                inirule.unit[6].strength[16] = 1;
+
+                inirule.unit[6].number = 1;
+
+                /* 大尉 */
+
+                inirule.unit[7].direction[0] = 1;
+                inirule.unit[7].direction[1] = 1;
+                inirule.unit[7].direction[2] = 1;
+                inirule.unit[7].direction[3] = 1;
+
+                inirule.unit[7].strength[0] = 1;
+                inirule.unit[7].strength[1] = -1;
+                inirule.unit[7].strength[2] = -1;
+                inirule.unit[7].strength[3] = -1;
+                inirule.unit[7].strength[4] = -1;
+                inirule.unit[7].strength[5] = -1;
+                inirule.unit[7].strength[6] = -1;
+                inirule.unit[7].strength[7] = 0;
+                inirule.unit[7].strength[8] = 1;
+                inirule.unit[7].strength[9] = 1;
+                inirule.unit[7].strength[10] = 1;
+                inirule.unit[7].strength[11] = 1;
+                inirule.unit[7].strength[12] = 0;
+                inirule.unit[7].strength[13] = -1;
+                inirule.unit[7].strength[14] = -1;
+                inirule.unit[7].strength[15] = 1;
+                inirule.unit[7].strength[16] = 1;
+
+                inirule.unit[7].number = 2;
+
+                /* 中尉 */
+
+                inirule.unit[8].direction[0] = 1;
+                inirule.unit[8].direction[1] = 1;
+                inirule.unit[8].direction[2] = 1;
+                inirule.unit[8].direction[3] = 1;
+
+                inirule.unit[8].strength[0] = 1;
+                inirule.unit[8].strength[1] = -1;
+                inirule.unit[8].strength[2] = -1;
+                inirule.unit[8].strength[3] = -1;
+                inirule.unit[8].strength[4] = -1;
+                inirule.unit[8].strength[5] = -1;
+                inirule.unit[8].strength[6] = -1;
+                inirule.unit[8].strength[7] = -1;
+                inirule.unit[8].strength[8] = 0;
+                inirule.unit[8].strength[9] = 1;
+                inirule.unit[8].strength[10] = 1;
+                inirule.unit[8].strength[11] = 1;
+                inirule.unit[8].strength[12] = 0;
+                inirule.unit[8].strength[13] = -1;
+                inirule.unit[8].strength[14] = -1;
+                inirule.unit[8].strength[15] = 1;
+                inirule.unit[8].strength[16] = 1;
+
+                inirule.unit[8].number = 2;
+
+                /* 少尉 */
+
+                inirule.unit[9].direction[0] = 1;
+                inirule.unit[9].direction[1] = 1;
+                inirule.unit[9].direction[2] = 1;
+                inirule.unit[9].direction[3] = 1;
+
+                inirule.unit[9].strength[0] = 1;
+                inirule.unit[9].strength[1] = -1;
+                inirule.unit[9].strength[2] = -1;
+                inirule.unit[9].strength[3] = -1;
+                inirule.unit[9].strength[4] = -1;
+                inirule.unit[9].strength[5] = -1;
+                inirule.unit[9].strength[6] = -1;
+                inirule.unit[9].strength[7] = -1;
+                inirule.unit[9].strength[8] = -1;
+                inirule.unit[9].strength[9] = 0;
+                inirule.unit[9].strength[10] = 1;
+                inirule.unit[9].strength[11] = 1;
+                inirule.unit[9].strength[12] = 0;
+                inirule.unit[9].strength[13] = -1;
+                inirule.unit[9].strength[14] = -1;
+                inirule.unit[9].strength[15] = 1;
+                inirule.unit[9].strength[16] = 1;
+
+                inirule.unit[9].number = 2;
+
+                /* 騎兵 */
+
+                inirule.unit[10].direction[0] = 1;
+                inirule.unit[10].direction[1] = 2;
+                inirule.unit[10].direction[2] = 1;
+                inirule.unit[10].direction[3] = 1;
+
+                inirule.unit[10].strength[0] = 1;
+                inirule.unit[10].strength[1] = -1;
+                inirule.unit[10].strength[2] = -1;
+                inirule.unit[10].strength[3] = -1;
+                inirule.unit[10].strength[4] = -1;
+                inirule.unit[10].strength[5] = -1;
+                inirule.unit[10].strength[6] = -1;
+                inirule.unit[10].strength[7] = -1;
+                inirule.unit[10].strength[8] = -1;
+                inirule.unit[10].strength[9] = -1;
+                inirule.unit[10].strength[10] = 0;
+                inirule.unit[10].strength[11] = 1;
+                inirule.unit[10].strength[12] = 0;
+                inirule.unit[10].strength[13] = -1;
+                inirule.unit[10].strength[14] = -1;
+                inirule.unit[10].strength[15] = 1;
+                inirule.unit[10].strength[16] = 1;
+
+                inirule.unit[10].number = 1;
+
+                /* 工兵 */
+
+                inirule.unit[11].direction[0] = 15;
+                inirule.unit[11].direction[1] = 15;
+                inirule.unit[11].direction[2] = 15;
+                inirule.unit[11].direction[3] = 15;
+
+                inirule.unit[11].strength[0] = 1;
+                inirule.unit[11].strength[1] = -1;
+                inirule.unit[11].strength[2] = -1;
+                inirule.unit[11].strength[3] = -1;
+                inirule.unit[11].strength[4] = -1;
+                inirule.unit[11].strength[5] = -1;
+                inirule.unit[11].strength[6] = -1;
+                inirule.unit[11].strength[7] = -1;
+                inirule.unit[11].strength[8] = -1;
+                inirule.unit[11].strength[9] = -1;
+                inirule.unit[11].strength[10] = -1;
+                inirule.unit[11].strength[11] = 0;
+                inirule.unit[11].strength[12] = 1;
+                inirule.unit[11].strength[13] = -1;
+                inirule.unit[11].strength[14] = 1;
+                inirule.unit[11].strength[15] = 1;
+                inirule.unit[11].strength[16] = 1;
+
+                inirule.unit[11].number = 2;
+
+                /* 地雷 */
+
+                inirule.unit[12].direction[0] = 0;
+                inirule.unit[12].direction[1] = 0;
+                inirule.unit[12].direction[2] = 0;
+                inirule.unit[12].direction[3] = 0;
+
+                inirule.unit[12].strength[0] = 1;
+                inirule.unit[12].strength[1] = 0;
+                inirule.unit[12].strength[2] = 0;
+                inirule.unit[12].strength[3] = 0;
+                inirule.unit[12].strength[4] = 0;
+                inirule.unit[12].strength[5] = 0;
+                inirule.unit[12].strength[6] = 0;
+                inirule.unit[12].strength[7] = 0;
+                inirule.unit[12].strength[8] = 0;
+                inirule.unit[12].strength[9] = 0;
+                inirule.unit[12].strength[10] = 0;
+                inirule.unit[12].strength[11] = -1;
+                inirule.unit[12].strength[12] = 0;
+                inirule.unit[12].strength[13] = -1;
+                inirule.unit[12].strength[14] = 0;
+                inirule.unit[12].strength[15] = 0;
+                inirule.unit[12].strength[16] = 1;
+
+                inirule.unit[12].number = 2;
+
+                /* 飛行機 */
+
+                inirule.unit[13].direction[0] = 1;
+                inirule.unit[13].direction[1] = 15;
+                inirule.unit[13].direction[2] = 1;
+                inirule.unit[13].direction[3] = 15;
+
+                inirule.unit[13].strength[0] = 1;
+                inirule.unit[13].strength[1] = -1;
+                inirule.unit[13].strength[2] = -1;
+                inirule.unit[13].strength[3] = -1;
+                inirule.unit[13].strength[4] = 1;
+                inirule.unit[13].strength[5] = 1;
+                inirule.unit[13].strength[6] = 1;
+                inirule.unit[13].strength[7] = 1;
+                inirule.unit[13].strength[8] = 1;
+                inirule.unit[13].strength[9] = 1;
+                inirule.unit[13].strength[10] = 1;
+                inirule.unit[13].strength[11] = 1;
+                inirule.unit[13].strength[12] = 1;
+                inirule.unit[13].strength[13] = 0;
+                inirule.unit[13].strength[14] = 1;
+                inirule.unit[13].strength[15] = 1;
+                inirule.unit[13].strength[16] = 1;
+
+                inirule.unit[13].number = 2;
+
+                /* タンク */
+
+                inirule.unit[14].direction[0] = 1;
+                inirule.unit[14].direction[1] = 2;
+                inirule.unit[14].direction[2] = 1;
+                inirule.unit[14].direction[3] = 1;
+
+                inirule.unit[14].strength[0] = 1;
+                inirule.unit[14].strength[1] = -1;
+                inirule.unit[14].strength[2] = -1;
+                inirule.unit[14].strength[3] = -1;
+                inirule.unit[14].strength[4] = 1;
+                inirule.unit[14].strength[5] = 1;
+                inirule.unit[14].strength[6] = 1;
+                inirule.unit[14].strength[7] = 1;
+                inirule.unit[14].strength[8] = 1;
+                inirule.unit[14].strength[9] = 1;
+                inirule.unit[14].strength[10] = 1;
+                inirule.unit[14].strength[11] = -1;
+                inirule.unit[14].strength[12] = 0;
+                inirule.unit[14].strength[13] = -1;
+                inirule.unit[14].strength[14] = 0;
+                inirule.unit[14].strength[15] = 1;
+                inirule.unit[14].strength[16] = 1;
+
+                inirule.unit[14].number = 2;
+
+                /* スパイ */
+
+                inirule.unit[15].direction[0] = 1;
+                inirule.unit[15].direction[1] = 1;
+                inirule.unit[15].direction[2] = 1;
+                inirule.unit[15].direction[3] = 1;
+
+                inirule.unit[15].strength[0] = 1;
+                inirule.unit[15].strength[1] = 1;
+                inirule.unit[15].strength[2] = -1;
+                inirule.unit[15].strength[3] = -1;
+                inirule.unit[15].strength[4] = -1;
+                inirule.unit[15].strength[5] = -1;
+                inirule.unit[15].strength[6] = -1;
+                inirule.unit[15].strength[7] = -1;
+                inirule.unit[15].strength[8] = -1;
+                inirule.unit[15].strength[9] = -1;
+                inirule.unit[15].strength[10] = -1;
+                inirule.unit[15].strength[11] = -1;
+                inirule.unit[15].strength[12] = -1;
+                inirule.unit[15].strength[13] = -1;
+                inirule.unit[15].strength[14] = -1;
+                inirule.unit[15].strength[15] = 0;
+                inirule.unit[15].strength[16] = 1;
+
+                inirule.unit[15].number = 1;
+
+                /* 軍旗 */
+
+                inirule.unit[16].direction[0] = 0;
+                inirule.unit[16].direction[1] = 0;
+                inirule.unit[16].direction[2] = 0;
+                inirule.unit[16].direction[3] = 0;
+
+                inirule.unit[16].strength[0] = 1;
+                inirule.unit[16].strength[1] = -1;
+                inirule.unit[16].strength[2] = -1;
+                inirule.unit[16].strength[3] = -1;
+                inirule.unit[16].strength[4] = -1;
+                inirule.unit[16].strength[5] = -1;
+                inirule.unit[16].strength[6] = -1;
+                inirule.unit[16].strength[7] = -1;
+                inirule.unit[16].strength[8] = -1;
+                inirule.unit[16].strength[9] = -1;
+                inirule.unit[16].strength[10] = -1;
+                inirule.unit[16].strength[11] = -1;
+                inirule.unit[16].strength[12] = -1;
+                inirule.unit[16].strength[13] = -1;
+                inirule.unit[16].strength[14] = -1;
+                inirule.unit[16].strength[15] = -1;
+                inirule.unit[16].strength[16] = 0;
+
+                inirule.unit[16].number = 1;
+            }
+
+            function movableDomain(pro, board, domain, turn, rule) {
+                var i, j;
+                var k, l, m;
+                var error = -1;
+
+                for (i = 0 ; i < rule.width ; i++) {
+                    for (j = 0 ; j < rule.height ; j++) {
+                        domain[i][j] = 0;
+                    }
+                }
+
+                if ((pro[0] >= 0 && pro[0] < rule.width) && (pro[1] >= 0 && pro[1] < rule.height)) {
+                    if (pro[0] == rule.width / 2 && pro[1] == 0) {
+                        pro[0] = rule.width / 2 - 1;
+                    } else if (pro[0] == rule.width / 2 - 1 && pro[1] == rule.height - 1) {
+                        pro[0] = rule.width / 2;
+                    }
+                    if (turn % 2 == 1 && (board[pro[0]][pro[1]] > 0 && board[pro[0]][pro[1]] <= rule.classnum)) {
+                        error = 0;
+                        k = 1;
+                        l = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]]].direction[0] && pro[0] - l >= 0) {
+                            if (board[pro[0]][pro[1]] != 13) {
+                                if ((pro[0] - l == rule.width / 2 && pro[1] == 0) || (pro[0] - l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] - l][pro[1]] == 0) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                    } else if (board[pro[0] - l][pro[1]] > rule.classnum) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                        break;
+                                    } else {
+                                        break;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            } else {
+                                if ((pro[0] - l == rule.width / 2 && pro[1] == 0) || (pro[0] - l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] - l][pro[1]] == 0 || board[pro[0] - l][pro[1]] > rule.classnum) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]]].direction[2] && pro[0] + l < rule.width) {
+                            if (board[pro[0]][pro[1]] != 13) {
+                                if ((pro[0] + l == rule.width / 2 && pro[1] == 0) || (pro[0] + l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] + l][pro[1]] == 0) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                    } else if (board[pro[0] + l][pro[1]] > rule.classnum) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                        break;
+                                    } else {
+                                        break;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            } else {
+                                if ((pro[0] + l == rule.width / 2 && pro[1] == 0) || (pro[0] + l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] + l][pro[1]] == 0 || board[pro[0] + l][pro[1]] > rule.classnum) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        m = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]]].direction[1] && pro[1] - k >= 0) {
+                            if (board[pro[0]][pro[1]] != 13) {
+                                if (m == 1 && (pro[0] == rule.width / 2 && pro[1] == rule.height - 1)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]]].direction[1] && pro[1] - l >= rule.height / 2) {
+                                        if (board[pro[0] - 1][pro[1] - l] == 0) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                        } else if (board[pro[0] - 1][pro[1] - l] > rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else if (!((pro[0] != 1 && pro[0] != rule.width - 2) && pro[1] - k == rule.height / 2 - 1)) {
+                                    if (pro[0] == rule.width / 2 && pro[1] - k == 0) {
+                                        if (board[pro[0] - 1][pro[1] - k] == 0) {
+                                            domain[pro[0] - 1][pro[1] - k] = 1;
+                                        } else if (board[pro[0] - 1][pro[1] - k] > rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    } else {
+                                        if (board[pro[0]][pro[1] - k] == 0) {
+                                            domain[pro[0]][pro[1] - k] = 1;
+                                        } else if (board[pro[0]][pro[1] - k] > rule.classnum) {
+                                            domain[pro[0]][pro[1] - k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    k++;
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                if (m == 1 && (pro[0] == rule.width / 2 && pro[1] == rule.height - 1)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]]].direction[1] && pro[1] - l >= 0) {
+                                        if (board[pro[0] - 1][pro[1] - l] == 0 || board[pro[0] - 1][pro[1] - l] > rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else {
+                                    if ((pro[0] == rule.width / 2 && pro[1] - k == 0) && (board[pro[0] - 1][pro[1] - k] == 0 || board[pro[0] - 1][pro[1] - k] > rule.classnum)) {
+                                        domain[pro[0] - 1][pro[1] - k] = 1;
+                                    } else if (!(pro[0] == rule.width / 2 && pro[1] - k == 0) && (board[pro[0]][pro[1] - k] == 0 || board[pro[0]][pro[1] - k] > rule.classnum)) {
+                                        domain[pro[0]][pro[1] - k] = 1;
+                                    }
+                                    k++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        m = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]]].direction[3] && pro[1] + k < rule.height) {
+                            if (board[pro[0]][pro[1]] != 13) {
+                                if (m == 1 && (pro[0] == rule.width / 2 - 1 && pro[1] == 0)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]]].direction[3] && pro[1] + l <= rule.height / 2 - 1) {
+                                        if (board[pro[0] + 1][pro[1] + l] == 0) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                        } else if (board[pro[0] + 1][pro[1] + l] > rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else if (!((pro[0] != 1 && pro[0] != rule.width - 2) && pro[1] + k == rule.height / 2)) {
+                                    if (pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) {
+                                        if (board[pro[0] + 1][pro[1] + k] == 0) {
+                                            domain[pro[0] + 1][pro[1] + k] = 1;
+                                        } else if (board[pro[0] + 1][pro[1] + k] > rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    } else {
+                                        if (board[pro[0]][pro[1] + k] == 0) {
+                                            domain[pro[0]][pro[1] + k] = 1;
+                                        } else if (board[pro[0]][pro[1] + k] > rule.classnum) {
+                                            domain[pro[0]][pro[1] + k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    k++;
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                if (m == 1 && (pro[0] == rule.width / 2 - 1 && pro[1] == 0)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]]].direction[3] && pro[1] + l < rule.height) {
+                                        if (board[pro[0] + 1][pro[1] + l] == 0 || board[pro[0] + 1][pro[1] + l] > rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else {
+                                    if ((pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) && (board[pro[0] + 1][pro[1] + k] == 0 || board[pro[0] + 1][pro[1] + k] > rule.classnum)) {
+                                        domain[pro[0] + 1][pro[1] + k] = 1;
+                                    } else if (!(pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) && (board[pro[0]][pro[1] + k] == 0 || board[pro[0]][pro[1] + k] > rule.classnum)) {
+                                        domain[pro[0]][pro[1] + k] = 1;
+                                    }
+                                    k++;
+                                }
+                            }
+                        }
+                    } else if (turn % 2 == 0 && board[pro[0]][pro[1]] > rule.classnum) {
+                        error = 0;
+                        k = 1;
+                        l = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[2] && pro[0] - l >= 0) {
+                            if (board[pro[0]][pro[1]] - rule.classnum != 13) {
+                                if ((pro[0] - l == rule.width / 2 && pro[1] == 0) || (pro[0] - l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] - l][pro[1]] == 0) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                    } else if (board[pro[0] - l][pro[1]] > 0 && board[pro[0] - l][pro[1]] <= rule.classnum) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                        break;
+                                    } else {
+                                        break;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            } else {
+                                if ((pro[0] - l == rule.width / 2 && pro[1] == 0) || (pro[0] - l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] - l][pro[1]] <= rule.classnum) {
+                                        domain[pro[0] - l][pro[1]] = 1;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[0] && pro[0] + l < rule.width) {
+                            if (board[pro[0]][pro[1] - rule.classnum] != 13) {
+                                if ((pro[0] + l == rule.width / 2 && pro[1] == 0) || (pro[0] + l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] + l][pro[1]] == 0) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                    } else if (board[pro[0] + l][pro[1]] > 0 && board[pro[0] + l][pro[1]] <= rule.classnum) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                        break;
+                                    } else {
+                                        break;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            } else {
+                                if ((pro[0] + l == rule.width / 2 && pro[1] == 0) || (pro[0] + l == rule.width / 2 - 1 && pro[1] == rule.height - 1)) {
+                                    l++;
+                                } else {
+                                    if (board[pro[0] + l][pro[1]] <= rule.classnum) {
+                                        domain[pro[0] + l][pro[1]] = 1;
+                                    }
+                                    k++;
+                                    l++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        m = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[3] && pro[1] - k >= 0) {
+                            if (board[pro[0]][pro[1]] - rule.classnum != 13) {
+                                if (m == 1 && (pro[0] == rule.width / 2 && pro[1] == rule.height - 1)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[3] && pro[1] - l >= rule.height / 2) {
+                                        if (board[pro[0] - 1][pro[1] - l] == 0) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                        } else if (board[pro[0] - 1][pro[1] - l] > 0 && board[pro[0] - 1][pro[1] - l] <= rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else if (!((pro[0] != 1 && pro[0] != rule.width - 2) && pro[1] - k == rule.height / 2 - 1)) {
+                                    if (pro[0] == rule.width / 2 && pro[1] - k == 0) {
+                                        if (board[pro[0] - 1][pro[1] - k] == 0) {
+                                            domain[pro[0] - 1][pro[1] - k] = 1;
+                                        } else if (board[pro[0] - 1][pro[1] - k] > 0 && board[pro[0] - 1][pro[1] - k] <= rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    } else {
+                                        if (board[pro[0]][pro[1] - k] == 0) {
+                                            domain[pro[0]][pro[1] - k] = 1;
+                                        } else if (board[pro[0]][pro[1] - k] > 0 && board[pro[0]][pro[1] - k] <= rule.classnum) {
+                                            domain[pro[0]][pro[1] - k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    k++;
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                if (m == 1 && (pro[0] == rule.width / 2 && pro[1] == rule.height - 1)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[3] && pro[1] - l >= 0) {
+                                        if (board[pro[0] - 1][pro[1] - l] <= rule.classnum) {
+                                            domain[pro[0] - 1][pro[1] - l] = 1;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else {
+                                    if ((pro[0] == rule.width / 2 && pro[1] - k == 0) && board[pro[0] - 1][pro[1] - k] <= rule.classnum) {
+                                        domain[pro[0] - 1][pro[1] - k] = 1;
+                                    } else if (!(pro[0] == rule.width / 2 && pro[1] - k == 0) && board[pro[0]][pro[1] - k] <= rule.classnum) {
+                                        domain[pro[0]][pro[1] - k] = 1;
+                                    }
+                                    k++;
+                                }
+                            }
+                        }
+                        k = 1;
+                        l = 1;
+                        m = 1;
+                        while (k <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[1] && pro[1] + k < rule.height) {
+                            if (board[pro[0]][pro[1]] - rule.classnum != 13) {
+                                if (m == 1 && (pro[0] == rule.width / 2 - 1 && pro[1] == 0)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[1] && pro[1] + l <= rule.height / 2 - 1) {
+                                        if (board[pro[0] + 1][pro[1] + l] == 0) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                        } else if (board[pro[0] + 1][pro[1] + l] > 0 && board[pro[0] + 1][pro[1] + l] <= rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else if (!((pro[0] != 1 && pro[0] != rule.width - 2) && pro[1] + k == rule.height / 2)) {
+                                    if (pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) {
+                                        if (board[pro[0] + 1][pro[1] + k] == 0) {
+                                            domain[pro[0] + 1][pro[1] + k] = 1;
+                                        } else if (board[pro[0] + 1][pro[1] + k] > 0 && board[pro[0] + 1][pro[1] + k] <= rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    } else {
+                                        if (board[pro[0]][pro[1] + k] == 0) {
+                                            domain[pro[0]][pro[1] + k] = 1;
+                                        } else if (board[pro[0]][pro[1] + k] > 0 && board[pro[0]][pro[1] + k] <= rule.classnum) {
+                                            domain[pro[0]][pro[1] + k] = 1;
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    k++;
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                if (m == 1 && (pro[0] == rule.width / 2 - 1 && pro[1] == 0)) {
+                                    while (l <= rule.unit[board[pro[0]][pro[1]] - rule.classnum].direction[1] && pro[1] + l < rule.height) {
+                                        if (board[pro[0] + 1][pro[1] + l] <= rule.classnum) {
+                                            domain[pro[0] + 1][pro[1] + l] = 1;
+                                        }
+                                        l++;
+                                    }
+                                    m++;
+                                } else {
+                                    if ((pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) && board[pro[0] + 1][pro[1] + k] <= rule.classnum) {
+                                        domain[pro[0] + 1][pro[1] + k] = 1;
+                                    } else if (!(pro[0] == rule.width / 2 - 1 && pro[1] + k == rule.height - 1) && board[pro[0]][pro[1] + k] <= rule.classnum) {
+                                        domain[pro[0]][pro[1] + k] = 1;
+                                    }
+                                    k++;
+                                }
+                            }
+                        }
+                    }
+                }
+                return error;
+            }
+
+            var HenkanToC = [];
+            onload = function () {
+                alert();
+
+                HenkanToC = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+                for (var i = 33; i <= 48; i++) {
+                    HenkanToC[i] = i - 16;
+                }
+
+                GetIniRule();
+                console.log(inirule);
+
+
+                for (var i = 0; i < inirule.width; i++) {
+                    b[i] = [];
+                    domain[i] = [];
+                    for (var j = 0; j < inirule.height; j++) {
+                        b[i][j] = HenkanToC[board[j + 1][i + 1]];
+                    }
+                }
+                for (var i = 0; i < inirule.width; i++) {
+                    document.write(b[i]);
+                    document.write("<br>");
+                }
+                var pro = [0, 1];
+                movableDomain(pro, b, domain, turn, inirule);
+                for (var i = 0; i < inirule.width; i++) {
+                    document.write("[")
+                    document.write(domain[i]);
+                    document.write("],<br>");
+                }
+            };
+        })();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

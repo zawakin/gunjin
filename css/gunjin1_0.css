@@ -1,0 +1,53 @@
+﻿body
+{
+    
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+    color:red;
+}
+header, nav,  section, footer {
+    display:block;
+}
+article,aside{
+    display:inline;
+}
+#box {
+    background-color:green;
+    display:none;
+    position:relative;
+
+}
+#komadai {
+    /*background-color:aqua;*/
+    
+    left:1500px;
+    top:0px;
+    position:absolute;
+}
+button{
+    width:300px;
+    height:100px;
+}
+#board {
+    
+    width:1235px;
+    height:1877px;
+    position:relative;
+
+}
+
+canvas {
+    position :relative;
+    /*width:200px;
+    height:200px;*/
+}
+
+canvas.cell{
+    position:absolute;
+ 
+}
+canvas.emphasis{
+    position:absolute;
+}
