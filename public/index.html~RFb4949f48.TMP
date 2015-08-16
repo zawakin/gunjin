@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>軍人将棋ver1.0</title>
+    <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script tyep="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/gunjin1_0.js">
+    </script>
+    <!--<script type="text/javascript">
+        $(function ($) {
+
+            alert();
+            var count = 0;
+
+
+
+            var b = "";
+            for (var i = 0; i < 10; i++) {
+                b += "abcd";
+            }
+            $("button").click(function () {
+
+                for (var i = 0; i < 3; i++) {
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:8082/test",
+                        datatype:"json",
+                        data: JSON.stringify({"a":b}),
+                        success: function (data) {
+
+                            alert(typeof (data));
+
+                            $("#debug").append("i = " + i + "data = " + data + "<br>");
+                            $("#debug").append("loadedData = " + JSON.parse(data) + "<br>");
+                            console.log(JSON.parse(data));
+                        }
+                    });
+                    // alert();
+                }
+                $("debug").append(i);
+            });
+
+        });
+    </script>-->
+</head>
+<body>
+    <header>
+        初期配置を決めてください。
+
+        <button>click me!</button>
+        <div id="debug"></div>
+    </header>
+    <article>
+      <!--  <div id="draggable" style="width:500px;height:500px;background-color:green;"></div>-->
+        <button id="sendbtn"><h1>SEND!</h1></button>
+        <button id="getMikata">GET MIKATA</button>
+        <button id="empClear">emphasis canvas clear</button>
+        <div style="display:none;">
+            <canvas class="cell" width="200" height="200"></canvas>
+            <canvas class="shireibu cell" width="405" height="200"></canvas>
+            <canvas class="emphasis" width="200" height="200"></canvas>
+        </div>"
+        <button id="change"><h1>ボードを初期化</h1></button>
+        <div id="board">
+            <canvas id="field" width="1235" height="1877"></canvas>
+
+        </div>
+
+        <div id="komadai">
+            <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
+
+        </div>
+
+    </article>
+    <aside></aside>
+    <footer>
+        ©hoge
+    </footer>
+</body>
+</html>
