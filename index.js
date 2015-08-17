@@ -14,7 +14,12 @@ app.get("/", function (req, res) {
     res.sendFile("index.html");
 });
 
+app.get("/game",function(req,res){
+	res.sendFile("battle.html");
+});
+
 var clients = [];
+var games = [];
 
 function GetClientList() {
     var list = [];
@@ -27,10 +32,15 @@ function GetClientList() {
 io.on("connection", function (socket) {
 
     console.log("client connected");
-    io.emit("change clients", clients);
+    io.emit("change clients", GetClientList());
 
 
     socket.on("disconnect", function () {
+    	for(var i=0;i<clients.length;i++){
+    		if(socket.id==clients[i].id){
+    			clients.splice(i,1);
+    		}
+    	}
         console.log("client disconnected");
 
     });
@@ -47,7 +57,11 @@ io.on("connection", function (socket) {
             }
         }
         if (!frag) {
-            clients.push(client);
+        	if(clients.length==0){
+            	clients.push(client);
+            }else{
+            	
+            }
         }
 
         console.log("debug");
