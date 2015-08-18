@@ -56,7 +56,7 @@ $(function ($) {
     var img;
     var cnvsList = [];
     var ctxList = [];
-    var komaSize = 200;
+    var komaSize = 67;
 
 
     function DrawIndex(ctx, index) {
@@ -202,13 +202,14 @@ $(function ($) {
         img_field = new Image();
         img_field.src = "img/field.png";
         img_field.onload = function () {
-            ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, 1235, 1877);
+            ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, 412, 626);
         }
 
         var cnvs_base = document.getElementsByClassName("cell")[0];
 
         //î’ñ ÇcanvasÇ≈ñÑÇﬂÇÈ
         var b = document.getElementById("board");
+        var bW = 1.67 //boarder width Ç‡Ç∆Ç‡Ç∆5
 
         //canvasÇñÑÇﬂÇÈ
         //isCellÇÕcell class Ç©Å@emp classÇ©ÇîªíËÇ∑ÇÈ
@@ -223,13 +224,13 @@ $(function ($) {
                             if (isCell) {
                                 cnvsList[i][j] = cnvs_base.cloneNode(true);
 
-                                cnvsList[i][j].style.left = (mathfloor((komaSize+5)/2)+5 + (5 + komaSize) * (suji - j - 1)) + "px";
+                                cnvsList[i][j].style.left = (mathfloor((komaSize+bW)/2)+bW + (bW + komaSize) * (suji - j - 1)) + "px";
                             } else {
                                 cnvsList[i][j] = document.getElementsByClassName("shireibu")[0].cloneNode(true);
 
-                                cnvsList[i][j].style.left = (5 + (5 + komaSize) * (suji - j - 1)) + "px";
+                                cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j - 1)) + "px";
                             }
-                            cnvsList[i][j].style.top = (5 + (5 + komaSize) * (i - 1)) + "px";
+                            cnvsList[i][j].style.top = (bW + (bW + komaSize) * (i - 1)) + "px";
                         }
                         if (j == 4) {
 
@@ -245,24 +246,24 @@ $(function ($) {
                         if (j == 4) {
                             if (isCell) {
                                 cnvsList[i][j] = cnvs_base.cloneNode(true);
-                                cnvsList[i][j].style.left = (mathfloor((komaSize + 5) / 2) + 5 + (5 + komaSize) * (suji - j)) + "px";
+                                cnvsList[i][j].style.left = (mathfloor((komaSize + bW) / 2) + bW + (bW + komaSize) * (suji - j)) + "px";
                             } else {
 
                                 cnvsList[i][j] = document.getElementsByClassName("shireibu")[0].cloneNode(true);
-                                cnvsList[i][j].style.left = (5 + (5 + komaSize) * (suji - j)) + "px";
+                                cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j)) + "px";
                             }
 
-                            cnvsList[i][j].style.top = (1057 + (5 + komaSize) * (i - 5)) + "px";
+                            cnvsList[i][j].style.top = (352 + (bW + komaSize) * (i - 5)) + "px";
                         }
                     } else {
 
                         cnvsList[i][j] = cnvs_base.cloneNode(true);
                         if (i <= 4) {
-                            cnvsList[i][j].style.left = (5 + (5 + komaSize) * (suji - j)) + "px";
-                            cnvsList[i][j].style.top = (5 + (5 + komaSize) * (i - 1)) + "px";
+                            cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j)) + "px";
+                            cnvsList[i][j].style.top = (bW + (bW + komaSize) * (i - 1)) + "px";
                         } else {
-                            cnvsList[i][j].style.left = (5 + (5 + komaSize) * (suji - j)) + "px";
-                            cnvsList[i][j].style.top = (1057 + (5 + komaSize) * (i - 5)) + "px";
+                            cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j)) + "px";
+                            cnvsList[i][j].style.top = (352 + (bW + komaSize) * (i - 5)) + "px";
                         }
                     }
 
