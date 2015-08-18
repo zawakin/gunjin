@@ -348,40 +348,7 @@ $(function ($) {
             }
 
         });
-        $("#sendbtn").click(function () {
-            var data = { "board": board };
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8082/test",
-                datatype: "json",
-                data: JSON.stringify(data),
-                success: function (data) {
 
-                    alert(typeof (data));
-
-                    $("#debug").append("data = " + data + "<br>");
-                    $("#debug").append("loadedData = " + JSON.parse(data) + "<br>");
-                    console.log(JSON.parse(data));
-                }
-            });
-        });
-        $("#getMikata").click(function () {
-            var mikataArray = kyokumen.GetMovableDomain({ suji: 2, dan: 4 });
-            clearAllEmpCanvas();
-            for (var i = 1; i <= dan; i++) {
-                for (var j = 1; j <= suji; j++) {
-                    if (mikataArray[i][j]==1) {
-
-                        empCtxList[i][j].fillStyle = 'rgba(192, 80, 77, 0.7)';
-                        empCtxList[i][j].fillRect(0, 0,cnvsList[i][j].width, cnvsList[i][j].height);
-
-                    }
-                }
-            }
-        });
-        $("#empClear").click(function () {
-            clearAllEmpCanvas();
-        });
     };
 
 });
