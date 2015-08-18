@@ -5,56 +5,11 @@
     <meta charset="utf-8" />
     <title>軍人将棋</title>
     <style>
-    	select{
-    		display: block;
-    	}
-        select{
-            width:200px;
-        }
-        #msg {
-        	color:red;
-        }
     </style>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 <body>
-    <h1>軍人将棋が対戦できるサイト</h1>
-
-    <input type="text" id="nickname">
-    <button id="ready">対戦する</button>
-    <label id="msg"></label>
-    <div>
-        <label>対戦待ちリスト</label><br />
-        <select id="clients" size="10" width="100px">
-
-        </select>
-        <label>対戦中リスト</label><br />
-        <select id="taisenchu" size="10" width="100px">
-    </div>
-
-
-    <script>
-        var socket = io();
-        console.log("socket created");
-        
-        socket.on("change clients", function (clients) {
-            $("#clients").empty();
-            for (var i = 0; i < clients.length; i++) {
-                $("#clients").append($("<option>").text(clients[i]));
-            }
-        });
-
-        var taisenMachi = false;
-        $("#ready").click(function () {
-        	if($("#nickname").val()==""){
-        		$("#msg").text("名前を入力してください");
-        		return;
-            }
-            $("#msg").text("");
-            socket.emit("taisen", $("#nickname").val());
-
-        });
-    </script>
+	<h1>オンラインで軍人将棋をしましょう！</h1>
+	<a href="/dojo">対局場へ</a>
 </body>
 </html>

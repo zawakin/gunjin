@@ -2,6 +2,7 @@
 
 var express = require("express");
 var app = express();
+var path = require("path");
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -11,11 +12,14 @@ app.set("port", (process.env.PORT || 5000));
 
 
 app.get("/", function (req, res) {
-    res.sendFile("index.html");
+    res.sendFile(path.resolve("public/index.html"));
+});
+app.get("/dojo", function (req, res) {
+    res.sendFile(path.resolve("public/dojo.html"));
 });
 
 app.get("/game",function(req,res){
-	res.sendFile("battle.html");
+    res.sendFile(path.resolve("public/battle.html"));
 });
 
 var clients = [];

@@ -6,6 +6,7 @@
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
     color:red;
+    
 }
 header, nav,  section, footer {
     display:block;
