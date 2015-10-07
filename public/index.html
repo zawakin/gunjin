@@ -15,11 +15,14 @@
         	color:red;
         }
     </style>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
 </head>
 <body>
     <h1>軍人将棋が対戦できるサイト</h1>
+
+    <ul id="roomList">
+    </ul>
 
     <input type="text" id="nickname">
     <button id="ready">対戦する</button>
@@ -35,26 +38,39 @@
 
 
     <script>
-        var socket = io();
-        console.log("socket created");
+
+
+        var roomNum = 100;
+        var roomList = document.getElementById("roomList");
+
+        for (var i = 1; i <= roomNum; i++) {
+            var room = document.createElement("li");
+            room.innerHTML = "<a href=\"game?r=" + i + "\">" + i + "</a>";
+            roomList.appendChild(room);
+        }
+
+
+
+        //var socket = io();
+        //console.log("socket created");
         
-        socket.on("change clients", function (clients) {
-            $("#clients").empty();
-            for (var i = 0; i < clients.length; i++) {
-                $("#clients").append($("<option>").text(clients[i]));
-            }
-        });
+        //socket.on("change clients", function (clients) {
+        //    $("#clients").empty();
+        //    for (var i = 0; i < clients.length; i++) {
+        //        $("#clients").append($("<option>").text(clients[i]));
+        //    }
+        //});
 
-        var taisenMachi = false;
-        $("#ready").click(function () {
-        	if($("#nickname").val()==""){
-        		$("#msg").text("名前を入力してください");
-        		return;
-            }
-            $("#msg").text("");
-            socket.emit("taisen", $("#nickname").val());
+        //var taisenMachi = false;
+        //$("#ready").click(function () {
+        //	if($("#nickname").val()==""){
+        //		$("#msg").text("名前を入力してください");
+        //		return;
+        //    }
+        //    $("#msg").text("");
+        //    socket.emit("taisen", $("#nickname").val());
 
-        });
+        //});
     </script>
 </body>
 </html>

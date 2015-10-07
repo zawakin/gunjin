@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title><%=title %></title>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+    
+
+    <h1 id="roomNum"><%= roomNum%></h1>
+    <div id="nameinput">
+        <label>名前を入力してください</label>
+        <form name="nameform" onsubmit="NameFormEvent(); return false;" >
+            <input id="name" type="text" />
+        </form>
+    </div>
+
+    <div id="waiting" style="display:none;">
+        <h1>対戦者が来るのを待っています...</h1>
+    </div>
+
+    <div id="battlestart" style="display:none;">
+        <h1>対戦者が決定しました</h1>
+        <div>
+            <label>先手：</label>
+            <label id="sente"></label><br />
+            <label>後手：</label>
+            <label id="gote"></label>
+        </div>
+    </div>
+
+    <div id="battle" style="display:none;">
+
+    </div>
+
+    <div id="battlefinish" style="display:none;">
+
+
+    </div>
+
+    <script>
+        
+        var stage = 0;
+        var waiting = false;
+
+        var socket = io();
+        var roomNum = document.getElementById("roomNum").textContent;
+        
+
+        function NameFormEvent() {
+            var name = document.forms.nameform.name.value;
+           
+            var data = { name: name ,roomNum:roomNum};
+            console.log(data);
+            socket.emit("taisenmachi", data);
+            $("#nameinput").hide();
+            $("#waiting").show();
+            waiting = true;
+        };
+
+        socket.on("taisenKettei", function (room) {
+
+            if (waiting) {
+
+                
+
+                $("#waiting").hide();
+                $("#sente").text(room.sente.name);
+                $("#gote").text(room.gote.name);
+
+                $("#battlestart").show();
+
+
+
+            }
+        });
+
+        
+    </script>
+</body>
+</html>
