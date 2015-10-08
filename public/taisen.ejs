@@ -1,12 +1,15 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <title><%=title %></title>
+    <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>   
+    <script tyep="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
+    <script type="text/javascript" src="js/gunjin1_0.js"></script>
 </head>
 <body>
     
@@ -33,10 +36,37 @@
         </div>
     </div>
 
+    <div id="battlejunbi" style="display:none;">
+        <header>
+            初期配置を決めてください。
+        </header>
+
+        <article>
+            <!--  <div id="draggable" style="width:500px;height:500px;background-color:green;"></div>-->
+            <div style="display:none;">
+                <canvas class="cell" width="67" height="67"></canvas>
+                <canvas class="shireibu cell" width="135" height="67"></canvas>
+                <canvas class="emphasis" width="67" height="67"></canvas>
+            </div>
+            <button id="change"><h1>ボードを初期化</h1></button>
+            <div id="board">
+                <canvas id="field" width="412" height="626"></canvas>
+
+            </div>
+
+            <div id="komadai">
+                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
+            </div>
+        </article>
+
+        <footer>
+            ©hoge
+        </footer>
+    </div>
+
     <div id="battle" style="display:none;">
 
     </div>
-
     <div id="battlefinish" style="display:none;">
 
 
@@ -71,10 +101,13 @@
                 $("#waiting").hide();
                 $("#sente").text(room.sente.name);
                 $("#gote").text(room.gote.name);
-
                 $("#battlestart").show();
 
-
+                window.setTimeout(function (roomInfo) {
+                    $("#battlestart").hide();
+                    $("#battlejunbi").show();
+                }, 1000, room
+                );
 
             }
         });

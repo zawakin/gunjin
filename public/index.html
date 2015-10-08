@@ -5,15 +5,12 @@
     <meta charset="utf-8" />
     <title>軍人将棋</title>
     <style>
-    	select{
-    		display: block;
-    	}
-        select{
-            width:200px;
+        li {
+            font-size:20px;
+            margin:10px;
+
         }
-        #msg {
-        	color:red;
-        }
+
     </style>
     <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
@@ -24,17 +21,6 @@
     <ul id="roomList">
     </ul>
 
-    <input type="text" id="nickname">
-    <button id="ready">対戦する</button>
-    <label id="msg"></label>
-    <div>
-        <label>対戦待ちリスト</label><br />
-        <select id="clients" size="10" width="100px">
-
-        </select>
-        <label>対戦中リスト</label><br />
-        <select id="taisenchu" size="10" width="100px">
-    </div>
 
 
     <script>

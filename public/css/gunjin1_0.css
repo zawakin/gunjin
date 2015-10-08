@@ -5,7 +5,7 @@
     -moz-user-select: none; /* mozilla browsers */
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
-    color:red;
+    color:black;
 }
 header, nav,  section, footer {
     display:block;
@@ -27,8 +27,6 @@ article,aside{
     position:absolute;
 }
 button{
-    width:300px;
-    height:100px;
 }
 #board {
     

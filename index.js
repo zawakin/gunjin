@@ -46,12 +46,7 @@ io.on("connection", function (socket) {
 
 
     socket.on("disconnect", function () {
-    	for(var i=0;i<clients.length;i++){
-    		if(socket.id==clients[i].id){
-    			clients.splice(i,1);
-    		}
-    	}
-        console.log("client disconnected");
+
     });
 
     socket.on("taisenmachi", function (data) {
