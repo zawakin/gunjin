@@ -35,7 +35,8 @@
         EHIKOUKI: 45,
         ETANK: 46,
         ESPY: 47,
-        EGUNKI: 48
+        EGUNKI: 48,
+        E_HIDE:49
     }
     var SENGO = {
         SENTE: 1,

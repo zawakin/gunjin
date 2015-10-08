@@ -236,7 +236,7 @@ $(function ($) {
         console.log(kyokumen.GetMovableDomain({ dan: 2, suji: 4 }));
         //駒の内部表現と画像のインデックスの変換配列 piece[内部表現] =　画像のインデックス
         piece = [17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        for (var i = 33; i <= 48; i++) {
+        for (var i = 33; i <= 49; i++) {
             piece[i] = i - 15;
         }
 
@@ -392,7 +392,13 @@ $(function ($) {
 
         //お互いの配置が完了してゲーム開始の合図を受け取る
         socket.on("gamestart", function (board) {
-            alert(board);
+            alert("対局開始！");
+
+            for (var dan = 1; dan <= 8; dan++) {
+                for (var suji = 1; suji <= 6; suji++) {
+                    DrawIndex(ctxList[dan][suji], piece[board[dan][suji]]);
+                }
+            }
         });
 
         //初期化ボタン

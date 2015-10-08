@@ -112,17 +112,17 @@ io.on("connection", function (socket) {
             room.haitiOk = true;
         } else {
             console.log(roomN + ":配置完了、対局開始");
-            io.to("room" + roomN).emit("gamestart", gunjin.createOneBoard(room.senteBoard, room.goteBoard));
+            room.board = gunjin.createOneBoard(room.senteBoard, room.goteBoard);
+
+            //io.to("room" + roomN).emit("gamestart", gunjin.createOneBoard(room.senteBoard, room.goteBoard));
+
+            io.to(room.sente.id).emit("gamestart", gunjin.getSenteGamingBoard(room.board));
+            io.to(room.gote.id).emit("gamestart", gunjin.getGoteGamingBoard(board));
         }
 
     });
     
 });
-
-function ExamineRoomNumber(socket){
-
-}
-
 
 http.listen(app.get("port"), function () {
     console.log("port = %s", app.get("port"));
