@@ -32,19 +32,10 @@ for(var i=1;i<=100;i++){
     rooms[i] = {waiting:false,num:0, clients:[] ,haitiOk:false};
 }
 
-function GetClientList() {
-    var list = [];
-    for (var i = 0; i < clients.length; i++) {
-        list.push(clients[i].name);
-    }
-    return list;
-}
 
 io.on("connection", function (socket) {
 
     console.log("client connected");
-    io.emit("change clients", GetClientList());
-
 
     socket.on("disconnect", function () {
         
@@ -117,12 +108,25 @@ io.on("connection", function (socket) {
             //io.to("room" + roomN).emit("gamestart", gunjin.createOneBoard(room.senteBoard, room.goteBoard));
 
             io.to(room.sente.id).emit("gamestart", gunjin.getSenteGamingBoard(room.board));
-            io.to(room.gote.id).emit("gamestart", gunjin.getGoteGamingBoard(board));
+            io.to(room.gote.id).emit("gamestart", gunjin.getGoteGamingBoard(room.board));
         }
 
     });
     
 });
+
+////gameクラス
+//var Game = function () {
+//    this.kyokumen = new Kyokumen();
+
+//};
+
+////局面クラス
+//var Kyokumen = function () {
+//    this.
+//}
+
+
 
 http.listen(app.get("port"), function () {
     console.log("port = %s", app.get("port"));

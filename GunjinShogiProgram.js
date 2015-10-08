@@ -1,4 +1,5 @@
 ﻿
+
     var KOMAINF = {
         OUTOFBOARD: 64,
         EMPTY: 0,
@@ -61,7 +62,7 @@
         this.dan = dan;
     }
 
-    var Kyokumen = function() {
+    function Kyokumen() {
         this.suji = 6;
         this.dan = 8;
         this.deadKomas = [[1,2],[33,44]];
@@ -1154,4 +1155,3 @@
     //    document.write(bb[i] + "<br>");
     //}
 
-    module.exports = Kyokumen;
