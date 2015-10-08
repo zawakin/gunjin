@@ -76,6 +76,12 @@ io.on("connection", function (socket) {
 
     });
 
+    //debug
+    socket.on("msg", function (msg) {
+        console.log(msg);
+
+    });
+
     socket.on("taisen", function (name) {
         if (name == "") name = "noname";
         var client = { id: socket.id, name: name };

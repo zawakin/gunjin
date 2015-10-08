@@ -80,14 +80,14 @@ $(function ($) {
                     //[64, 64, 64, 64, 64, 64, 64, 64]
 
                 [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
-                [64, 13, 0, 0, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
-                [64, 13, 0, 13, 0, 13, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
                 [64, 64, 64, 64, 64, 64, 64, 64]
     ];
 
@@ -124,9 +124,29 @@ $(function ($) {
                 console.log(saki);
                 console.log(moto.suji);
                 console.log(board[saki.dan][saki.suji]);
-                board[saki.dan][saki.suji] = board[0][moto.suji];
-                DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
-                DrawIndex(motoCtx, piece[0]);
+
+                if (board[saki.dan][saki.suji] != 0) {
+
+                    var sakipiece = board[saki.dan][saki.suji];
+
+                    for (var i = 1; i <= komadaiBoard.length; i++) {
+                        if (board[0][i] == 0) {
+
+                            board[0][i] = sakipiece;
+                            DrawIndex(ctxList[0][i], piece[sakipiece]);
+                            break;
+                        }
+                    }
+                    board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
+                    board[moto.dan][moto.suji] = 0;
+                    DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
+
+                } else {
+                    board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
+                    board[moto.dan][moto.suji] = 0;
+                    DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
+                    DrawIndex(motoCtx, piece[0]);
+                }
             //‹î‘ä‚Ö
             } else if (saki.dan == 0) {
                 console.log(moto);
@@ -143,10 +163,33 @@ $(function ($) {
                 console.log(saki);
                 console.log(board[moto.dan][moto.suji]);
                 console.log(board[saki.dan][saki.suji]);
-                board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
-                DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
-                board[moto.dan][moto.suji] = 0;
-                DrawIndex(motoCtx, piece[board[moto.dan][moto.suji]]);
+
+                //ƒhƒƒbƒvæ‚É‹î‚ª‚ ‚é‚È‚ç‹î‘ä‚Ö–ß‚·
+                if (board[saki.dan][saki.suji] != 0) {
+
+                    var sakipiece = board[saki.dan][saki.suji];
+
+                    console.log(board[0]);
+                    for (var i = 1; i <= komadaiBoard.length; i++) {
+                        if (board[0][i] == 0) {
+
+                            board[0][i] = sakipiece;
+                            DrawIndex(ctxList[0][i], piece[sakipiece]);
+                            break;
+                        }
+                    }
+                    board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
+                    board[moto.dan][moto.suji] = 0;
+                    DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
+
+                } else {
+                    //‚È‚¢‚È‚ç“ü‚ê‘Ö‚¦‚é                
+                    board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
+                    DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
+                    board[moto.dan][moto.suji] = 0;
+                    DrawIndex(motoCtx, piece[board[moto.dan][moto.suji]]);
+                }
+
             }
         }
 
@@ -336,7 +379,10 @@ $(function ($) {
                 }
             }
         });
-
+        $("#haitikettei").click(function () {
+            socket.emit("msg", "test");
+            alert();
+        });
         $("#change").click(function () {
             clearAllEmpCanvas();
             for (var i = 1; i <= dan; i++) {

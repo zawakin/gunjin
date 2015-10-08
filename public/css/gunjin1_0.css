@@ -27,6 +27,7 @@ article,aside{
     position:absolute;
 }
 button{
+    margin:10px;
 }
 #board {
     
