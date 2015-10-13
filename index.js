@@ -32,8 +32,6 @@ for(var i=1;i<=100;i++){
     rooms[i] = {waiting:false,num:0, clients:[] ,haitiOk:false};
 }
 
-//全体を管理するオブジェクト
-var mng = new Manager(100);
 
 io.on("connection", function (socket) {
 
@@ -41,7 +39,9 @@ io.on("connection", function (socket) {
 
     //ソケットが切れたときの処理
     socket.on("disconnect", function () {
-        
+        console.log(mng);
+        var n = mng.RemoveSocket(socket);
+        io.to("room" + n).emit("clientchange", {});
     });
 
     //対戦申し込みの処理
@@ -118,16 +118,6 @@ io.on("connection", function (socket) {
     
 });
 
-////gameクラス
-//var Game = function () {
-//    this.kyokumen = new Kyokumen();
-
-//};
-
-////局面クラス
-//var Kyokumen = function () {
-//    this.
-//}
 
 
 
@@ -161,23 +151,23 @@ var ROOMSTATE = {
 }
 
 var Room = (function () {
-    var roomN;
-    this.roomstate = ROOMSTATE.EMPTY;
 
     var Room = function (roomN) {
         this.roomN = roomN;
+        this.roomstate = ROOMSTATE.EMPTY;
         this.clientList = [];
     };
 
     var p = Room.prototype;
 
-    //socketを引数にとる
+    //指定されたソケットを部屋に追加
     p.AddClient = function (socket) {
         var client = new Client(socket);
         this.clientList.push(client);
         return this.clientList;
     }
 
+    //指定されたソケットが存在すれば削除し、いなければエラーをサーバーに送信する関数
     p.RemoveClient = function (socket) {
         for (var i = 0; i < this.clientList.length; i++) {
             if (this.clientList[i].idIsMine(socket.id)) {
@@ -188,6 +178,7 @@ var Room = (function () {
         this.MsgToServer("error 削除しようとしたユーザーがいませんでした")
     };
 
+    //この部屋に指定したソケットが存在しているかどうかを返す関数
     p.ContainSocket = function (socket) {
         for (var i = 0; i < this.clientList.length; i++) {
             if (this.clientList[i].idIsMine(socket.id)) {
@@ -197,42 +188,58 @@ var Room = (function () {
         return false;
     };
 
+    //部屋番号を付与してサーバーに送信する関数
     p.MsgToServer = function (msg) {
         console.log(this.roomN + " : " + msg);
     }
-   
-    
 
     return Room;
 })();
 
 var Manager = (function () {
+    var rooms;
     
-
     var Manager = function (num) {
-        this.rooms = [];
+        rooms = [];
         for (var i = 1; i <= num; i++) {
-            this.rooms.push(new Room(i));
+            rooms.push(new Room(i));
         }
     };
 
     var p = Manager.prototype;
 
-    //0:not found, others : found
+    //前から順に部屋を検索し、指定されたソケットがあれば部屋番号、無ければ0を返す関数
     p.WhereSocket = function (socket) {
-        for (var i = 1; i <= this.rooms.length; i++) {
+
+        console.log(rooms);
+        console.log(Manager.rooms);
+        for (var i = 1; i <= rooms.length; i++) {
             if (rooms[i].ContainSocket(socket)) {
                 return i;
             }
         }
-        return 0;//not found
+        return 0;
     }
 
+    //指定されたソケットが存在すればその部屋からクライアントを削除する関数、戻り値に部屋番号、無ければ0を返す
+    p.RemoveSocket = function(socket){
+        var n = Manager.WhereSocket(socket);
+        if(n==0){
+            return 0;
+        }else{
+            rooms[n].RemoveClient(socket);
+            return n;
+        }
+    }
+
+    console.log(new Manager(1));
     return Manager;
 })();
 
 
 
+//全体を管理するオブジェクト
+var mng = new Manager(100);
 
 http.listen(app.get("port"), function () {
     console.log("port = %s", app.get("port"));

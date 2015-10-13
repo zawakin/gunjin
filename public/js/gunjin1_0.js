@@ -1,10 +1,10 @@
-
+ï»¿
 
 $(function ($) {
     ////gameStage = Haiti, Game, EndGame
     //var gameStage = "Haiti";
 
-    //img‚Íkoma‚Ì6”{‚É‚È‚é‚æ‚¤‚É‚·‚éB
+    //imgã¯komaã®6å€ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
     var imgWidth = 1200;
     var imgHeight = 1200;
     var komaWidth = 200;
@@ -97,12 +97,12 @@ $(function ($) {
         e.preventDefault();
     }
 
-    //jQuery UI—p‚Ì‘‚«’¼‚³‚ê‚½ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰
+    //jQuery UIç”¨ã®æ›¸ãç›´ã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©
     function OnDrop(e, ui) {
 
         console.log("drop");
         e.preventDefault();
-        //moto‚Íƒhƒ‰ƒbƒOŒ³‚Ìpos,saki‚Íƒhƒƒbƒvæ‚Ìpos
+        //motoã¯ãƒ‰ãƒ©ãƒƒã‚°å…ƒã®pos,sakiã¯ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã®pos
         var motoCnvs = ui.helper[0];
         var motoCtx = motoCnvs.getContext("2d");
         var moto = getIndexInContextList(motoCtx);
@@ -112,12 +112,12 @@ $(function ($) {
         var sakiCtx = sakiCnvs.getContext("2d");
         var saki = getIndexInContextList(sakiCtx);
 
-        //ƒhƒƒbƒvæ‚ªcanvas‚Å‚ ‚èAŒ³‚ª‹ó‚Å‚È‚­A“¯‚¶‚Æ‚±‚ë‚Éƒhƒƒbƒv‚µ‚Ä‚È‚¢‚È‚ç
+        //ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒcanvasã§ã‚ã‚Šã€å…ƒãŒç©ºã§ãªãã€åŒã˜ã¨ã“ã‚ã«ãƒ‰ãƒ­ãƒƒãƒ—ã—ã¦ãªã„ãªã‚‰
         if (saki != null && (board[moto.dan][moto.suji] != 0) && !(saki.suji == moto.suji && saki.dan == moto.dan)) {
             //console.log(saki);
             clearAllEmpCanvas();
             DrawIndex(motoCtx, piece[0]);
-            //‹î‘ä‚©‚ç
+            //é§’å°ã‹ã‚‰
             if (moto.dan == 0) {
                 console.log(board);
                 console.log(moto);
@@ -147,7 +147,7 @@ $(function ($) {
                     DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
                     DrawIndex(motoCtx, piece[0]);
                 }
-            //‹î‘ä‚Ö
+            //é§’å°ã¸
             } else if (saki.dan == 0) {
                 console.log(moto);
                 console.log(saki);
@@ -157,14 +157,14 @@ $(function ($) {
                 DrawIndex(sakiCtx, piece[board[moto.dan][moto.suji]]);
                 board[moto.dan][moto.suji] = 0;
                 DrawIndex(motoCtx, piece[board[moto.dan][moto.suji]]);
-            //‚»‚¤‚Å‚È‚¢‚È‚ç
+            //ãã†ã§ãªã„ãªã‚‰
             } else {
                 console.log(moto);
                 console.log(saki);
                 console.log(board[moto.dan][moto.suji]);
                 console.log(board[saki.dan][saki.suji]);
 
-                //ƒhƒƒbƒvæ‚É‹î‚ª‚ ‚é‚È‚ç‹î‘ä‚Ö–ß‚·
+                //ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã«é§’ãŒã‚ã‚‹ãªã‚‰é§’å°ã¸æˆ»ã™
                 if (board[saki.dan][saki.suji] != 0) {
 
                     var sakipiece = board[saki.dan][saki.suji];
@@ -183,7 +183,7 @@ $(function ($) {
                     DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
 
                 } else {
-                    //‚È‚¢‚È‚ç“ü‚ê‘Ö‚¦‚é                
+                    //ãªã„ãªã‚‰å…¥ã‚Œæ›¿ãˆã‚‹                
                     board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
                     DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
                     board[moto.dan][moto.suji] = 0;
@@ -195,7 +195,7 @@ $(function ($) {
 
     }
 
-    //context‚ğ“ü‚ê‚é‚Æcell‚ÌêŠ‚ğ•Ô‚·
+    //contextã‚’å…¥ã‚Œã‚‹ã¨cellã®å ´æ‰€ã‚’è¿”ã™
     function getIndexInContextList(ctx) {
         for (var i = 1; i <= komaZenbu; i++) {
             if (ctx == ctxList[0][i]) {
@@ -212,7 +212,7 @@ $(function ($) {
         return null;
     }
 
-    //EmpCanvas‚ğƒNƒŠƒA
+    //EmpCanvasã‚’ã‚¯ãƒªã‚¢
     function clearAllEmpCanvas() {
         for (var i = 1; i <= dan; i++) {
             for (var j = 1; j <= suji; j++) {
@@ -234,7 +234,7 @@ $(function ($) {
 
         kyokumen.Print();
         console.log(kyokumen.GetMovableDomain({ dan: 2, suji: 4 }));
-        //‹î‚Ì“à•”•\Œ»‚Æ‰æ‘œ‚ÌƒCƒ“ƒfƒbƒNƒX‚Ì•ÏŠ·”z—ñ piece[“à•”•\Œ»] =@‰æ‘œ‚ÌƒCƒ“ƒfƒbƒNƒX
+        //é§’ã®å†…éƒ¨è¡¨ç¾ã¨ç”»åƒã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å¤‰æ›é…åˆ— piece[å†…éƒ¨è¡¨ç¾] =ã€€ç”»åƒã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
         piece = [17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         for (var i = 33; i <= 49; i++) {
             piece[i] = i - 15;
@@ -250,12 +250,12 @@ $(function ($) {
 
         var cnvs_base = document.getElementsByClassName("cell")[0];
 
-        //”Õ–Ê‚ğcanvas‚Å–„‚ß‚é
+        //ç›¤é¢ã‚’canvasã§åŸ‹ã‚ã‚‹
         var b = document.getElementById("board");
-        var bW = 1.67 //boarder width ‚à‚Æ‚à‚Æ5
+        var bW = 1.67 //boarder width ã‚‚ã¨ã‚‚ã¨5
 
-        //canvas‚ğ–„‚ß‚é
-        //isCell‚Ícell class ‚©@emp class‚©‚ğ”»’è‚·‚é
+        //canvasã‚’åŸ‹ã‚ã‚‹
+        //isCellã¯cell class ã‹ã€€emp classã‹ã‚’åˆ¤å®šã™ã‚‹
         function FillCanvasAtBoard(cnvsList, ctxList, cnvs_base,draggable,isCell) {
             for (var i = 1; i <= dan; i++) {
                 cnvsList[i] = [];
@@ -320,7 +320,7 @@ $(function ($) {
          FillCanvasAtBoard(empCnvsList, empCtxList, document.getElementsByClassName("emphasis")[0],"true",false);
          FillCanvasAtBoard(cnvsList, ctxList, cnvs_base, "true",true);
 
-        //‹î‘ä‚É‹î‚ğ’Ç‰Á
+        //é§’å°ã«é§’ã‚’è¿½åŠ 
         var komadai = document.getElementById("komadai");
         cnvsList[0] = [];
         ctxList[0] = [];
@@ -337,12 +337,12 @@ $(function ($) {
         img.src = "img/gunjinkoma.png";
 
         img.onload = function () {
-            //‹î‘äã‚Ì‹î‚Ì•`‰æ
+            //é§’å°ä¸Šã®é§’ã®æç”»
             for (var i = 1; i <= komaZenbu; i++) {
                 DrawIndex(ctxList[0][i], piece[board[0][i]]);
             }
 
-            //ƒtƒB[ƒ‹ƒh‚Ì‹î‚ğ•`‰æ
+            //ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®é§’ã‚’æç”»
             for (var i = 1; i <= dan; i++) {
                 for (var j = suji; j >= 1; j--) {
                     DrawIndex(ctxList[i][j], piece[board[i][j]]);
@@ -380,19 +380,19 @@ $(function ($) {
             }
         });
 
-        //”z’u‚ğƒT[ƒo[‚É‘—M
+        //é…ç½®ã‚’ã‚µãƒ¼ãƒãƒ¼ã«é€ä¿¡
         $("#haitikettei").click(function () {
             socket.emit("haitikettei", board);
         });
 
-        //”z’u‚É‚Â‚¢‚ÄƒT[ƒo[‚©‚ç•Ô–‚ğó‚¯æ‚é
+        //é…ç½®ã«ã¤ã„ã¦ã‚µãƒ¼ãƒãƒ¼ã‹ã‚‰è¿”äº‹ã‚’å—ã‘å–ã‚‹
         socket.on("haitikettei", function (res) {
             alert(res);
         });
 
-        //‚¨Œİ‚¢‚Ì”z’u‚ªŠ®—¹‚µ‚ÄƒQ[ƒ€ŠJn‚Ì‡}‚ğó‚¯æ‚é
+        //ãŠäº’ã„ã®é…ç½®ãŒå®Œäº†ã—ã¦ã‚²ãƒ¼ãƒ é–‹å§‹ã®åˆå›³ã‚’å—ã‘å–ã‚‹
         socket.on("gamestart", function (board) {
-            alert("‘Î‹ÇŠJnI");
+            alert("å¯¾å±€é–‹å§‹ï¼");
 
             for (var dan = 1; dan <= 8; dan++) {
                 for (var suji = 1; suji <= 6; suji++) {
@@ -401,7 +401,12 @@ $(function ($) {
             }
         });
 
-        //‰Šú‰»ƒ{ƒ^ƒ“
+        //åŒã˜éƒ¨å±‹ã«ã„ã‚‹ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆãŒé€€å‡ºã—ãŸæ™‚ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚µã‚¤ãƒˆã«æˆ»ã‚‹
+        socket.on("clientchange", function (d) {
+            window.location.href = "./index.html";
+        });
+
+        //åˆæœŸåŒ–ãƒœã‚¿ãƒ³
         $("#change").click(function () {
             clearAllEmpCanvas();
             for (var i = 1; i <= komadaiBoard.length; i++) {

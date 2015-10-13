@@ -80,14 +80,13 @@
         var waiting = false;
 
         var socket = io();
-        var roomNum = document.getElementById("roomNum").textContent;
         
 
         function NameFormEvent() {
             var name = document.forms.nameform.name.value;
-           
+            var roomNum = document.getElementById("roomNum").textContent;
+
             var data = { name: name ,roomNum:roomNum};
-            console.log(data);
             socket.emit("taisenmachi", data);
             $("#nameinput").hide();
             $("#waiting").show();
@@ -98,8 +97,6 @@
 
             if (waiting) {
 
-                
-
                 $("#waiting").hide();
                 $("#sente").text(room.sente.name);
                 $("#gote").text(room.gote.name);
@@ -108,7 +105,7 @@
                 window.setTimeout(function (roomInfo) {
                     $("#battlestart").hide();
                     $("#battlejunbi").show();
-                }, 1000, room
+                }, 2000, room
                 );
 
             }
