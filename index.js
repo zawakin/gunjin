@@ -32,12 +32,8 @@ for(var i=1;i<=100;i++){
     rooms[i] = {waiting:false,num:0, clients:[] ,haitiOk:false};
 }
 
-<<<<<<< HEAD
-=======
 //全体を管理するオブジェクト
 var mng = new Manager(100);
-
->>>>>>> test
 
 io.on("connection", function (socket) {
 
