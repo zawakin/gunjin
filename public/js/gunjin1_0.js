@@ -236,7 +236,7 @@ $(function ($) {
         console.log(kyokumen.GetMovableDomain({ dan: 2, suji: 4 }));
         //駒の内部表現と画像のインデックスの変換配列 piece[内部表現] =　画像のインデックス
         piece = [17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        for (var i = 33; i <= 48; i++) {
+        for (var i = 33; i <= 49; i++) {
             piece[i] = i - 15;
         }
 
@@ -379,17 +379,39 @@ $(function ($) {
                 }
             }
         });
+
+        //配置をサーバーに送信
         $("#haitikettei").click(function () {
-            socket.emit("msg", "test");
-            alert();
+            socket.emit("haitikettei", board);
         });
+
+        //配置についてサーバーから返事を受け取る
+        socket.on("haitikettei", function (res) {
+            alert(res);
+        });
+
+        //お互いの配置が完了してゲーム開始の合図を受け取る
+        socket.on("gamestart", function (board) {
+            alert("対局開始！");
+
+            for (var dan = 1; dan <= 8; dan++) {
+                for (var suji = 1; suji <= 6; suji++) {
+                    DrawIndex(ctxList[dan][suji], piece[board[dan][suji]]);
+                }
+            }
+        });
+
+        //初期化ボタン
         $("#change").click(function () {
             clearAllEmpCanvas();
+            for (var i = 1; i <= komadaiBoard.length; i++) {
+                board[0][i] = komadaiBoard[i];
+                DrawIndex(ctxList[0][i], piece[board[0][i]]);
+            }
             for (var i = 1; i <= dan; i++) {
                 for (var j = 1; j <= suji; j++) {
                     board[i][j] = 0;
                     DrawIndex(ctxList[i][j], piece[board[i][j]]);
-
                 }
             }
 
