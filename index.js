@@ -32,11 +32,18 @@ for(var i=1;i<=100;i++){
     rooms[i] = {waiting:false,num:0, clients:[] ,haitiOk:false};
 }
 
+<<<<<<< HEAD
+=======
+//全体を管理するオブジェクト
+var mng = new Manager(100);
+
+>>>>>>> test
 
 io.on("connection", function (socket) {
 
     console.log("client connected");
 
+    //ソケットが切れたときの処理
     socket.on("disconnect", function () {
         
     });
@@ -125,6 +132,109 @@ io.on("connection", function (socket) {
 //var Kyokumen = function () {
 //    this.
 //}
+
+
+
+var Client = (function () {
+
+
+    var Client = function (socket) {
+        this.socket = socket;
+    };
+
+    var p = Client.prototype;
+
+    p.SetName = function (name) {
+        this.name = name;
+    }
+
+    p.idIsMine = function (id) {
+        return this.socket.id == id;
+    }
+
+    return Client;
+})();
+
+
+var ROOMSTATE = {
+    EMPTY: 0,
+    WAITING: 1,
+    HAITIMODE: 2,
+    BATTLE: 3,
+    BATTLEFINISH: 4
+}
+
+var Room = (function () {
+    var roomN;
+    this.roomstate = ROOMSTATE.EMPTY;
+
+    var Room = function (roomN) {
+        this.roomN = roomN;
+        this.clientList = [];
+    };
+
+    var p = Room.prototype;
+
+    //socketを引数にとる
+    p.AddClient = function (socket) {
+        var client = new Client(socket);
+        this.clientList.push(client);
+        return this.clientList;
+    }
+
+    p.RemoveClient = function (socket) {
+        for (var i = 0; i < this.clientList.length; i++) {
+            if (this.clientList[i].idIsMine(socket.id)) {
+                this.clientList.splice(i, 1);
+                break;
+            }
+        }
+        this.MsgToServer("error 削除しようとしたユーザーがいませんでした")
+    };
+
+    p.ContainSocket = function (socket) {
+        for (var i = 0; i < this.clientList.length; i++) {
+            if (this.clientList[i].idIsMine(socket.id)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    p.MsgToServer = function (msg) {
+        console.log(this.roomN + " : " + msg);
+    }
+   
+    
+
+    return Room;
+})();
+
+var Manager = (function () {
+    
+
+    var Manager = function (num) {
+        this.rooms = [];
+        for (var i = 1; i <= num; i++) {
+            this.rooms.push(new Room(i));
+        }
+    };
+
+    var p = Manager.prototype;
+
+    //0:not found, others : found
+    p.WhereSocket = function (socket) {
+        for (var i = 1; i <= this.rooms.length; i++) {
+            if (rooms[i].ContainSocket(socket)) {
+                return i;
+            }
+        }
+        return 0;//not found
+    }
+
+    return Manager;
+})();
+
 
 
 
