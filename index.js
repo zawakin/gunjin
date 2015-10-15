@@ -68,6 +68,8 @@ io.on("connection", function (socket) {
                 gameData.gote = room.clientList[1 - sente];
                 room.NewGame(gameData);
                 room.MsgToServer("先手:" + gameData.sente.name + " vs 後手:" + gameData.gote.name);
+                io.to(room.sente.id).emit("SENGO", 1);
+                io.to(room.gote.id).emit("SENGO", 2);
 
                 io.to(room.name).emit("taisenKettei", room.game);
         		break;
@@ -120,17 +122,35 @@ io.on("connection", function (socket) {
         }
     });
     
+    socket.on("sashite", function (te) {
+        room.MsgToServer(te.From + " " + te.To);
+        room.game.Fight(te);
+
+        var gameData = {};
+        gameData.board = room.game.kyokumen.board;
+        gameData.Winner = "";
+
+        switch (room.game.FinishCheck()) {
+            case 0:
+                io.to(room.name).emit("sashite", board);
+                break;
+            case 1:
+                io.to(room.name).emit("gamefinish", gameData);
+                room.MsgToServer("senteWin");
+                break;
+            case 2:
+                io.to(room.name).emit("gamefinish", gameData);
+                room.MsgToServer("goteWin");
+                break;
+            case 3:
+                io.to(room.name).emit("gamefinish", gameData);
+                room.MsgToServer("doro-");
+                break;
+        }
+
+    });
+
 });
-
-var GameOption = (function(){
-    
-    var GameOption = function(){
-
-    };
-    return GameOption;
-})();
-
-
 
 var Game = (function () {
 
@@ -164,6 +184,12 @@ var Game = (function () {
     p.Start = function () {
 
     };
+    p.Fight = function (te) {
+        this.kyokumen.Fight(te);
+    }
+    p.FinishCheck = function (te) {
+        return this.kyokumen.FinishCheck();
+    }
 
 
     return Game;

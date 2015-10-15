@@ -57,10 +57,6 @@
         komaStr[i] = "  " + komaStr[i];
     }
 
-    function Pos(suji, dan) {
-        this.suji = suji;
-        this.dan = dan;
-    }
 
     var Kyokumen = (function () {
 
@@ -250,8 +246,8 @@
         p.InitialValidCheck = function () {
             return;
         }
-        p.GetMovableDomain = function (te) {
-            var pro = [te.suji - 1, te.dan - 1];
+        p.GetMovableDomain = function (pos) {
+            var pro = [pos.suji - 1, pos.dan - 1];
             var movdom = [];
             for (var i = 0; i < this.suji; i++) {
                 movdom[i] = [];
@@ -344,13 +340,27 @@
             return resultBoard;
         };
 
+        p.Fight = function (te) {
+            var pro = [te.From.suji-1,te.From.dan-1];
+            var post = [te.To.suji-1,te.To.dan-1];
+            fight(pro, post, this.board, this.rule);
+            console.log(this.board);
+        };
+
         //局面が詰んでいれば勝者
         p.FinishCheck = function () {
-
+            var num = victory(this.board, this.rule);
+            return num;
         };
 
         return Kyokumen;
     })();
+
+
+    function Pos(suji, dan) {
+        this.suji = suji;
+        this.dan = dan;
+    }
     function Te(from,to,komaInf) {
         this.From = from;
         this.To = to;
@@ -1228,6 +1238,7 @@
         return error;
     }
 
+/* 勝利条件の判定 */ /* return = 1: 先攻の勝利, 2: 後攻の勝利, 3: 引き分け */
     function victory(board,rule)
     {
 	var first, second ;
@@ -1265,6 +1276,7 @@
 //post ato
 //board battlego henka
 //rul ok
+
     function fight(pro, post, board, rule)
     {
         if (board[post[0]][post[1]] > rule.classnum){
