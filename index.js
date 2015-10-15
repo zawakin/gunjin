@@ -147,7 +147,7 @@ var Game = (function () {
 
     var p = Game.prototype;
     p.SetInitKyokumen = function (senteBoard,goteBoard) {
-        this.kyokumen.CreateInitBoardFromPlayers(this.sente.board, this.sente.board);
+        this.kyokumen.CreateInitBoardFromPlayers(this.sente.board, this.gote.board);
         console.log("初期配置");
         console.log(this.kyokumen.board);
     };
@@ -158,11 +158,9 @@ var Game = (function () {
     }
 
     p.GetSenteBoard = function () {
-        console.log(this.kyokumen.GetSenteBoard());
         return this.kyokumen.GetSenteBoard();
     };
     p.GetGoteBoard = function () {
-        console.log(this.kyokumen.GetSenteBoard());
         return this.kyokumen.GetGoteBoard();
     };
 

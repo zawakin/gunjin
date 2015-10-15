@@ -165,6 +165,7 @@
                 this.board[i] = this.board[i].reverse();
             }
             this.temaePlayer = 3 - this.temaePlayer;
+            this.deadKomas = this.deadKomas.reverse();
             return this.board;
         };
         p.Print = function () {
@@ -263,19 +264,8 @@
         }
         
         p.CreateInitBoardFromPlayers = function (senteBoard, goteBoard) {
-            //var board = [
-            //[17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 0, 0, 0, 0, 0, 0, 64],
-            //[64, 64, 64, 64, 64, 64, 64, 64]
-            //];
-            for (var dan = 1; dan <= this.dan; dan++) {
+
+            for (var dan = 5; dan <= this.dan; dan++) {
                 for (var suji = 1; suji <= this.suji; suji++) {
                     this.board[dan][suji] = goteBoard[dan][suji];
                 }
@@ -284,9 +274,10 @@
             this.Hanten();
             for (var dan = 5; dan <= this.dan; dan++) {
                 for (var suji = 1; suji <= this.suji; suji++) {
-                    this.board[dan][suji] = senteBoard[i][j];
+                    this.board[dan][suji] = senteBoard[dan][suji];
                 }
             }
+
         };
         p.GetSenteBoard = function () {
             var resultBoard = [
@@ -305,8 +296,12 @@
                 for (var suji = 1; suji <= this.suji; suji++) {
                     if (isEnemy(this.board[dan][suji])) {
                         resultBoard[dan][suji] = KOMAINF.E_HIDE;
+                    } else {
+                        if (isSelf(this.board[dan][suji])) {
+                            resultBoard[dan][suji] = this.board[dan][suji];
+                        }
                     }
-                    resultBoard[dan][suji] = this.board[dan][suji];
+                    
                 }
             }
             return resultBoard;
