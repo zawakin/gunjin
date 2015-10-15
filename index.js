@@ -24,14 +24,6 @@ app.get("/game", function (req, res) {
 
 
 
-var clients = [];
-var games = [];
-
-var rooms = [];
-for(var i=1;i<=100;i++){
-    rooms[i] = {waiting:false,num:0, clients:[] ,haitiOk:false};
-}
-
 
 io.on("connection", function (socket) {
 
@@ -39,43 +31,48 @@ io.on("connection", function (socket) {
 
     //ソケットが切れたときの処理
     socket.on("disconnect", function () {
-        console.log(mng);
         var n = mng.RemoveSocket(socket);
-        io.to("room" + n).emit("clientchange", {});
+        
+        //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
+        if(n!=0){
+	    	mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
+	    	mng.rooms[n].Clear();
+	        io.to(mng.rooms[n]).emit("clientchange", {});
+        }
     });
 
     //対戦申し込みの処理
     socket.on("taisenmachi", function (data) {
-
-
-        var room = rooms[data.roomNum];
         socket.roomN = data.roomNum;
-        console.log(data.roomNum + ":" + data.name + " joined.");
-
-        //部屋に誰も入ってなかったら
-        if (room.clients.length == 0) {
-            room.clients[0] = { id: socket.id, name: data.name };
-            socket.join("room" + data.roomNum);
-            console.log(data.roomNum + ":" + data.name + " is waiting...");
-            room.waiting = true;
-        } else {
-
-            //対戦待ちが一人いたら
-            if (room.clients.length == 1) {
-                room.clients[1] = { id: socket.id, name: data.name };
-                socket.join("room" + data.roomNum);
-
-                room.waiting = false;
-                console.log(data.roomNum + ": matching success");
+        var room = mng.rooms[data.roomNum];
+		room.MsgToServer(data.name + " が参加しました");
+		
+		//空室ならば対戦待ちに、対戦待ちがいればマッチング
+        switch(room.state){
+        	
+        	case ROOMSTATE.EMPTY:
+	        	room.AddClient(socket);
+	            room.state = ROOMSTATE.WAITING;
+	            room.MsgToServer(data.name + " が対戦を待っています...");
+        		break;
+        		
+        	case ROOMSTATE.WAITING:
+	        	room.AddClient(socket);
+                room.state = ROOMSTATE.HAITIMODE;
+                room.MsgToServer("マッチング成功");
+                
+                //先後をランダムで決定する
                 var sente = Math.floor(Math.random() * 2);
-                room.sente = room.clients[sente];
-                room.gote = room.clients[1 - sente];
-
-                console.log(data.roomNum + ": 先手:" + room.sente.name + " vs 後手:" + room.gote.name);
-                io.to("room" + data.roomNum).emit("taisenKettei", room);
-            } else {
+                room.sente = room.clientList[sente];
+                room.gote = room.clientList[1 - sente];
+				room.MsgToServer("先手:" + room.sente.name + " vs 後手:" + room.gote.name);
+                io.to(room.name).emit("taisenKettei", room);
+        		break;
+        	
+        	default:
                 //観戦処理...
-            }
+                socket.emit("error","対戦中なので入れません");
+        		break;        
         }
 
 
@@ -126,13 +123,10 @@ var Client = (function () {
 
     var Client = function (socket) {
         this.socket = socket;
+        this.id = socket.id;
     };
 
     var p = Client.prototype;
-
-    p.SetName = function (name) {
-        this.name = name;
-    }
 
     p.idIsMine = function (id) {
         return this.socket.id == id;
@@ -156,6 +150,8 @@ var Room = (function () {
         this.roomN = roomN;
         this.roomstate = ROOMSTATE.EMPTY;
         this.clientList = [];
+        this.state = ROOMSTATE.EMPTY;
+        this.name = "room" + this.roomN;
     };
 
     var p = Room.prototype;
@@ -164,6 +160,7 @@ var Room = (function () {
     p.AddClient = function (socket) {
         var client = new Client(socket);
         this.clientList.push(client);
+	    socket.join("room" + this.roomN);
         return this.clientList;
     }
 
@@ -171,8 +168,10 @@ var Room = (function () {
     p.RemoveClient = function (socket) {
         for (var i = 0; i < this.clientList.length; i++) {
             if (this.clientList[i].idIsMine(socket.id)) {
+                //console.log(this.clientList);
                 this.clientList.splice(i, 1);
-                break;
+                //console.log(this.clientList);
+                return;
             }
         }
         this.MsgToServer("error 削除しようとしたユーザーがいませんでした")
@@ -197,12 +196,13 @@ var Room = (function () {
 })();
 
 var Manager = (function () {
-    var rooms;
+	var roomAllNum = 100;
     
     var Manager = function (num) {
-        rooms = [];
-        for (var i = 1; i <= num; i++) {
-            rooms.push(new Room(i));
+        this.rooms = [];
+        this.roomNum = num;
+        for (var i = 1; i <= this.roomNum; i++) {
+            this.rooms[i] = new Room(i);
         }
     };
 
@@ -211,10 +211,9 @@ var Manager = (function () {
     //前から順に部屋を検索し、指定されたソケットがあれば部屋番号、無ければ0を返す関数
     p.WhereSocket = function (socket) {
 
-        console.log(rooms);
-        console.log(Manager.rooms);
-        for (var i = 1; i <= rooms.length; i++) {
-            if (rooms[i].ContainSocket(socket)) {
+        for (var i = 1; i <= this.roomNum; i++) {
+        	
+            if (this.rooms[i].ContainSocket(socket)) {
                 return i;
             }
         }
@@ -223,16 +222,15 @@ var Manager = (function () {
 
     //指定されたソケットが存在すればその部屋からクライアントを削除する関数、戻り値に部屋番号、無ければ0を返す
     p.RemoveSocket = function(socket){
-        var n = Manager.WhereSocket(socket);
+        var n = this.WhereSocket(socket);
+        console.log("debug " +  n);
         if(n==0){
             return 0;
         }else{
-            rooms[n].RemoveClient(socket);
+            this.rooms[n].RemoveClient(socket);
             return n;
         }
     }
-
-    console.log(new Manager(1));
     return Manager;
 })();
 
