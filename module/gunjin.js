@@ -3,6 +3,8 @@ var gsp = require("../public/js/GunjinShogiProgram.js");
 var kyokumen = new gsp();
 
 module.exports = {
+    Kyokumen: gsp,
+
     boardCheck: function (board) {
 
     },

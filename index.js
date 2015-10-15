@@ -3,7 +3,7 @@
 var express = require("express");
 var app = express();
 var ejs = require("ejs");
-var gunjin = require("./module/gunjin.js");
+var Kyokumen = require("./public/js/GunjinShogiProgram.js");
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -36,7 +36,7 @@ io.on("connection", function (socket) {
         //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
         if(n!=0){
 	    	mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
-	    	mng.rooms[n].Clear();
+	    	//mng.rooms[n].Clear();
 	        io.to(mng.rooms[n]).emit("clientchange", {});
         }
     });
@@ -50,23 +50,26 @@ io.on("connection", function (socket) {
 		//空室ならば対戦待ちに、対戦待ちがいればマッチング
         switch(room.state){
         	
-        	case ROOMSTATE.EMPTY:
-	        	room.AddClient(socket);
+            case ROOMSTATE.EMPTY:
+	        	room.AddClient(socket,data);
 	            room.state = ROOMSTATE.WAITING;
 	            room.MsgToServer(data.name + " が対戦を待っています...");
         		break;
         		
         	case ROOMSTATE.WAITING:
-	        	room.AddClient(socket);
+	        	room.AddClient(socket,data);
                 room.state = ROOMSTATE.HAITIMODE;
                 room.MsgToServer("マッチング成功");
                 
-                //先後をランダムで決定する
+        	    //先後をランダムで決定する
+                var gameData = {};
                 var sente = Math.floor(Math.random() * 2);
-                room.sente = room.clientList[sente];
-                room.gote = room.clientList[1 - sente];
-				room.MsgToServer("先手:" + room.sente.name + " vs 後手:" + room.gote.name);
-                io.to(room.name).emit("taisenKettei", room);
+                gameData.sente = room.clientList[sente];
+                gameData.gote = room.clientList[1 - sente];
+                room.NewGame(gameData);
+                room.MsgToServer("先手:" + gameData.sente.name + " vs 後手:" + gameData.gote.name);
+
+                io.to(room.name).emit("taisenKettei", room.game);
         		break;
         	
         	default:
@@ -80,42 +83,91 @@ io.on("connection", function (socket) {
 
     //配置受信、チェック
     socket.on("haitikettei", function (board) {
-        var room = rooms[socket.roomN];
+        var room = mng.rooms[socket.roomN];
         var roomN = socket.roomN;
 
         //配置チェックしレスポンスを返す
 
-        var res = "ok";
+        if (room.game.HaitiCheck(board)) {
 
-        socket.emit("haitikettei", res);
+            socket.emit("haitikettei", "配置おk");
 
-        
-        
-        if(socket.id == room.sente.id){
-            console.log(roomN + ":先手配置完了");
-            room.senteBoard = board;
-        }else{
-            console.log(roomN + ":後手配置完了");
-            room.goteBoard = board;
-        }
+            switch (socket.id) {
+                case room.sente.socket.id:
+                    room.MsgToServer("先手 " + room.game.sente.name + " 配置完了");
+                    room.game.sente.board = board;
+                    room.sente.haitiKanryo = true;
+                    break;
+                case room.gote.socket.id:
+                    room.MsgToServer("後手 " + room.game.gote.name + " 配置完了");
+                    room.game.gote.board = board;
+                    room.gote.haitiKanryo = true;
+                    break;
+            }
 
-        if (!room.haitiOk) {
-            room.haitiOk = true;
+            if (room.sente.haitiKanryo && room.gote.haitiKanryo) {
+                room.state = ROOMSTATE.BATTLE;
+                room.MsgToServer("配置完了、対局開始");
+                room.game.SetInitKyokumen();
+                console.log(room.game.kyokumen.board);
+
+                io.to(room.sente.id).emit("gamestart", room.game.GetSenteBoard());
+                io.to(room.gote.id).emit("gamestart", room.game.GetGoteBoard());
+            }
+
         } else {
-            console.log(roomN + ":配置完了、対局開始");
-            room.board = gunjin.createOneBoard(room.senteBoard, room.goteBoard);
-
-            //io.to("room" + roomN).emit("gamestart", gunjin.createOneBoard(room.senteBoard, room.goteBoard));
-
-            io.to(room.sente.id).emit("gamestart", gunjin.getSenteGamingBoard(room.board));
-            io.to(room.gote.id).emit("gamestart", gunjin.getGoteGamingBoard(room.board));
+            socket.emit("haitikettei", "配置やり直し");
         }
-
     });
     
 });
 
+var GameOption = (function(){
+    
+    var GameOption = function(){
 
+    };
+    return GameOption;
+})();
+
+
+
+var Game = (function () {
+
+    var Game = function (gameData) {
+        this.sente = {};
+        this.gote = {};
+        this.sente.name = gameData.sente.name;
+        this.gote.name = gameData.gote.name;
+        this.sente.board = [];
+        this.gote.board = [];
+
+        this.kyokumen = new Kyokumen();
+    };
+
+    var p = Game.prototype;
+    p.SetInitKyokumen = function (senteBoard,goteBoard) {
+        this.kyokumen.CreateInitBoardFromPlayers(this.sente.board, this.sente.board);
+        console.log("初期配置");
+        console.log(this.kyokumen.board);
+    };
+
+    //配置チェックしてtrue,falseで返す
+    p.HaitiCheck = function (board) {
+        return true;
+    }
+
+    p.GetSenteBoard = function () {
+        console.log(this.kyokumen.GetSenteBoard());
+        return this.kyokumen.GetSenteBoard();
+    };
+    p.GetGoteBoard = function () {
+        console.log(this.kyokumen.GetSenteBoard());
+        return this.kyokumen.GetGoteBoard();
+    };
+
+    return Game;
+})();
 
 
 var Client = (function () {
@@ -124,6 +176,7 @@ var Client = (function () {
     var Client = function (socket) {
         this.socket = socket;
         this.id = socket.id;
+        this.haitiKanryo = false;
     };
 
     var p = Client.prototype;
@@ -157,10 +210,11 @@ var Room = (function () {
     var p = Room.prototype;
 
     //指定されたソケットを部屋に追加
-    p.AddClient = function (socket) {
+    p.AddClient = function (socket,userData) {
         var client = new Client(socket);
+        client.name = userData.name;
         this.clientList.push(client);
-	    socket.join("room" + this.roomN);
+	    socket.join(this.name);
         return this.clientList;
     }
 
@@ -191,6 +245,13 @@ var Room = (function () {
     p.MsgToServer = function (msg) {
         console.log(this.roomN + " : " + msg);
     }
+
+    p.NewGame = function (gameData) {
+        this.game = new Game(gameData);
+        this.sente = gameData.sente;
+        this.gote = gameData.gote;
+        this.MsgToServer("new game created!");
+    };
 
     return Room;
 })();

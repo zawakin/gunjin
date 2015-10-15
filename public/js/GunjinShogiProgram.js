@@ -37,15 +37,16 @@
         EGUNKI: 48,
         E_HIDE:49
     }
+
     var SENGO = {
         SENTE: 1,
         GOTE:2
     }
     function isEnemy(komaInf) {
-        return (komaInf & KOMAINF.ENEMY);
+        return KOMAINF.ENEMY < komaInf && komaInf < KOMAINF.E_HIDE;
     }
     function isSelf(komaInf) {
-        return (KOMAINF.TAISHOU <= komaInf) && (komaInf <= KOMAINF.GUNKI);
+        return KOMAINF.EMPTY < komaInf && komaInf < KOMAINF.ENEMY;
     }
 
     var komaStr = ["　　  ", "大将", "中将", "少将", "大佐", "中佐", "少佐", "大尉", "中尉", "少尉", "騎兵", "工兵", "地雷", "飛行", "タン", "スパ", "軍旗"];
@@ -61,30 +62,38 @@
         this.dan = dan;
     }
 
-    var Kyokumen = function() {
-        this.suji = 6;
-        this.dan = 8;
-        this.deadKomas = [[1,2],[33,44]];
-        this.teban = 1;
-        this.temaePlayer = 1;
-        this.rule = GetIniRule();
-        this.tesuu = 1;
+    var Kyokumen = (function () {
 
-        console.log("Kyokumen Created!");
+        //コンストラクタ
+        var Kyokumen = function () {
+            this.suji = 6;
+            this.dan = 8;
+            this.deadKomas = [[], []];
+            this.teban = 1;
+            this.temaePlayer = 1;
+            this.rule = GetIniRule();
+            this.tesuu = 1;
 
-        this.board = [
-                    [64, 64, 64, 64, 64, 64, 64, 64], 
-                    [64, 12, 12, 0, 12, 12, 12, 64],
-                    [64, 0, 0, 12, 45, 1, 0, 64],
-                    [64, 8, 9, 14, 14, 14, 11, 64],
-                    [64, 3, 1, 39, 1, 6, 10, 64],
-                    [64, 36, 36, 44, 45, 46, 40, 64],
-                    [64, 12, 12, 12, 12, 12, 12, 64],
-                    [64, 8, 9, 14, 14, 14, 11, 64],
-                    [64, 3, 1, 1, 0, 6, 10, 64],
-                    [64, 64, 64, 64, 64, 64, 64, 64]
-        ];
-        this.GetMikata= function () {
+            console.log("Kyokumen Created!");
+
+            this.board = [
+                        [64, 64, 64, 64, 64, 64, 64, 64],
+                        [64, 12, 12, 0, 12, 12, 12, 64],
+                        [64, 0, 0, 12, 45, 1, 0, 64],
+                        [64, 8, 9, 14, 14, 14, 11, 64],
+                        [64, 3, 1, 39, 1, 6, 10, 64],
+                        [64, 36, 36, 44, 45, 46, 40, 64],
+                        [64, 12, 12, 12, 12, 12, 12, 64],
+                        [64, 8, 9, 14, 14, 14, 11, 64],
+                        [64, 3, 1, 1, 0, 6, 10, 64],
+                        [64, 64, 64, 64, 64, 64, 64, 64]
+            ];
+            this.initData = {};
+        }
+
+        var p = Kyokumen.prototype;
+
+        p.GetMikata = function () {
             if (this.teban == SENGO.SENTE) {
                 return this.board.map(function (dan) {
                     return dan.map(function (x) {
@@ -105,8 +114,8 @@
                 })
             }
         };
-     
-        this.Enemy = function () {
+
+        p.Enemy = function () {
             if (this.teban == 1) {
                 return KOMAINF.ENEMY;
             } else {
@@ -114,7 +123,7 @@
             }
             return 0;
         };
-        this.GetEnemys = function () {
+        p.GetEnemys = function () {
             if (this.teban == SENGO.SENTE) {
                 return this.board.map(function (dan) {
                     return dan.map(function (x) {
@@ -126,30 +135,39 @@
                 return this.board.map(function (dan) {
                     return dan.map(function (x) {
                         if (x == KOMAINF.OUTOFBOARD) { return 64; }
-                        return ((x & KOMAINF.ENEMY) >> 5) == 0 && x==KOMAINF.EMPTY;
+                        return ((x & KOMAINF.ENEMY) >> 5) == 0 && x == KOMAINF.EMPTY;
                     })
                 })
             }
         };
-        this.WhichPlayersKoma = function (pos) {
+        p.WhichPlayersKoma = function (pos) {
             var komaInf = this.board[pos.dan][pos.suji];
             if (((komaInf & KOMAINF.ENEMY) >> 5) == 1) {
                 return 2;
-            }else if(komaInf == KOMAINF.EMPTY){
+            } else if (komaInf == KOMAINF.EMPTY) {
                 return 0;
             }
             return 1;
         };
-        this.Hanten = function () {
+        p.Hanten = function () {
             var temp = [];
             this.board = this.board.reverse();
             for (var i = 1; i <= this.dan; i++) {
+                for (var j = 1; j <= this.suji; j++) {
+                    if (isSelf(this.board[i][j])) {
+                        this.board[i][j] += KOMAINF.ENEMY;
+                    } else {
+                        if (isEnemy(this.board[i][j])) {
+                            this.board[i][j] -= KOMAINF.ENEMY;
+                        }
+                    }
+                }
                 this.board[i] = this.board[i].reverse();
             }
             this.temaePlayer = 3 - this.temaePlayer;
             return this.board;
         };
-        this.Print = function () {
+        p.Print = function () {
             var ss = "                Player " + (3 - this.temaePlayer);
             if (this.teban != this.temaePlayer) {
                 ss += "  TURN";
@@ -183,26 +201,26 @@
             ss += "\n";
             for (var i = 1; i <= 2; i++) {
                 ss += "player " + i + " 's Dead Koma List = ";
-                for (var j = 0; j < this.deadKomas[i-1].length; j++) {
-                    ss += komaStr[this.deadKomas[i-1][j] - 32 * (i-1)] + ", ";
+                for (var j = 0; j < this.deadKomas[i - 1].length; j++) {
+                    ss += komaStr[this.deadKomas[i - 1][j] - 32 * (i - 1)] + ", ";
                 }
                 ss += "\n";
             }
             console.log(ss);
         };
-        this.Move = function (teban, te) {
+        p.Move = function (teban, te) {
             var attackedKoma = this.board[te.To.dan][te.To.suji];
             console.log("attackedKoma = " + komaStr[attackedKoma]);
-            if(te.TO)
-            if ((attackedKoma % KOMAINF.ENEMY) < (te.komaInf % KOMAINF.ENEMY)) {
-                console.log(komaStr[te.komaInf] + " beats " + komaStr[attackedKoma]);
-            }
+            if (te.TO)
+                if ((attackedKoma % KOMAINF.ENEMY) < (te.komaInf % KOMAINF.ENEMY)) {
+                    console.log(komaStr[te.komaInf] + " beats " + komaStr[attackedKoma]);
+                }
         };
-        this.InitialValidCheck = function () {
-
+        p.InitialValidCheck = function () {
+            return;
         }
-        this.GetMovableDomain = function(te){
-            var pro = [te.suji-1, te.dan-1];
+        p.GetMovableDomain = function (te) {
+            var pro = [te.suji - 1, te.dan - 1];
             var movdom = [];
             for (var i = 0; i < this.suji; i++) {
                 movdom[i] = [];
@@ -228,23 +246,82 @@
             result[this.dan + 1] = [];
             for (var i = 0; i <= this.suji + 1; i++) {
                 result[0][i] = KOMAINF.OUTOFBOARD;
-                result[this.dan+1][i] = KOMAINF.OUTOFBOARD;
+                result[this.dan + 1][i] = KOMAINF.OUTOFBOARD;
             }
 
             for (var dan = 1; dan <= this.dan; dan++) {
                 result[dan] = [];
                 result[dan][0] = KOMAINF.OUTOFBOARD;
-                result[dan][this.suji+1] = KOMAINF.OUTOFBOARD;
+                result[dan][this.suji + 1] = KOMAINF.OUTOFBOARD;
                 for (var suji = 1; suji <= this.suji; suji++) {
-                    result[dan][suji] = movdom[suji-1][dan-1];
+                    result[dan][suji] = movdom[suji - 1][dan - 1];
                 }
             }
             console.log("result:");
             console.log(result);
             return result;
         }
+        
+        p.CreateInitBoardFromPlayers = function (senteBoard, goteBoard) {
+            //var board = [
+            //[17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 0, 0, 0, 0, 0, 0, 64],
+            //[64, 64, 64, 64, 64, 64, 64, 64]
+            //];
+            for (var dan = 1; dan <= this.dan; dan++) {
+                for (var suji = 1; suji <= this.suji; suji++) {
+                    this.board[dan][suji] = goteBoard[dan][suji];
+                }
+            }
 
-    }
+            this.Hanten();
+            for (var dan = 5; dan <= this.dan; dan++) {
+                for (var suji = 1; suji <= this.suji; suji++) {
+                    this.board[dan][suji] = senteBoard[i][j];
+                }
+            }
+        };
+        p.GetSenteBoard = function () {
+            var resultBoard = [
+                [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 64, 64, 64, 64, 64, 64, 64]
+            ];
+            for (var dan = 1; dan <= this.dan; dan++) {
+                for (var suji = 1; suji <= this.suji; suji++) {
+                    if (isEnemy(this.board[dan][suji])) {
+                        resultBoard[dan][suji] = KOMAINF.E_HIDE;
+                    }
+                    resultBoard[dan][suji] = this.board[dan][suji];
+                }
+            }
+            return resultBoard;
+        };
+
+        p.GetGoteBoard = function () {
+            this.Hanten();
+            var resultBoard = this.GetSenteBoard();
+            this.Hanten();
+            return resultBoard;
+        };
+
+
+        return Kyokumen;
+    })();
     function Te(from,to,komaInf) {
         this.From = from;
         this.To = to;

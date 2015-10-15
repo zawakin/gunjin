@@ -16,7 +16,7 @@
 
     <h1 id="roomNum"><%= roomNum%></h1>
     <div id="nameinput">
-        <label>名前を入力してください</label>
+        <label>名前を入力してEnter</label>
         <form name="nameform" onsubmit="NameFormEvent(); return false;" >
             <input id="name" type="text" />
         </form>
@@ -66,6 +66,7 @@
         </footer>
     </div>
 
+
     <div id="battle" style="display:none;">
 
     </div>
@@ -93,19 +94,19 @@
             waiting = true;
         };
 
-        socket.on("taisenKettei", function (room) {
-
+        socket.on("taisenKettei", function (game) {
+            
             if (waiting) {
 
                 $("#waiting").hide();
-                $("#sente").text(room.sente.name);
-                $("#gote").text(room.gote.name);
+                $("#sente").text(game.sente.name);
+                $("#gote").text(game.gote.name);
                 $("#battlestart").show();
 
-                window.setTimeout(function (roomInfo) {
+                window.setTimeout(function (game) {
                     $("#battlestart").hide();
                     $("#battlejunbi").show();
-                }, 2000, room
+                }, 2000, game
                 );
 
             }
