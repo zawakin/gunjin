@@ -74,7 +74,7 @@ io.on("connection", function (socket) {
         	
         	default:
                 //観戦処理...
-                socket.emit("error","対戦中なので入れません");
+                socket.emit("err","対戦中なので入れません");
         		break;        
         }
 
@@ -109,8 +109,8 @@ io.on("connection", function (socket) {
                 room.state = ROOMSTATE.BATTLE;
                 room.MsgToServer("配置完了、対局開始");
                 room.game.SetInitKyokumen();
-                console.log(room.game.kyokumen.board);
 
+                room.game.Start();
                 io.to(room.sente.id).emit("gamestart", room.game.GetSenteBoard());
                 io.to(room.gote.id).emit("gamestart", room.game.GetGoteBoard());
             }
@@ -148,8 +148,6 @@ var Game = (function () {
     var p = Game.prototype;
     p.SetInitKyokumen = function (senteBoard,goteBoard) {
         this.kyokumen.CreateInitBoardFromPlayers(this.sente.board, this.gote.board);
-        console.log("初期配置");
-        console.log(this.kyokumen.board);
     };
 
     //配置チェックしてtrue,falseで返す
@@ -163,6 +161,10 @@ var Game = (function () {
     p.GetGoteBoard = function () {
         return this.kyokumen.GetGoteBoard();
     };
+    p.Start = function () {
+
+    };
+
 
     return Game;
 })();
@@ -269,9 +271,7 @@ var Manager = (function () {
 
     //前から順に部屋を検索し、指定されたソケットがあれば部屋番号、無ければ0を返す関数
     p.WhereSocket = function (socket) {
-
         for (var i = 1; i <= this.roomNum; i++) {
-        	
             if (this.rooms[i].ContainSocket(socket)) {
                 return i;
             }

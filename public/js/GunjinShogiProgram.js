@@ -69,11 +69,9 @@
             this.suji = 6;
             this.dan = 8;
             this.deadKomas = [[], []];
-            this.teban = 1;
             this.temaePlayer = 1;
             this.rule = GetIniRule();
-            this.tesuu = 1;
-
+            this.gameFinished = false;
             console.log("Kyokumen Created!");
 
             this.board = [
@@ -92,6 +90,38 @@
         }
 
         var p = Kyokumen.prototype;
+
+        p.Start = function () {
+            this.teban = SENGO.SENTE;
+            this.tesuu = 1;
+            return {
+                board: this.board,
+                deadKomas: this.deadKomas
+            };
+        };
+
+        p.Next = function (Te) {
+            var msg = "";
+            switch (this.Battle(Te)) {
+                case "勝ち":
+
+                    break;
+                case "負け":
+
+                    break;
+            }
+            
+            //終局しているかチェックし、しているならばどちらが勝ったかを返す
+            if (this.FinishCheck()) {
+                this.gameFinish = true;
+            }
+            this.teban = 3 - this.teban;
+            this.tesuu++;
+            return {board:this.board,
+                deadKomas:this.deadKomas,
+                resultMsg:msg,
+                finish:false};
+        };
 
         p.GetMikata = function () {
             if (this.teban == SENGO.SENTE) {
@@ -314,6 +344,10 @@
             return resultBoard;
         };
 
+        //局面が詰んでいれば勝者
+        p.FinishCheck = function () {
+
+        };
 
         return Kyokumen;
     })();
@@ -324,10 +358,6 @@
         this.Print = function () {
             console.log((this.To).suji + "" + (this.To).dan + "" + komaStr[this.komaInf] + "(" + (this.From).suji + "" + this.From.dan + ")");
         }
-    }
-
-    function FillOutOfBoards(board) {
-
     }
 
     function GetIniRule() {
@@ -1198,32 +1228,89 @@
         return error;
     }
 
+    function victory(board,rule)
+    {
+	var first, second ;
+    var i, j ;
+    var vic = 0 ;
+	
+    if (board[rule.width/2-1][0] >= 1 && board[rule.width/2-1][0] <= 6){
+        vic = 1 ;
+    } else if (board[rule.width/2][rule.height-1] >= 1+rule.classnum && board[rule.width/2][rule.height-1] <= 6+rule.classnum){
+        vic = 2 ;
+    }
+	
+    first = 0 ;
+    second = 0 ;
+    for (i = 0 ; i < rule.width ; i++){
+        for (j = 0 ; j < rule.height ; j++){
+            if ((board[i][j] > 0 && board[i][j] <= rule.classnum) && !(board[i][j] == 12 || board[i][j] == 16)){
+                first++ ;
+            } else if (board[i][j] > rule.classnum && !(board[i][j]-rule.classnum == 12 || board[i][j]-rule.classnum == 16)){	
+                second++ ;
+            }	
+        }
+    }
+    if (first > 0 && second == 0){
+        vic = 1 ;
+    }else if (first == 0 && second > 0){
+        vic = 2 ;
+    }else if (first == 0 && second == 0){
+        vic = 3 ;
+    }
+    return vic ;
+    }
 
-    //var kyokumen = new Kyokumen();
-    //kyokumen.Print();
-    ////kyokumen.Hanten();
-    ////kyokumen.Print();
-    //var te = new Te(new Pos(1, 2), new Pos(3, 4), KOMAINF.CHUUI);
-    //te.Print();
-    //kyokumen.Move(1, te);
-    //var aa = kyokumen.GetEnemys();
-    //for (var i = 0; i < aa.length; i++) {
-    //    document.write(aa[i] + "<br>");
-    //}
-    //aa = kyokumen.GetMikata();
-    //for (var i = 0; i < aa.length; i++) {
-    //    document.write(aa[i] + "<br>");
-    //}
-    //console.log(kyokumen.WhichPlayersKoma(new Pos(1, 3)));
-    //var bb = [];
-    //for (var i = 1; i <= kyokumen.dan; i++) {
-    //    bb[i] = [];
-    //    for (var j = 1; j <= kyokumen.suji; j++) {
-    //        bb[i][j] = kyokumen.WhichPlayersKoma(new Pos(j, i));
-    //    }
-    //}
-    //for (var i = 1; i < bb.length; i++) {
-    //    document.write(bb[i] + "<br>");
-    //}
+//pro mae
+//post ato
+//board battlego henka
+//rul ok
+    function fight(pro, post, board, rule)
+    {
+        if (board[post[0]][post[1]] > rule.classnum){
+        if ((board[post[0]][post[1]] == 16+rule.classnum && post[1] > 0) && board[post[0]][post[1]-1] > rule.classnum){
+            if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 1){
+                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+			
+            } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 0){
+                board[post[0]][post[1]] = 0 ;
+			
+            }
+        } else {
+            if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 1){
+                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+			
+            } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 0){
+                board[post[0]][post[1]] = 0 ;
+			
+            }
+        }
+    } else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= rule.classnum){
+        if ((board[post[0]][post[1]] == 16 && post[1] < rule.height-1) && (board[post[0]][post[1]+1] > 0 && board[post[0]][post[1]+1] <= rule.classnum)){
+            if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 1){
+                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+			
+            } else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 0){
+                board[post[0]][post[1]] = 0 ;
+				
+            }
+        } else {
+            if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 1){
+                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+			
+            } else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 0){
+                board[post[0]][post[1]] = 0 ;
+				
+            }
+        }
+    } else {
+		board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+		
+    }
+    board[pro[0]][pro[1]] = 0 ;
+	
+    return ;
+    }
+
 
     module.exports = Kyokumen;

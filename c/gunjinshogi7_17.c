@@ -1984,6 +1984,10 @@ int movement(int pro[], int post[], int board[][16], int domain[][16], rul rule)
 }
 
 
+//pro mae
+//post ato
+//board battlego henka
+//rul ok
 void fight(int pro[], int post[], int board[][16], rul rule)
 {
 	if (board[post[0]][post[1]] > rule.classnum){

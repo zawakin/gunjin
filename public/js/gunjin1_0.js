@@ -243,7 +243,7 @@ $(function ($) {
         var field = document.getElementById("field");
         var ctx_field = field.getContext("2d");
         img_field = new Image();
-        img_field.src = "img/field.png";
+        img_field.src = "img/field2.png";
         img_field.onload = function () {
             ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, 412, 626);
         }
@@ -406,6 +406,14 @@ $(function ($) {
             window.location.href = "./index.html";
         });
 
+        //エラーを受け取るとインデックスページに戻る
+        socket.on("err", function (err) {
+            alert(err);
+            window.setTimeout(function () {
+                window.location.href = "./index.html";
+            }, 2000, null
+            );
+        });
         //初期化ボタン
         $("#change").click(function () {
             clearAllEmpCanvas();
