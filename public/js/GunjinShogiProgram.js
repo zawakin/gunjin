@@ -68,6 +68,7 @@
             this.temaePlayer = 1;
             this.rule = GetIniRule();
             this.gameFinished = false;
+            this.tesuu = 1;
             console.log("Kyokumen Created!");
 
             this.board = [
@@ -89,7 +90,6 @@
 
         p.Start = function () {
             this.teban = SENGO.SENTE;
-            this.tesuu = 1;
             return {
                 board: this.board,
                 deadKomas: this.deadKomas

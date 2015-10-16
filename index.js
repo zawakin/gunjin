@@ -123,6 +123,7 @@ io.on("connection", function (socket) {
     });
     
     socket.on("sashite", function (te) {
+        var room = mng.rooms[socket.roomN];
         room.MsgToServer(te.From + " " + te.To);
         room.game.Fight(te);
 
