@@ -385,13 +385,39 @@ $(function ($) {
             drop: OnDrop
         });
 
-        $(".cell").click(function () {
+        $(".cell").mousedown(function () {
+            if (!gameChu) return;
+            if (mySengo != kyokumen.teban) return;
             clearAllEmpCanvas();
             var pos = getIndexInContextList(this.getContext("2d"));
             if (pos != null) {
                 var mikataArray = kyokumen.GetMovableDomain(pos);
+                for (var i = 1; i <= dan; i++) {
+                    for (var j = 1; j <= suji; j++) {
+                        if (mikataArray[i][j] == 1) {
 
-                alert(mikataArray);
+                            empCtxList[i][j].fillStyle = 'rgba(192, 80, 77, 0.7)';
+                            empCtxList[i][j].fillRect(0, 0, empCnvsList[i][j].width, empCnvsList[i][j].height);
+
+                        }
+                    }
+                }
+            }
+        });
+
+        $(".cell").mouseup(function () {
+            if (!gameChu) return;
+            if (mySengo != kyokumen.teban) return;
+
+            clearAllEmpCanvas();
+        });
+
+        $(".cell").click(function () {
+            if (gameChu) return;
+            clearAllEmpCanvas();
+            var pos = getIndexInContextList(this.getContext("2d"));
+            if (pos != null) {
+                var mikataArray = kyokumen.GetMovableDomain(pos);
                 for (var i = 1; i <= dan; i++) {
                     for (var j = 1; j <= suji; j++) {
                         if (mikataArray[i][j] == 1) {
@@ -434,17 +460,38 @@ $(function ($) {
             }
         });
 
-        socket.on("sashite", function (board) {
-            kyokumen.board = board;
+        socket.on("sashite", function (gameData) {
+            kyokumen.board = gameData.board;
+            kyokumen.lastTe = gameData.lastTe;
             kyokumen.teban = 3 - kyokumen.teban;
             clearAllEmpCanvas();
+
             for (var dan = 1; dan <= 8; dan++) {
                 for (var suji = 1; suji <= 6; suji++) {
-                    DrawIndex(ctxList[dan][suji], piece[board[dan][suji]]);
+                    DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
                 }
             }
+
+            var from = kyokumen.lastTe.From;
+            var to = kyokumen.lastTe.To;
+
+            //最後に動いた駒を赤色に表示
+            if (mySengo == SENGO.GOTE) {
+                to.dan = kyokumen.dan + 1 - to.dan;
+                to.suji = kyokumen.suji + 1 - to.suji;
+            }
+            empCtxList[to.dan][to.suji].fillStyle = "rgba(255,0,0,0.6)";
+            empCtxList[to.dan][to.suji].fillRect(0, 0, cnvsList[to.dan][to.suji].width, cnvsList[to.dan][to.suji].height);
+
+            //最後に動いた駒がいた場所を青色に表示
+            if (mySengo == SENGO.GOTE) {
+                from.dan = kyokumen.dan + 1 - from.dan;
+                from.suji = kyokumen.suji + 1 - from.suji;
+            }
+            empCtxList[from.dan][from.suji].fillStyle = "rgba(0,0,128,0.2)";
+            empCtxList[from.dan][from.suji].fillRect(0, 0, cnvsList[from.dan][from.suji].width, cnvsList[from.dan][from.suji].height);
             if (mySengo == kyokumen.teban) {
-                alert("あなたの手番です");
+                //alert("あなたの手番です");
             }
         });
 

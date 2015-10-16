@@ -69,6 +69,7 @@
             this.rule = GetIniRule();
             this.gameFinished = false;
             this.tesuu = 1;
+            this.lastTe = null;
             console.log("Kyokumen Created!");
 
             this.board = [
@@ -396,7 +397,11 @@
             return te;
         }
 
+        //戦闘処理、手番が進む処理はここに書く
         p.Fight = function (te) {
+            this.tesuu++;
+            this.lastTe = te;
+            this.lastTe.komaInf = 0;
             var pro = [te.From.suji-1,te.From.dan-1];
             var post = [te.To.suji - 1, te.To.dan - 1];
 
@@ -406,9 +411,10 @@
         };
 
         //符号の表現
-        p.TeHugou= function (te) {
+        p.TeHugou = function (te) {
+            var suuji = ["","１","２","３","４","５","６"];
             var kanji = ["","一", "二", "三", "四", "五", "六", "七", "八"];
-            var result = te.To.suji + kanji[te.To.dan]  + komaStr[te.komaInf] + "(" + te.From.suji + te.From.dan + ")";
+            var result = this.tesuu + ":" +suuji[te.To.suji] + kanji[te.To.dan]  + komaStr[te.komaInf] + "(" + te.From.suji + te.From.dan + ")";
             return result;
         }
 

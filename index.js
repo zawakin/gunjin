@@ -128,14 +128,19 @@ io.on("connection", function (socket) {
         room.game.Fight(te);
 
         var gameData = {};
+        gameData.lastTe = room.game.kyokumen.lastTe;
 
         var v = room.game.FinishCheck();
 
         switch (v) {
+
             //対局続行
             case 0:
-                io.to(room.sente.id).emit("sashite", room.game.GetSenteBoard(false));
-                io.to(room.gote.id).emit("sashite", room.game.GetGoteBoard(false));
+                gameData.board = room.game.GetSenteBoard(true);
+                io.to(room.sente.id).emit("sashite", gameData);
+
+                gameData.board = room.game.GetGoteBoard(true);
+                io.to(room.gote.id).emit("sashite", gameData);
                 break;
             //終局
             case 1:
@@ -168,6 +173,9 @@ var Game = (function () {
         this.gote.name = gameData.gote.name;
         this.sente.board = [];
         this.gote.board = [];
+
+        //棋譜の表現：initBoardを配列の最初に、それ以降を棋譜のstringを入れていく
+        this.kifu = [];
 
         this.kyokumen = new Kyokumen();
     };
