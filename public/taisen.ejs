@@ -7,7 +7,7 @@
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>   
-    <script tyep="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
     <script type="text/javascript" src="js/gunjin1_0.js"></script>
 </head>
@@ -38,7 +38,7 @@
 
     <div id="battlejunbi" style="display:none;">
         <header>
-            <h1>初期配置を決めてください。</h1>
+            <h1 id="statemsg">初期配置を決めてください。</h1>
         </header>
 
         <article>
@@ -49,14 +49,20 @@
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
             <h1></h1>
-            <button id="change">ボードを初期化</button>
-            <button id="haitikettei" style="color:red;">配置決定</button>
+            <button id="change" class="haitimode">配置をやり直す</button>
+            <button id="haitikettei" class="haitimode" style="color:red;">配置決定</button>
             <div id="board">
                 <canvas id="field" width="412" height="626"></canvas>
+                <div id="komagote" class="battlemode"></div>
+                <div id="infobox" class="battlemode">
+                    <label style="top:0px;">後手</label>
+                    <label style="top:132px;">先手</label>
+                </div>
+                <div id="komasente" class="battlemode"></div>
 
             </div>
 
-            <div id="komadai">
+            <div id="komadai" class="haitimode">
                 <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
             </div>
         </article>

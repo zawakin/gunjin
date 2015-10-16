@@ -50,3 +50,35 @@ canvas.cell{
 canvas.emphasis{
     position:absolute;
 }
+
+#komagote{
+    width:200px;
+    height:233px;
+    background-color:aqua; 
+    top:0px;
+    left:417px;
+
+}
+#infobox {
+    width: 200px;
+    height: 150px;
+    background-color: chocolate;
+    top: 238px;
+    left: 417px;
+}
+#komasente {
+    width: 200px;
+    height: 233px;
+    background-color: aqua;
+    top: 393px;
+    left: 417px;
+}
+
+div.battlemode{
+    position:absolute;
+}
+
+label.info{
+    position:absolute;
+    font-size:18px;
+}

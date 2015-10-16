@@ -438,12 +438,13 @@ $(function ($) {
 
         //配置についてサーバーから返事を受け取る
         socket.on("haitikettei", function (res) {
-            alert(res);
+            $("#statemsg").text("対局相手が配置し終わるのを待っています。。。");
         });
 
         //お互いの配置が完了してゲーム開始の合図を受け取る
         socket.on("gamestart", function (board) {
-            alert("対局開始！");
+            $("#statemsg").text("対局開始");
+            $(".haitimode").hide();
             kyokumen.board = board;
             kyokumen.teban = SENGO.SENTE;
             gameChu = true;

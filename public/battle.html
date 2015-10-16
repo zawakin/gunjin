@@ -4,15 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <title>軍人将棋</title>
-    <link href="css/gunjin.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script tyep="text/javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/gunjin.js"></script>
+    <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <header>
-        初期配置を決めてください。
     </header>
     
     <article>
@@ -25,9 +20,14 @@
         <button id="change"><h1>配置をやり直す</h1></button>
         <div id="board">
             <canvas id="field" width="412" height="626"></canvas>
+            <div id="komagote" class="battlemode"></div>
+            <div id="infobox" class="battlemode">
+                <label class="info"style="top:0px;">後手</label>
+                <label class="info"style="top:132px;">先手</label>
+            </div>
+            <div id="komasente" class="battlemode"></div>
 
         </div>
-
         <div id="komadai">
             <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
         </div>
