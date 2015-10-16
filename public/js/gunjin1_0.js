@@ -112,18 +112,18 @@ $(function ($) {
         var saki = getIndexInContextList(sakiCtx);
 
         //ドロップ先がcanvasであり、元が空でなく、同じところにドロップしてないなら
-        if (saki != null && (board[moto.dan][moto.suji] != 0) && !(saki.suji == moto.suji && saki.dan == moto.dan)) {
+        if (saki != null && (kyokumen.board[moto.dan][moto.suji] != 0) && !(saki.suji == moto.suji && saki.dan == moto.dan)) {
 
             clearAllEmpCanvas();
             if (gameChu) {
                 //対局中
-                alert(1);
                 if (kyokumen.teban == mySengo) {
-                    alert(2);
                     var movableDomain = kyokumen.GetMovableDomain(moto);
                     if (movableDomain[saki.dan][saki.suji] == 1) {
-                        alert(3);
                         var te = { From: moto, To: saki, komaInf: kyokumen.board[moto.dan][moto.suji] };
+                        if (mySengo == SENGO.GOTE) {
+                            te = kyokumen.TeToGote(te);
+                        }
                         socket.emit("sashite", te);
                     }
                 }
@@ -136,11 +136,11 @@ $(function ($) {
 
                 //駒台から
                 if (moto.dan == 0) {
-                    console.log(board);
-                    console.log(moto);
-                    console.log(saki);
-                    console.log(moto.suji);
-                    console.log(board[saki.dan][saki.suji]);
+                    //console.log(board);
+                    //console.log(moto);
+                    //console.log(saki);
+                    //console.log(moto.suji);
+                    //console.log(board[saki.dan][saki.suji]);
 
                     if (board[saki.dan][saki.suji] != 0) {
 
@@ -166,27 +166,26 @@ $(function ($) {
                     }
                     //駒台へ
                 } else if (saki.dan == 0) {
-                    console.log(moto);
-                    console.log(saki);
-                    console.log(board[moto.dan][moto.suji]);
-                    console.log(saki.dan);
+                    //console.log(moto);
+                    //console.log(saki);
+                    //console.log(board[moto.dan][moto.suji]);
+                    //console.log(saki.dan);
 
                     DrawIndex(sakiCtx, piece[board[moto.dan][moto.suji]]);
                     board[moto.dan][moto.suji] = 0;
                     DrawIndex(motoCtx, piece[board[moto.dan][moto.suji]]);
                     //そうでないなら
                 } else {
-                    console.log(moto);
-                    console.log(saki);
-                    console.log(board[moto.dan][moto.suji]);
-                    console.log(board[saki.dan][saki.suji]);
+                    //console.log(moto);
+                    //console.log(saki);
+                    //console.log(board[moto.dan][moto.suji]);
+                    //console.log(board[saki.dan][saki.suji]);
 
                     //ドロップ先に駒があるなら駒台へ戻す
                     if (board[saki.dan][saki.suji] != 0) {
 
                         var sakipiece = board[saki.dan][saki.suji];
 
-                        console.log(board[0]);
                         for (var i = 1; i <= komadaiBoard.length; i++) {
                             if (board[0][i] == 0) {
 
@@ -450,8 +449,15 @@ $(function ($) {
         });
 
         socket.on("gamefinish", function (gameData) {
-
-
+            gameChu = false;
+            kyokumen.board = gameData.board;
+            clearAllEmpCanvas();
+            for (var dan = 1; dan <= 8; dan++) {
+                for (var suji = 1; suji <= 6; suji++) {
+                    DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
+                }
+            }
+            alert(gameData.vicMsg);
         });
 
         //同じ部屋にいるクライアントが退出した時インデックスサイトに戻る

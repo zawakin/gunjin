@@ -28,6 +28,7 @@ app.get("/game", function (req, res) {
 io.on("connection", function (socket) {
 
     console.log("client connected");
+    var room;
 
     //ソケットが切れたときの処理
     socket.on("disconnect", function () {
@@ -44,7 +45,7 @@ io.on("connection", function (socket) {
     //対戦申し込みの処理
     socket.on("taisenmachi", function (data) {
         socket.roomN = data.roomNum;
-        var room = mng.rooms[data.roomNum];
+        room = mng.rooms[data.roomNum];
 		room.MsgToServer(data.name + " が参加しました");
 		
 		//空室ならば対戦待ちに、対戦待ちがいればマッチング
@@ -85,7 +86,7 @@ io.on("connection", function (socket) {
 
     //配置受信、チェック
     socket.on("haitikettei", function (board) {
-        var room = mng.rooms[socket.roomN];
+        //var room = mng.rooms[socket.roomN];
         var roomN = socket.roomN;
 
         //配置チェックしレスポンスを返す
@@ -123,29 +124,34 @@ io.on("connection", function (socket) {
     });
     
     socket.on("sashite", function (te) {
-        var room = mng.rooms[socket.roomN];
-        room.MsgToServer(te.From + " " + te.To);
+        room.MsgToServer(room.game.kyokumen.TeHugou(te));
         room.game.Fight(te);
 
         var gameData = {};
-        gameData.board = room.game.kyokumen.board;
-        gameData.Winner = "";
 
-        switch (room.game.FinishCheck()) {
+        var v = room.game.FinishCheck();
+
+        switch (v) {
+            //対局続行
             case 0:
-                io.to(room.name).emit("sashite", board);
+                io.to(room.sente.id).emit("sashite", room.game.GetSenteBoard(false));
+                io.to(room.gote.id).emit("sashite", room.game.GetGoteBoard(false));
                 break;
+            //終局
             case 1:
-                io.to(room.name).emit("gamefinish", gameData);
-                room.MsgToServer("senteWin");
-                break;
             case 2:
-                io.to(room.name).emit("gamefinish", gameData);
-                room.MsgToServer("goteWin");
-                break;
             case 3:
-                io.to(room.name).emit("gamefinish", gameData);
-                room.MsgToServer("doro-");
+                room.state = ROOMSTATE.BATTLEFINISH;
+                var vicMsg = ["", "先手勝利", "後手勝利", "引き分け"];
+                gameData.vicMsg = vicMsg[v];
+                room.MsgToServer(vicMsg[v]);
+
+                gameData.board = room.game.GetSenteBoard(true);
+                io.to(room.sente.id).emit("gamefinish", gameData);
+
+                gameData.board = room.game.GetGoteBoard(true);
+                io.to(room.gote.id).emit("gamefinish", gameData);
+
                 break;
         }
 
@@ -176,11 +182,12 @@ var Game = (function () {
         return true;
     }
 
-    p.GetSenteBoard = function () {
-        return this.kyokumen.GetSenteBoard();
+    //flag:trueであれば全て表
+    p.GetSenteBoard = function (flag) {
+        return this.kyokumen.GetSenteBoard(flag);
     };
-    p.GetGoteBoard = function () {
-        return this.kyokumen.GetGoteBoard();
+    p.GetGoteBoard = function (flag) {
+        return this.kyokumen.GetGoteBoard(flag);
     };
     p.Start = function () {
 
@@ -188,7 +195,7 @@ var Game = (function () {
     p.Fight = function (te) {
         this.kyokumen.Fight(te);
     }
-    p.FinishCheck = function (te) {
+    p.FinishCheck = function () {
         return this.kyokumen.FinishCheck();
     }
 

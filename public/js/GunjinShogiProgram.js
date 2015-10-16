@@ -51,11 +51,11 @@
 
     var komaStr = ["　　  ", "大将", "中将", "少将", "大佐", "中佐", "少佐", "大尉", "中尉", "少尉", "騎兵", "工兵", "地雷", "飛行", "タン", "スパ", "軍旗"];
     for (var i = 1; i <= KOMAINF.ENEMY; i++) {
-        komaStr[i + KOMAINF.ENEMY] = " v" + komaStr[i];
+        komaStr[i + KOMAINF.ENEMY] = komaStr[i];
     }
-    for (var i = 1; i <= 16; i++) {
-        komaStr[i] = "  " + komaStr[i];
-    }
+    //for (var i = 1; i <= 16; i++) {
+    //    komaStr[i] = "  " + komaStr[i];
+    //}
 
 
     var Kyokumen = (function () {
@@ -246,6 +246,48 @@
         p.InitialValidCheck = function () {
             return;
         }
+
+
+        //盤面の表現 C -> javascript
+        p.BoardExpFromC = function (board) {
+            var movdom = board;
+            var result = [];
+            result[0] = [];
+            result[this.dan + 1] = [];
+            for (var i = 0; i <= this.suji + 1; i++) {
+                result[0][i] = KOMAINF.OUTOFBOARD;
+                result[this.dan + 1][i] = KOMAINF.OUTOFBOARD;
+            }
+
+            for (var dan = 1; dan <= this.dan; dan++) {
+                result[dan] = [];
+                result[dan][0] = KOMAINF.OUTOFBOARD;
+                result[dan][this.suji + 1] = KOMAINF.OUTOFBOARD;
+                for (var suji = 1; suji <= this.suji; suji++) {
+                    result[dan][suji] = movdom[suji - 1][dan - 1];
+                    if (17 <= result[dan][suji] && result[dan][suji] <= 32) {
+                        result[dan][suji] += 16;
+                    }
+                }
+            }
+            return result;
+        }
+
+        //盤面の表現 javascript -> C
+        p.BoardExpToC = function (board) {
+            var b = [];
+            for (var i = 0; i < this.suji; i++) {
+                b[i] = [];
+                for (var j = 0; j < this.dan; j++) {
+                    b[i][j] = board[j + 1][i + 1];
+                    if (isEnemy(b[i][j])) {
+                        b[i][j] -= 16;
+                    }
+                }
+            }
+            return b;
+        }
+
         p.GetMovableDomain = function (pos) {
             var pro = [pos.suji - 1, pos.dan - 1];
             var movdom = [];
@@ -305,7 +347,8 @@
             }
 
         };
-        p.GetSenteBoard = function () {
+        //flag:trueなら全て表向き
+        p.GetSenteBoard = function (flag) {
             var resultBoard = [
                 [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
                 [64, 0, 0, 0, 0, 0, 0, 64],
@@ -321,7 +364,11 @@
             for (var dan = 1; dan <= this.dan; dan++) {
                 for (var suji = 1; suji <= this.suji; suji++) {
                     if (isEnemy(this.board[dan][suji])) {
-                        resultBoard[dan][suji] = KOMAINF.E_HIDE;
+                        if (!flag) {
+                            resultBoard[dan][suji] = KOMAINF.E_HIDE;
+                        } else {
+                            resultBoard[dan][suji] = this.board[dan][suji];
+                        }
                     } else {
                         if (isSelf(this.board[dan][suji])) {
                             resultBoard[dan][suji] = this.board[dan][suji];
@@ -333,23 +380,42 @@
             return resultBoard;
         };
 
-        p.GetGoteBoard = function () {
+        p.GetGoteBoard = function (flag) {
             this.Hanten();
-            var resultBoard = this.GetSenteBoard();
+            var resultBoard = this.GetSenteBoard(flag);
             this.Hanten();
             return resultBoard;
         };
 
+        p.TeToGote = function (te) {
+            te.From.dan = this.dan + 1 - te.From.dan;
+            te.From.suji = this.suji + 1 - te.From.suji;
+            te.To.dan = this.dan + 1 - te.To.dan;
+            te.To.suji = this.suji + 1 - te.To.suji;
+            te.komaInf = KOMAINF.ENEMY + te.komaInf;
+            return te;
+        }
+
         p.Fight = function (te) {
             var pro = [te.From.suji-1,te.From.dan-1];
-            var post = [te.To.suji-1,te.To.dan-1];
-            fight(pro, post, this.board, this.rule);
-            console.log(this.board);
+            var post = [te.To.suji - 1, te.To.dan - 1];
+
+            var b = this.BoardExpToC(this.board);
+            fight(pro, post, b, this.rule);
+            this.board = this.BoardExpFromC(b);
         };
+
+        //符号の表現
+        p.TeHugou= function (te) {
+            var kanji = ["","一", "二", "三", "四", "五", "六", "七", "八"];
+            var result = te.To.suji + kanji[te.To.dan]  + komaStr[te.komaInf] + "(" + te.From.suji + te.From.dan + ")";
+            return result;
+        }
 
         //局面が詰んでいれば勝者
         p.FinishCheck = function () {
-            var num = victory(this.board, this.rule);
+            var b = this.BoardExpToC(this.board);
+            var num = victory(b, this.rule);
             return num;
         };
 
