@@ -377,7 +377,8 @@ $(function ($) {
         };
         $(".cell").draggable({
             revert: true,
-            snap: true
+            snap: true,
+            revertDuration:1
         });
 
 

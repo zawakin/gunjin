@@ -4,35 +4,27 @@
 <head>
     <meta charset="utf-8" />
     <title>軍人将棋</title>
+    
     <style>
         li {
             font-size:20px;
             margin:10px;
 
         }
-
-    </style>
-    <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+	</style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/indexpage.js"></script>
 </head>
 <body>
     <h1>軍人将棋が対戦できるサイト</h1>
 
-    <ul id="roomList">
-    </ul>
+	<article>
+	    <ul id="roomList" class="list-group">
+	    </ul>
+	</article>
+	
 
-    <script>
-
-
-        var roomNum = 100;
-        var roomList = document.getElementById("roomList");
-
-        for (var i = 1; i <= roomNum; i++) {
-            var room = document.createElement("li");
-            room.innerHTML = "<a href=\"game?r=" + i + "\">" + i + "</a>";
-            roomList.appendChild(room);
-        }
-
-    </script>
 </body>
 </html>

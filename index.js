@@ -53,13 +53,13 @@ io.on("connection", function (socket) {
         	
             case ROOMSTATE.EMPTY:
 	        	room.AddClient(socket,data);
-	            room.state = ROOMSTATE.WAITING;
+	        	room.StateChange(ROOMSTATE.WAITING);
 	            room.MsgToServer(data.name + " が対戦を待っています...");
         		break;
         		
         	case ROOMSTATE.WAITING:
 	        	room.AddClient(socket,data);
-                room.state = ROOMSTATE.HAITIMODE;
+	        	room.StateChange(ROOMSTATE.HAITIMODE);
                 room.MsgToServer("マッチング成功");
                 
         	    //先後をランダムで決定する
@@ -109,7 +109,7 @@ io.on("connection", function (socket) {
             }
 
             if (room.sente.haitiKanryo && room.gote.haitiKanryo) {
-                room.state = ROOMSTATE.BATTLE;
+            	room.StateChange(ROOMSTATE.BATTLE);
                 room.MsgToServer("配置完了、対局開始");
                 room.game.SetInitKyokumen();
 
@@ -146,7 +146,7 @@ io.on("connection", function (socket) {
             case 1:
             case 2:
             case 3:
-                room.state = ROOMSTATE.BATTLEFINISH;
+            	room.StateChange(ROOMSTATE.BATTLEFINISH);
                 var vicMsg = ["", "先手勝利", "後手勝利", "引き分け"];
                 gameData.vicMsg = vicMsg[v];
                 room.MsgToServer(vicMsg[v]);
@@ -243,7 +243,6 @@ var Room = (function () {
 
     var Room = function (roomN) {
         this.roomN = roomN;
-        this.roomstate = ROOMSTATE.EMPTY;
         this.clientList = [];
         this.state = ROOMSTATE.EMPTY;
         this.name = "room" + this.roomN;
@@ -294,6 +293,14 @@ var Room = (function () {
         this.gote = gameData.gote;
         this.MsgToServer("new game created!");
     };
+	
+	p.StateChange = function(state){
+		this.state = state;
+		var room = {};
+		room.N = this.roomN;
+		room.state = this.state;
+		io.emit("roomstatechange",room);
+	}
 
     return Room;
 })();
@@ -319,7 +326,7 @@ var Manager = (function () {
             }
         }
         return 0;
-    }
+    };
 
     //指定されたソケットが存在すればその部屋からクライアントを削除する関数、戻り値に部屋番号、無ければ0を返す
     p.RemoveSocket = function(socket){
@@ -331,6 +338,12 @@ var Manager = (function () {
             this.rooms[n].RemoveClient(socket);
             return n;
         }
+    };
+    
+    p.SendRoomState = function(){
+    	for(var i=1;i<=this.roomNum;i++){
+    		this.rooms[i].StateChange(this.rooms[i].state);
+    	}
     }
     return Manager;
 })();
