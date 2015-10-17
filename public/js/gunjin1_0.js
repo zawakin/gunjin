@@ -1,4 +1,4 @@
-﻿
+﻿var socket = io();
 
 //imgはkomaの6倍になるようにする。
 var imgWidth = 1200;
@@ -17,12 +17,6 @@ var ctxList = [];
 var komaSize = 67;
 
 
-function DrawIndex(ctx, index) {
-    ctx.clearRect(0, 0, komaSize, komaSize);
-    var x = komaWidth * (index % mathfloor(imgWidth / komaWidth));
-    var y = komaHeight * mathfloor(index / mathfloor(imgWidth / komaWidth));
-    ctx.drawImage(img, x, y, komaWidth, komaHeight, 0, 0, komaSize, komaSize);
-}
 
 
 var board = [
@@ -50,6 +44,34 @@ var board = [
 ];
 
 var num = 0;
+
+
+var kyokumen;
+var emphasis = [];
+var empCnvsList = [];
+var empCtxList = [];
+var komaZenbu = 23;
+var komadaiBoard = [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15];
+
+var gameChu = false;
+var mySengo = 0;
+
+var SENGO = {
+    SENTE: 1,
+    GOTE:2
+}
+
+var waiting = false;
+
+    
+
+
+function DrawIndex(ctx, index) {
+    ctx.clearRect(0, 0, komaSize, komaSize);
+    var x = komaWidth * (index % mathfloor(imgWidth / komaWidth));
+    var y = komaHeight * mathfloor(index / mathfloor(imgWidth / komaWidth));
+    ctx.drawImage(img, x, y, komaWidth, komaHeight, 0, 0, komaSize, komaSize);
+}
 
 function OnDragOver(e) {
     e.preventDefault();
@@ -194,30 +216,12 @@ function clearAllEmpCanvas() {
         }
     }
 }
-
-var kyokumen;
-var emphasis = [];
-var empCnvsList = [];
-var empCtxList = [];
-var komaZenbu = 23;
-var komadaiBoard = [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15];
-
-var gameChu = false;
-var mySengo = 0;
-
-var SENGO = {
-    SENTE: 1,
-    GOTE:2
-}
-
 onload = function () {
 
     kyokumen = new Kyokumen();
     kyokumen.board = board;
 
-    kyokumen.Print();
-    console.log(kyokumen.GetMovableDomain({ dan: 2, suji: 4 }));
-    //駒の内部表現と画像のインデックスの変換配列 piece[内部表現] =　画像のインデックス
+    //駒の内部表現と画像のインデックスの変換配列 piece[内部表現] =画像のインデックス
     piece = [17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     for (var i = 33; i <= 49; i++) {
         piece[i] = i - 15;
@@ -225,7 +229,7 @@ onload = function () {
 
     var field = document.getElementById("field");
     var ctx_field = field.getContext("2d");
-    img_field = new Image();
+    var img_field = new Image();
     img_field.src = "img/field2.png";
     img_field.onload = function () {
         ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, 412, 626);
@@ -388,7 +392,47 @@ onload = function () {
                 }
             }
         }
+    });        
+
+
+
+	$("#nameform").submit(function(){
+		var name = document.forms.nameform.name.value;
+	    var roomNum = document.getElementById("roomNum").textContent;
+
+	    var data = { name: name ,roomNum:roomNum};
+	    socket.emit("taisenmachi", data);
+	    $("#nameinput").hide();
+	    $("#waiting").show();
+	    waiting = true;
+	    return false;
+	});
+
+
+    socket.on("SENGO", function (sengo) {
+        socket.mySengo = sengo;
     });
+
+    socket.on("taisenKettei", function (game) {
+        
+        if (waiting) {
+
+            $("#waiting").hide();
+            $("#sente").text(game.sente.name);
+            $("#gote").text(game.gote.name);
+            $("#battlestart").show();
+
+
+
+            window.setTimeout(function (game) {
+                $("#battlestart").hide();
+                $("#battlejunbi").show();
+            }, 2000, game
+            );
+
+        }
+    });
+
 
     //配置をサーバーに送信
     $("#haitikettei").click(function () {
@@ -498,21 +542,5 @@ onload = function () {
 
     });
 
-    $("#getMikata").click(function () {
-        var mikataArray = kyokumen.GetMovableDomain({ suji: 2, dan: 4 });
-        clearAllEmpCanvas();
-        for (var i = 1; i <= dan; i++) {
-            for (var j = 1; j <= suji; j++) {
-                if (mikataArray[i][j]==1) {
 
-                    empCtxList[i][j].fillStyle = 'rgba(192, 80, 77, 0.7)';
-                    empCtxList[i][j].fillRect(0, 0,cnvsList[i][j].width, cnvsList[i][j].height);
-
-                }
-            }
-        }
-    });
-    $("#empClear").click(function () {
-        clearAllEmpCanvas();
-    });
 };

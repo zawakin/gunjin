@@ -20,7 +20,7 @@
     <h1 id="roomNum"><%= roomNum%></h1>
     <div id="nameinput">
         <label>名前を入力してEnter</label>
-        <form name="nameform" onsubmit="NameFormEvent(); return false;" >
+        <form id="nameform">
             <input id="name" type="text" />
         </form>
     </div>
@@ -45,13 +45,11 @@
         </header>
 
         <article>
-            <!--  <div id="draggable" style="width:500px;height:500px;background-color:green;"></div>-->
             <div style="display:none;">
                 <canvas class="cell" width="67" height="67"></canvas>
                 <canvas class="shireibu cell" width="135" height="67"></canvas>
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
-            <h1></h1>
             <button id="change" class="haitimode">配置をやり直す</button>
             <button id="haitikettei" class="haitimode" style="color:red;">配置決定</button>
             <div id="board">
@@ -83,50 +81,5 @@
 
     </div>
 
-    <script>
-        
-        var stage = 0;
-        var waiting = false;
-
-        var socket = io();
-        
-
-        function NameFormEvent() {
-            var name = document.forms.nameform.name.value;
-            var roomNum = document.getElementById("roomNum").textContent;
-
-            var data = { name: name ,roomNum:roomNum};
-            socket.emit("taisenmachi", data);
-            $("#nameinput").hide();
-            $("#waiting").show();
-            waiting = true;
-        };
-
-        socket.on("SENGO", function (sengo) {
-            socket.mySengo = sengo;
-        });
-
-        socket.on("taisenKettei", function (game) {
-            
-            if (waiting) {
-
-                $("#waiting").hide();
-                $("#sente").text(game.sente.name);
-                $("#gote").text(game.gote.name);
-                $("#battlestart").show();
-
-
-
-                window.setTimeout(function (game) {
-                    $("#battlestart").hide();
-                    $("#battlejunbi").show();
-                }, 2000, game
-                );
-
-            }
-        });
-
-        
-    </script>
 </body>
 </html>
