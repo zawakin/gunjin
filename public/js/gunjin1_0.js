@@ -378,7 +378,7 @@ $(function ($) {
         $(".cell").draggable({
             revert: true,
             snap: true,
-            revertDuration:1
+            revertDuration:1000
         });
 
 
@@ -467,6 +467,8 @@ $(function ($) {
             kyokumen.lastTe = gameData.lastTe;
             kyokumen.teban = 3 - kyokumen.teban;
             clearAllEmpCanvas();
+            
+            $("#komaoto")[0].play();
 
             for (var dan = 1; dan <= 8; dan++) {
                 for (var suji = 1; suji <= 6; suji++) {
@@ -485,12 +487,12 @@ $(function ($) {
             empCtxList[to.dan][to.suji].fillStyle = "rgba(255,0,0,0.6)";
             empCtxList[to.dan][to.suji].fillRect(0, 0, cnvsList[to.dan][to.suji].width, cnvsList[to.dan][to.suji].height);
 
-            //最後に動いた駒がいた場所を青色に表示
+            //最後に動いた駒がいた場所を薄い赤色に表示
             if (mySengo == SENGO.GOTE) {
                 from.dan = kyokumen.dan + 1 - from.dan;
                 from.suji = kyokumen.suji + 1 - from.suji;
             }
-            empCtxList[from.dan][from.suji].fillStyle = "rgba(0,0,128,0.2)";
+            empCtxList[from.dan][from.suji].fillStyle = "rgba(255,255,0,0.4)";
             empCtxList[from.dan][from.suji].fillRect(0, 0, cnvsList[from.dan][from.suji].width, cnvsList[from.dan][from.suji].height);
             if (mySengo == kyokumen.teban) {
                 //alert("あなたの手番です");

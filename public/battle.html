@@ -5,12 +5,40 @@
     <meta charset="utf-8" />
     <title>軍人将棋</title>
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
+    
 </head>
 <body>
     <header>
     </header>
     
     <article>
+    
+    <audio id="komaoto" preload="auto">
+    	<source src="src/komaoto.mp3" type="audio/mp3">
+    </audio>
+    
+    <button id="komabtn" onClick="sound();">駒音</button>
+    
+	<script>
+		function sound(){
+			alert();
+			document.getElementById("komaoto").play();
+		}
+	
+	</script>
+    
+    
+            <h1>対戦者が決定しました</h1>
+        <div>
+            <label>先手：</label>
+            <label id="sente"></label><br />
+            <label>後手：</label>
+            <label id="gote"></label>
+        </div>
+    
+    
+    
+    
         <!--  <div id="draggable" style="width:500px;height:500px;background-color:green;"></div>-->
         <div style="display:none;">
             <canvas class="cell" width="67" height="67"></canvas>
