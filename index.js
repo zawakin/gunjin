@@ -37,8 +37,8 @@ io.on("connection", function (socket) {
         //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
         if(n!=0){
 	    	mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
-	    	//mng.rooms[n].Clear();
-	        io.to(mng.rooms[n]).emit("clientchange", {});
+	        io.to(mng.rooms[n].name).emit("clientchange", {});
+	    	mng.rooms[n].Init();
         }
     });
 
@@ -249,6 +249,11 @@ var Room = (function () {
     };
 
     var p = Room.prototype;
+    
+    p.Init = function(){
+    	this.clientList = [];
+    	this.StateChange(ROOMSTATE.EMPTY);
+    };
 
     //指定されたソケットを部屋に追加
     p.AddClient = function (socket,userData) {
@@ -257,7 +262,7 @@ var Room = (function () {
         this.clientList.push(client);
 	    socket.join(this.name);
         return this.clientList;
-    }
+    };
 
     //指定されたソケットが存在すれば削除し、いなければエラーをサーバーに送信する関数
     p.RemoveClient = function (socket) {
