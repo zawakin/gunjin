@@ -15,22 +15,11 @@ var img;
 var cnvsList = [];
 var ctxList = [];
 var komaSize = 67;
-
+var kifu;
 
 
 
 var board = [
-                //[64, 64, 64, 64, 64, 64, 64, 64],
-                //[64, 12, 12, 0, 12, 12, 12, 64],
-                //[64, 0, 0, 12, 45, 1, 0, 64],
-                //[64, 8, 9, 14, 14, 14, 11, 64],
-                //[64, 3, 1, 39, 1, 6, 10, 64],
-                //[64, 36, 36, 44, 45, 46, 40, 64],
-                //[64, 12, 12, 12, 12, 12, 12, 64],
-                //[64, 8, 9, 14, 14, 14, 11, 64],
-                //[64, 3, 1, 1, 0, 6, 10, 64],
-                //[64, 64, 64, 64, 64, 64, 64, 64]
-
             [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
             [64, 0, 0, 0, 0, 0, 0, 64],
             [64, 0, 0, 0, 0, 0, 0, 64],
@@ -63,7 +52,18 @@ var SENGO = {
 
 var waiting = false;
 
-    
+
+function DrawKyokumen(){
+	if(mySengo == SENGO.GOTE) {
+		kyokumen.board = kyokumen.GetGoteBoard(true);
+	}
+	clearAllEmpCanvas();
+	for (var dan = 1; dan <= 8; dan++) {
+	    for (var suji = 1; suji <= 6; suji++) {
+	        DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
+	    }
+	}
+};
 
 
 function DrawIndex(ctx, index) {
@@ -468,6 +468,7 @@ onload = function () {
         kyokumen.board = gameData.board;
         kyokumen.lastTe = gameData.lastTe;
         kyokumen.teban = 3 - kyokumen.teban;
+        
         clearAllEmpCanvas();
         
         $("#komaoto")[0].play();
@@ -503,14 +504,39 @@ onload = function () {
 
     socket.on("gamefinish", function (gameData) {
         gameChu = false;
-        kyokumen.board = gameData.board;
-        clearAllEmpCanvas();
-        for (var dan = 1; dan <= 8; dan++) {
-            for (var suji = 1; suji <= 6; suji++) {
-                DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
-            }
-        }
+        
+        $("#komaoto")[0].play();
+        
+        kifu = gameData.kifu;
+        
+        nanteme = kifu.length - 1;
+        $("#nanteme").text(nanteme);
+        $("#tesuu").text(nanteme);
+        kyokumen.board = kifu[nanteme];
+        kyokumen.Print();
+        DrawKyokumen();
         alert(gameData.vicMsg);
+    });
+    
+    
+    var nanteme;
+    $("#modoru").click(function(){
+    	if(nanteme>0) {
+    		nanteme--;
+        	$("#nanteme").text(nanteme);
+    	}
+    	kyokumen.board = kifu[nanteme];
+    	DrawKyokumen();
+    });
+    
+    $("#susumu").click(function(){
+    	if(nanteme<kifu.length - 1){
+    		nanteme++;
+        	$("#nanteme").text(nanteme);
+    	}
+        $("#komaoto")[0].play();
+    	kyokumen.board = kifu[nanteme];
+    	DrawKyokumen(kifu[nanteme]);
     });
 
     //同じ部屋にいるクライアントが退出した時インデックスサイトに戻る

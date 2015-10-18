@@ -150,6 +150,8 @@ io.on("connection", function (socket) {
                 gameData.vicMsg = vicMsg[v];
                 room.MsgToServer(vicMsg[v]);
 
+                gameData.kifu = room.game.kifu;
+                
                 gameData.board = room.game.GetSenteBoard(true);
                 io.to(room.sente.id).emit("gamefinish", gameData);
 
@@ -173,7 +175,7 @@ var Game = (function () {
         this.sente.board = [];
         this.gote.board = [];
 
-        //棋譜の表現：initBoardを配列の最初に、それ以降を棋譜のstringを入れていく
+        //棋譜の表現：initBoardを配列の最初に、手数ごとにboardそのものを要素とする配列を作る
         this.kifu = [];
 
         this.kyokumen = new Kyokumen();
@@ -182,6 +184,7 @@ var Game = (function () {
     var p = Game.prototype;
     p.SetInitKyokumen = function (senteBoard,goteBoard) {
         this.kyokumen.CreateInitBoardFromPlayers(this.sente.board, this.gote.board);
+        this.BoardPushToKifu();
     };
 
     //配置チェックしてtrue,falseで返す
@@ -201,11 +204,40 @@ var Game = (function () {
     };
     p.Fight = function (te) {
         this.kyokumen.Fight(te);
+        this.BoardPushToKifu();
     }
     p.FinishCheck = function () {
         return this.kyokumen.FinishCheck();
     }
+    p.BoardPushToKifu = function(){
 
+		var temp = [
+		            [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 0, 0, 0, 0, 0, 0, 64],
+		            [64, 64, 64, 64, 64, 64, 64, 64]
+		];
+
+    	var board = this.kyokumen.board;
+    	for(var dan=1;dan<=this.kyokumen.dan;dan++){
+    		for(var suji=1;suji<=this.kyokumen.suji;suji++){
+    			temp[dan][suji] = board[dan][suji];
+    		}
+    	}
+    	this.kifu.push(temp);
+    };
+    
+    p.CreateGameData = function(){
+    	
+    
+    };
+    
 
     return Game;
 })();
