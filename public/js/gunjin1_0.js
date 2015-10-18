@@ -56,6 +56,7 @@ var waiting = false;
 function DrawKyokumen(){
 	if(mySengo == SENGO.GOTE) {
 		kyokumen.board = kyokumen.GetGoteBoard(true);
+		kyokumen.deadKomas = kyokumen.GetGoteDeadKomas();
 	}
 	clearAllEmpCanvas();
 	for (var dan = 1; dan <= 8; dan++) {
@@ -63,6 +64,18 @@ function DrawKyokumen(){
 	        DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
 	    }
 	}
+    $("#komatemae").empty();
+    $("#komaushiro").empty();
+    
+    kyokumen.deadKomas = kyokumen.DeadKomasToString();
+    
+    for(var i=0;i<kyokumen.deadKomas[0].length;i++){
+    	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
+    }
+    for(var i=0;i<kyokumen.deadKomas[1].length;i++){
+    	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
+    }
+	
 };
 
 
@@ -531,7 +544,8 @@ onload = function () {
         nanteme = kifu.length - 1;
         $("#nanteme").text(nanteme);
         $("#tesuu").text(nanteme);
-        kyokumen.board = kifu[nanteme];
+        kyokumen.board = kifu[nanteme].board;
+        kyokumen.deadKomas = kifu[nanteme].deadKomas;
         kyokumen.Print();
         DrawKyokumen();
         alert(gameData.vicMsg);
@@ -543,19 +557,21 @@ onload = function () {
     	if(nanteme>0) {
     		nanteme--;
         	$("#nanteme").text(nanteme);
+	    	kyokumen.board = kifu[nanteme].board;
+	        kyokumen.deadKomas = kifu[nanteme].deadKomas;
+	    	DrawKyokumen();
     	}
-    	kyokumen.board = kifu[nanteme];
-    	DrawKyokumen();
     });
     
     $("#susumu").click(function(){
-    	if(nanteme<kifu.length - 1){
+    	if(nanteme < kifu.length - 1){
     		nanteme++;
         	$("#nanteme").text(nanteme);
+	        $("#komaoto")[0].play();
+	    	kyokumen.board = kifu[nanteme].board;
+	        kyokumen.deadKomas = kifu[nanteme].deadKomas;
+	    	DrawKyokumen(kifu[nanteme]);
     	}
-        $("#komaoto")[0].play();
-    	kyokumen.board = kifu[nanteme];
-    	DrawKyokumen(kifu[nanteme]);
     });
 
     //同じ部屋にいるクライアントが退出した時インデックスサイトに戻る

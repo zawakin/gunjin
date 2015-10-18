@@ -233,7 +233,14 @@ var Game = (function () {
     			temp[dan][suji] = board[dan][suji];
     		}
     	}
-    	this.kifu.push(temp);
+	    var deadKomas = [];
+		for(var i=0;i<=1;i++){
+			deadKomas[i] = [];
+			for(var j=0;j<this.kyokumen.deadKomas[i].length;j++){
+				deadKomas[i][j] = this.kyokumen.deadKomas[i][j];
+			}
+		}
+    	this.kifu.push({board:temp,deadKomas:deadKomas});
     };
     
     p.CreateGameData = function(){

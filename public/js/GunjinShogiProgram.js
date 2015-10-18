@@ -387,6 +387,19 @@
             this.Hanten();
             return resultBoard;
         };
+        
+        p.GetGoteDeadKomas = function(){        	
+        	var result = [[],[]];
+        	
+    		for(var j=0;j<this.deadKomas[1].length;j++){
+    			result[0][j] = this.deadKomas[1][j];
+    		}
+    		for(var j=0;j<this.deadKomas[0].length;j++){
+    			result[1][j] = this.deadKomas[0][j];
+    		}
+       
+        	return result;
+        }
 
         p.TeToGote = function (te) {
             te.From.dan = this.dan + 1 - te.From.dan;
