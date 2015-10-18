@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title><%=title %></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>   
@@ -15,7 +16,6 @@
     <audio id="komaoto" preload="auto">
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
-    
 	<h1 style="display:none;" id="roomNum"><%= roomNum%></h1>
     <p id="roomNum">あなたが今いるのは　<%= roomNum%>号室です。</p>
     <div id="nameinput">
@@ -23,12 +23,12 @@
         <form id="nameform">
             <input id="name" type="text" />
         </form>
-        <button onClick="ToIndexPage();">部屋リストに戻る</button>
+        <button class="btn btn-default" onClick="ToIndexPage();">部屋リストに戻る</button>
     </div>
 
     <div id="waiting" style="display:none;">
         <h1>対戦者が来るのを待っています...</h1>
-        <button onClick="ToIndexPage();">やめる</button>
+        <button class="btn btn-default" onClick="ToIndexPage();">やめる</button>
     </div>
 
     <div id="battlestart" style="display:none;">
@@ -43,39 +43,45 @@
 
     <div id="battlejunbi" style="display:none;">
         <header>
+        	<h1 id="mysengo"></h1>
             <h1 id="statemsg">初期配置を決めてください。</h1>
         </header>
         
-        <button id="modoru">一手戻る</button>
-        <label id="nanteme"></label>        
-        <label>/</label>        
-        <label id="tesuu"></label>
-        <button id="susumu">一手進む</button>
-
-        <article>
+        <div class="gamefinish">
+	        <button id="modoru" class="btn btn-default">一手戻る</button>
+	        <label id="nanteme"></label>        
+	        <label>/</label>        
+	        <label id="tesuu"></label>
+	        <button id="susumu" class="btn btn-default">一手進む</button>
+		</div>
+        <div>
             <div style="display:none;">
                 <canvas class="cell" width="67" height="67"></canvas>
                 <canvas class="shireibu cell" width="135" height="67"></canvas>
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
-            <button id="change" class="haitimode">配置をやり直す</button>
-            <button id="haitikettei" class="haitimode" style="color:red;">配置決定</button>
-            <div id="board">
-                <canvas id="field" width="412" height="626"></canvas>
-                <div id="komaushiro" class="battlemode"></div>
-                <div id="infobox" class="battlemode">
-                	<h1 id="sengodebug"></h1>
-                    <label style="top:0px;">後手</label>
-                    <label style="top:132px;">先手</label>
-                </div>
-                <div id="komatemae" class="battlemode"></div>
+            <button id="change" class="haitimode btn btn-default">配置をやり直す</button>
+            <button id="haitikettei" class="haitimode btn btn-default" style="color:red;">配置決定</button>
+            <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
+            <button class="haitiwaiting btn btn-default" id="haitichange">配置決定を取り消す</button>
+            <div>
+	            <div id="board">
+	                <canvas id="field" width="412" height="626"></canvas>
+	                <div id="komaushiro" class="battlemode"></div>
+	                <div id="infobox" class="battlemode">
+	                	<h1 id="sengodebug"></h1>
+	                    <label style="top:0px;">後手</label>
+	                    <label style="top:132px;">先手</label>
+	                </div>
+	                <div id="komatemae" class="battlemode"></div>
 
-            </div>
+	            </div>
 
-            <div id="komadai" class="haitimode">
-                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
-            </div>
-        </article>
+	            <div id="komadai" class="haitimode">
+	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
+	            </div>
+	       </div>
+        </div>
 
         <footer>
             ©hoge

@@ -445,6 +445,11 @@ onload = function () {
             window.setTimeout(function (game) {
                 $("#battlestart").hide();
                 $("#battlejunbi").show();
+                if(socket.mySengo==SENGO.SENTE){
+                	$("#mysengo").text("あなたが先手です。");
+                }else{
+                	$("#mysengo").text("あなたが後手です。");
+                }
             }, 2000, game
             );
 
@@ -455,6 +460,33 @@ onload = function () {
     //配置をサーバーに送信
     $("#haitikettei").click(function () {
         socket.emit("haitikettei", board);
+        $(".haitimode").hide();
+        $(".haitiwaiting").show();
+        $("#statemsg").text("配置を送信中...");
+    });
+    
+    //送信した配置を取り消す
+    $("#haitichange").click(function(){
+    	socket.emit("haitichange",{});
+    	$(".haitiwaiting").hide();
+    	$(".haitimode").show();
+        $("#statemsg").text("初期配置を決めてください。");
+    });
+    
+    socket.on("haitichange",function(haitistate){
+    	var str = "先手："
+    	if(haitistate.sente){
+    		str += "完了";
+    	}else{
+    		str += "配置中";
+    	}
+    	str += " 後手：";
+    	if(haitistate.gote){
+    		str += "完了";
+    	}else{
+    		str += "配置中";
+    	}
+    	$("#haitistate").text(str);
     });
 
     //配置についてサーバーから返事を受け取る
@@ -466,6 +498,7 @@ onload = function () {
     socket.on("gamestart", function (board) {
         $("#statemsg").text("対局開始");
         $(".haitimode").hide();
+        $(".battlemode").show();
         kyokumen.board = board;
         kyokumen.teban = SENGO.SENTE;
         gameChu = true;
@@ -542,6 +575,7 @@ onload = function () {
     socket.on("gamefinish", function (gameData) {
         gameChu = false;
         
+        $(".gamefinish").show();
         $("#komaoto")[0].play();
         
         kifu = gameData.kifu;

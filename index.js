@@ -105,11 +105,13 @@ io.on("connection", function (socket) {
                     room.MsgToServer("先手 " + room.game.sente.name + " 配置完了");
                     room.game.sente.board = board;
                     room.sente.haitiKanryo = true;
+                    io.to(room.name).emit("haitichange",{sente:room.sente.haitiKanryo,gote:room.gote.haitiKanryo});
                     break;
                 case room.gote.socket.id:
                     room.MsgToServer("後手 " + room.game.gote.name + " 配置完了");
                     room.game.gote.board = board;
                     room.gote.haitiKanryo = true;
+                    io.to(room.name).emit("haitichange",{sente:room.sente.haitiKanryo,gote:room.gote.haitiKanryo});
                     break;
             }
 
@@ -125,6 +127,21 @@ io.on("connection", function (socket) {
 
         } else {
             socket.emit("haitikettei", "配置やり直し");
+        }
+    });
+    
+    socket.on("haitichange",function(){
+		switch (socket.id) {
+            case room.sente.socket.id:
+                room.MsgToServer("先手 " + room.game.sente.name + " 配置取り消し");
+                room.sente.haitiKanryo = false;
+                io.to(room.name).emit("haitichange",{sente:room.sente.haitiKanryo,gote:room.gote.haitiKanryo});
+                break;
+            case room.gote.socket.id:
+                room.MsgToServer("後手 " + room.game.gote.name + " 配置取り消し");
+                room.gote.haitiKanryo = false;
+                io.to(room.name).emit("haitichange",{sente:room.sente.haitiKanryo,gote:room.gote.haitiKanryo});
+                break;
         }
     });
     

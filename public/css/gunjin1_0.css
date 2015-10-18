@@ -6,12 +6,15 @@
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
     color:black;
+    margin : 100px;
+    position:relative;
 }
 header, nav,  section, footer {
     display:block;
 }
 article,aside{
     display:inline;
+    margin: 10px;
 }
 #box {
     background-color:green;
@@ -22,8 +25,8 @@ article,aside{
 #komadai {
     /*background-color:aqua;*/
     
-    left:500px;
-    top:0px;
+    left:450px;
+    top:400px;
     position:absolute;
 }
 button{
@@ -74,8 +77,17 @@ canvas.emphasis{
     left: 417px;
 }
 
+.haitiwaiting{
+	display:none;
+}
+
 div.battlemode{
     position:absolute;
+    display: none;
+}
+
+.gamefinish {
+	display:none;
 }
 
 label.info{
