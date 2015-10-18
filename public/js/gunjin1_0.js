@@ -78,6 +78,10 @@ function DrawKyokumen(){
 	
 };
 
+function ToIndexPage(){
+	window.location.href = "./index.html";
+}
+
 
 function DrawIndex(ctx, index) {
     ctx.clearRect(0, 0, komaSize, komaSize);
@@ -406,6 +410,7 @@ onload = function () {
             }
         }
     });        
+	
 
 
 

@@ -27,6 +27,8 @@ app.get("/game", function (req, res) {
 io.on("connection", function (socket) {
 
     console.log("client connected");
+    
+    
     var room;
 
     //ソケットが切れたときの処理
@@ -40,6 +42,10 @@ io.on("connection", function (socket) {
 	    	mng.rooms[n].Init();
         }
     });
+    
+	socket.on("givemerooms",function(){
+		mng.SendRoomState();
+	});
 
     //対戦申し込みの処理
     socket.on("taisenmachi", function (data) {
@@ -58,7 +64,6 @@ io.on("connection", function (socket) {
         		
         	case ROOMSTATE.WAITING:
 	        	room.AddClient(socket,data);
-	        	room.StateChange(ROOMSTATE.HAITIMODE);
                 room.MsgToServer("マッチング成功");
                 
         	    //先後をランダムで決定する
@@ -72,6 +77,7 @@ io.on("connection", function (socket) {
                 io.to(room.gote.id).emit("SENGO", 2);
 
                 io.to(room.name).emit("taisenKettei", room.game);
+	        	room.StateChange(ROOMSTATE.HAITIMODE);
         		break;
         	
         	default:
@@ -287,6 +293,10 @@ var Room = (function () {
         this.clientList = [];
         this.state = ROOMSTATE.EMPTY;
         this.name = "room" + this.roomN;
+        this.sente = {};
+        this.gote = {};
+        this.sente.name = "";
+        this.gote.name = "";
     };
 
     var p = Room.prototype;
@@ -345,8 +355,12 @@ var Room = (function () {
 		var room = {};
 		room.N = this.roomN;
 		room.state = this.state;
+		room.sente = this.sente.name;
+		room.gote = this.gote.name;
 		io.emit("roomstatechange",room);
 	}
+	
+	
 
     return Room;
 })();

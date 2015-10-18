@@ -16,17 +16,19 @@
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
     
-
-    <h1 id="roomNum"><%= roomNum%></h1>
+	<h1 style="display:none;" id="roomNum"><%= roomNum%></h1>
+    <p id="roomNum">あなたが今いるのは　<%= roomNum%>号室です。</p>
     <div id="nameinput">
-        <label>名前を入力してEnter</label>
+        <label>名前を入力してEnterキーを押してください。対戦相手が決まると自動的に配置モードに切り替わります。</label>
         <form id="nameform">
             <input id="name" type="text" />
         </form>
+        <button onClick="ToIndexPage();">部屋リストに戻る</button>
     </div>
 
     <div id="waiting" style="display:none;">
         <h1>対戦者が来るのを待っています...</h1>
+        <button onClick="ToIndexPage();">やめる</button>
     </div>
 
     <div id="battlestart" style="display:none;">
