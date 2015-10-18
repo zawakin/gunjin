@@ -47,13 +47,7 @@
             <h1 id="statemsg">初期配置を決めてください。</h1>
         </header>
         
-        <div class="gamefinish">
-	        <button id="modoru" class="btn btn-default">一手戻る</button>
-	        <label id="nanteme"></label>        
-	        <label>/</label>        
-	        <label id="tesuu"></label>
-	        <button id="susumu" class="btn btn-default">一手進む</button>
-		</div>
+
         <div>
             <div style="display:none;">
                 <canvas class="cell" width="67" height="67"></canvas>
@@ -62,16 +56,24 @@
             </div>
             <button id="change" class="haitimode btn btn-default">配置をやり直す</button>
             <button id="haitikettei" class="haitimode btn btn-default" style="color:red;">配置決定</button>
-            <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
             <button class="haitiwaiting btn btn-default" id="haitichange">配置決定を取り消す</button>
+            <label id="haitistate" class="haitimode haitiwaiting">先手：配置中　後手：配置中</label>
             <div>
 	            <div id="board">
 	                <canvas id="field" width="412" height="626"></canvas>
 	                <div id="komaushiro" class="battlemode"></div>
 	                <div id="infobox" class="battlemode">
-	                	<h1 id="sengodebug"></h1>
-	                    <label style="top:0px;">後手</label>
-	                    <label style="top:132px;">先手</label>
+	                	<h6 id="sengodebug"></h6>       
+	                	 <div class="gamefinish">
+					        <button id="modoru" class="btn btn-default">一手戻る</button>
+					        <label id="nanteme"></label>        
+					        <label>/</label>        
+					        <label id="tesuu"></label>
+					        <button id="susumu" class="btn btn-default">一手進む</button>
+					        <br>
+					        <button id="saishomodoru" class="btn btn-default">最初に戻る</button>
+					        <button id="saigosusumu" class="btn btn-default">最後に進む</button>
+						</div>
 	                </div>
 	                <div id="komatemae" class="battlemode"></div>
 

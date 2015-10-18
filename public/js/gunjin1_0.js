@@ -20,7 +20,7 @@ var kifu;
 
 
 var board = [
-            [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15],
+            [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15,16],
             [64, 0, 0, 0, 0, 0, 0, 64],
             [64, 0, 0, 0, 0, 0, 0, 64],
             [64, 0, 0, 0, 0, 0, 0, 64],
@@ -40,7 +40,7 @@ var emphasis = [];
 var empCnvsList = [];
 var empCtxList = [];
 var komaZenbu = 23;
-var komadaiBoard = [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15];
+var komadaiBoard = [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15,16];
 
 var gameChu = false;
 var mySengo = 0;
@@ -498,6 +498,7 @@ onload = function () {
     socket.on("gamestart", function (board) {
         $("#statemsg").text("対局開始");
         $(".haitimode").hide();
+        $(".haitiwaiting").hide();
         $(".battlemode").show();
         kyokumen.board = board;
         kyokumen.teban = SENGO.SENTE;
@@ -532,12 +533,17 @@ onload = function () {
         
         kyokumen.deadKomas = kyokumen.DeadKomasToString();
         
-        for(var i=0;i<kyokumen.deadKomas[0].length;i++){
-        	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
-        }
-        for(var i=0;i<kyokumen.deadKomas[1].length;i++){
-        	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
-        }
+        var DEADKOMAMIERU = false;
+        
+        if(DEADKOMAMIERU){
+        
+	        for(var i=0;i<kyokumen.deadKomas[0].length;i++){
+	        	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
+	        }
+	        for(var i=0;i<kyokumen.deadKomas[1].length;i++){
+	        	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
+	        }
+	    }
         
         clearAllEmpCanvas();
         
@@ -601,6 +607,13 @@ onload = function () {
 	    	DrawKyokumen();
     	}
     });
+	$("#saishomodoru").click(function(){
+		nanteme = 0;
+    	$("#nanteme").text(nanteme);
+    	kyokumen.board = kifu[nanteme].board;
+        kyokumen.deadKomas = kifu[nanteme].deadKomas;
+    	DrawKyokumen();
+    });
     
     $("#susumu").click(function(){
     	if(nanteme < kifu.length - 1){
@@ -611,6 +624,14 @@ onload = function () {
 	        kyokumen.deadKomas = kifu[nanteme].deadKomas;
 	    	DrawKyokumen(kifu[nanteme]);
     	}
+    });
+    $("#saigosusumu").click(function(){
+		nanteme = kifu.length - 1;
+    	$("#nanteme").text(nanteme);
+        $("#komaoto")[0].play();
+    	kyokumen.board = kifu[nanteme].board;
+        kyokumen.deadKomas = kifu[nanteme].deadKomas;
+    	DrawKyokumen(kifu[nanteme]);
     });
 
     //同じ部屋にいるクライアントが退出した時インデックスサイトに戻る

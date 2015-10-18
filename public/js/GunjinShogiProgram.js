@@ -479,11 +479,15 @@
         };
         
         p.DeadKomasToString = function(){
+        	var komaStrFULL = ["　　  ", "大将", "中将", "少将", "大佐", "中佐", "少佐", "大尉", "中尉", "少尉", "騎兵", "工兵", "地雷", "飛行機", "タンク", "スパイ", "軍旗"];
+       	    for (var i = 1; i <= KOMAINF.ENEMY; i++) {
+		        komaStrFULL[i + KOMAINF.ENEMY] = komaStrFULL[i];
+		    }
         	var result = [];
         	for(var i=0;i<=1;i++){
         		result[i] = [];
         		for(var j=0;j<this.deadKomas[i].length;j++){
-        			result[i][j] = komaStr[this.deadKomas[i][j]];
+        			result[i][j] = komaStrFULL[this.deadKomas[i][j]];
         		}
         	}
         	return result;
