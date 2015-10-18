@@ -400,7 +400,13 @@
         //戦闘処理、手番が進む処理はここに書く
         p.Fight = function (te) {
             this.tesuu++;
-            this.lastTe = te;
+            var sakiKomaInf = this.board[te.To.dan][te.To.suji];
+            this.lastTe = new Te(
+            	{dan:te.From.dan,suji:te.From.suji},
+            	{dan:te.To.dan,suji:te.To.suji},
+            	te.komaInf);
+            	
+            	
             this.lastTe.komaInf = 0;
             var pro = [te.From.suji-1,te.From.dan-1];
             var post = [te.To.suji - 1, te.To.dan - 1];
@@ -408,6 +414,40 @@
             var b = this.BoardExpToC(this.board);
             fight(pro, post, b, this.rule);
             this.board = this.BoardExpFromC(b);
+            
+            if(sakiKomaInf == KOMAINF.EMPTY)return;
+            
+            
+            var beaten;
+         	switch(this.board[te.To.dan][te.To.suji]){
+        		case te.komaInf:
+        			beaten = sakiKomaInf;
+        			break;
+        		case sakiKomaInf:
+        			beaten = te.komaInf;
+        			break;
+        		case KOMAINF.EMPTY:
+        			beaten = -1;
+        			break;
+        	}
+        	
+        	if(beaten==-1){
+        		if(isSelf(te.komaInf)){
+        			this.deadKomas[0].push(te.komaInf);
+        			this.deadKomas[1].push(sakiKomaInf);
+        		}else{
+        			this.deadKomas[1].push(te.komaInf);
+        			this.deadKomas[0].push(sakiKomaInf);
+        		}
+        	}
+        	
+        	if(isSelf(beaten)){
+            	this.deadKomas[0].push(beaten);
+        	}
+        	if(isEnemy(beaten)){
+            	this.deadKomas[1].push(beaten);
+        	}
+            
         };
 
         //符号の表現
@@ -424,6 +464,17 @@
             var num = victory(b, this.rule);
             return num;
         };
+        
+        p.DeadKomasToString = function(){
+        	var result = [];
+        	for(var i=0;i<=1;i++){
+        		result[i] = [];
+        		for(var j=0;j<this.deadKomas[i].length;j++){
+        			result[i][j] = komaStr[this.deadKomas[i][j]];
+        		}
+        	}
+        	return result;
+        }
 
         return Kyokumen;
     })();

@@ -128,6 +128,7 @@ io.on("connection", function (socket) {
 
         var gameData = {};
         gameData.lastTe = room.game.kyokumen.lastTe;
+        gameData.deadKomas = room.game.kyokumen.deadKomas;
 
         var v = room.game.FinishCheck();
 
@@ -138,8 +139,10 @@ io.on("connection", function (socket) {
                 gameData.board = room.game.GetSenteBoard(true);
                 io.to(room.sente.id).emit("sashite", gameData);
 
+				gameData.deadKomas.reverse();
                 gameData.board = room.game.GetGoteBoard(true);
                 io.to(room.gote.id).emit("sashite", gameData);
+                gameData.deadKomas.reverse();
                 break;
             //終局
             case 1:

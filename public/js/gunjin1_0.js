@@ -452,7 +452,14 @@ onload = function () {
         kyokumen.teban = SENGO.SENTE;
         gameChu = true;
         mySengo = socket.mySengo;
-        alert(mySengo);
+        switch(mySengo){
+        	case SENGO.SENTE:    
+	        	$("#sengodebug").text("先手");		
+        		break;
+        	case SENGO.GOTE:
+	        	$("#sengodebug").text("後手");
+        	
+        }
         clearAllEmpCanvas();
         for (var dan = 1; dan <= 8; dan++) {
             for (var suji = 1; suji <= 6; suji++) {
@@ -468,6 +475,18 @@ onload = function () {
         kyokumen.board = gameData.board;
         kyokumen.lastTe = gameData.lastTe;
         kyokumen.teban = 3 - kyokumen.teban;
+        kyokumen.deadKomas = gameData.deadKomas;
+        $("#komatemae").empty();
+        $("#komaushiro").empty();
+        
+        kyokumen.deadKomas = kyokumen.DeadKomasToString();
+        
+        for(var i=0;i<kyokumen.deadKomas[0].length;i++){
+        	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
+        }
+        for(var i=0;i<kyokumen.deadKomas[1].length;i++){
+        	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
+        }
         
         clearAllEmpCanvas();
         
