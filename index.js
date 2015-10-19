@@ -374,6 +374,9 @@ var Room = (function () {
 		room.state = this.state;
 		room.sente = this.sente.name;
 		room.gote = this.gote.name;
+		if(room.state == ROOMSTATE.WAITING){
+			room.waitingname = this.clientList[0].name;
+		}
 		io.emit("roomstatechange",room);
 	}
 	

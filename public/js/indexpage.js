@@ -32,17 +32,20 @@ onload = function(){
 
 socket.on("roomstatechange",function(room){
 	var txt;
+	var vstxt = room.sente + " vs " + room.gote;
 	switch(room.state){
 		case ROOMSTATE.EMPTY:
 			txt = "空室";
 			break;
 		case ROOMSTATE.WAITING:
-			txt = "対戦待ちの人がいます";
+			txt = room.waitingname + "　対戦待ち";
 			break;
 		case ROOMSTATE.HAITIMODE:
 		case ROOMSTATE.BATTLE:
+			txt = vstxt + "　対戦中";
+			break;
 		case ROOMSTATE.BATTLEFINISH:
-			txt = room.sente + " vs " + room.gote;
+			txt = vstxt + "　感想戦";
 			break;
 	
 	}
