@@ -159,11 +159,11 @@ io.on("connection", function (socket) {
 
             //対局続行
             case 0:
-                gameData.board = room.game.GetSenteBoard(true);
+                gameData.board = room.game.GetSenteBoard(false);
                 io.to(room.sente.id).emit("sashite", gameData);
 
 				gameData.deadKomas.reverse();
-                gameData.board = room.game.GetGoteBoard(true);
+                gameData.board = room.game.GetGoteBoard(false);
                 io.to(room.gote.id).emit("sashite", gameData);
                 gameData.deadKomas.reverse();
                 break;
