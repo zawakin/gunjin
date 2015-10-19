@@ -77,6 +77,14 @@ canvas.emphasis{
     left: 417px;
 }
 
+#komainfobox{
+    width: 300px;
+    height: 388px;
+    top:0px;
+    left:722px;
+    background-color:yellow; 
+}
+
 .haitiwaiting{
 	display:none;
 }

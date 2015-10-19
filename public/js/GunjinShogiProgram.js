@@ -56,9 +56,11 @@
     //for (var i = 1; i <= 16; i++) {
     //    komaStr[i] = "  " + komaStr[i];
     //}
+	var komaStrFULL = ["　　  ", "大将", "中将", "少将", "大佐", "中佐", "少佐", "大尉", "中尉", "少尉", "騎兵", "工兵", "地雷", "飛行機", "タンク", "スパイ", "軍旗"];
 
 
-    var Kyokumen = (function () {
+    var Kyokumen = (function () {        	
+    
 
         //コンストラクタ
         var Kyokumen = function () {
@@ -479,7 +481,6 @@
         };
         
         p.DeadKomasToString = function(){
-        	var komaStrFULL = ["　　  ", "大将", "中将", "少将", "大佐", "中佐", "少佐", "大尉", "中尉", "少尉", "騎兵", "工兵", "地雷", "飛行機", "タンク", "スパイ", "軍旗"];
        	    for (var i = 1; i <= KOMAINF.ENEMY; i++) {
 		        komaStrFULL[i + KOMAINF.ENEMY] = komaStrFULL[i];
 		    }
@@ -492,6 +493,27 @@
         	}
         	return result;
         }
+        
+        p.GetStrengthList = function(komainf){
+        	var strengthList = [];
+        	strengthList[0] = komaStrFULL[komainf] + "の強さ比較;
+        	for(var i=1;i<=KOMAINF.GUNKI;i++){
+        		var s = this.rule.unit[komainf].strength[i];
+        		switch(s){
+        			case 1:
+        				s = "○";
+        				break;
+        			case 0:
+        				s = "△";
+        				break;
+        			case -1:
+        				s = "×";
+        				break;
+        		}
+        		strengthList[i] = komaStrFULL[i] + " : " + s;
+        	}
+        	return strengthList;
+        };
 
         return Kyokumen;
     })();

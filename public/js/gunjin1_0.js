@@ -401,7 +401,6 @@ onload = function () {
             for (var i = 1; i <= dan; i++) {
                 for (var j = 1; j <= suji; j++) {
                     if (mikataArray[i][j] == 1) {
-
                         empCtxList[i][j].fillStyle = 'rgba(192, 80, 77, 0.7)';
                         empCtxList[i][j].fillRect(0, 0, empCnvsList[i][j].width, empCnvsList[i][j].height);
 
@@ -411,6 +410,19 @@ onload = function () {
         }
     });        
 	
+	$(".cell").mouseover(function(){
+		if(!gameChu) return;        
+		$("#komainfobox").empty();
+		var pos = getIndexInContextList(this.getContext("2d"));
+        if (pos != null) {
+        	if(isSelf(kyokumen.board[pos.dan][pos.suji])){
+        		var strengthList = kyokumen.GetStrengthList(kyokumen.board[pos.dan][pos.suji]);
+        		for(var i=0;i<strengthList.length;i++){
+        			$("#komainfobox").append(strengthList[i] + "<br>");
+        		}
+        	}
+        }
+	});
 
 
 
