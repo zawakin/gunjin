@@ -14,17 +14,17 @@ typedef struct {
 } opt ;
 
 
-void initialdata(void) ;  /* ‰ŠúÝ’èƒf[ƒ^‚Ìì¬ */
-int loadoption(int *classnum, int *height, int *width, opt option[], char datname[]) ;  /* Ý’è‚Ì“Ç‚Ýž‚Ý */ /* return = -1: “Ç‚Ýž‚ÝŽ¸”s */
-void saveoption(int classnum, int height, int width, opt option[], char datname[]) ;  /* Ý’è‚Ì•Û‘¶ */
-void view(int classnum, int board[][16], int turn, int height, int width) ;  /* ”Õ–Ê‚Ì•\Ž¦ */
-void setting(int classnum, int board[][16], int turn, int height, int width, opt option[]) ;  /* ”z’u */
-int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], int turn, int height, int width, opt option[]) ;  /* ˆÚ“®‰Â”\—Ìˆæ */ /* return = -1: –³Œø‚È‘I‘ð */
-void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, int height, int width) ;  /* ˆÚ“®‰Â”\—Ìˆæ‚Ì•\Ž¦ */
-int movement(int classnum, int pro[], int post[], int board[][16], int domain[][16], int height, int width, opt option[]) ;  /* ˆÚ“® */ /* return = -1: –³Œø‚ÈˆÚ“® */
-void fight(int classnum, int pro[], int post[], int board[][16], int height, int width, opt option[]) ;  /* í“¬ */
-int victory(int classnum, int board[][16], int height, int width) ;  /* return = 1: æU‚ÌŸ—˜, 2: ŒãU‚ÌŸ—˜, 3: ˆø‚«•ª‚¯ */
-void allview(int classnum, int board[][16], int turn, int height, int width) ;  /* ‘S‹î‚Ì•\Ž¦ */
+void initialdata(void) ;  /* ï¿½ï¿½ï¿½ï¿½ï¿½Ý’ï¿½ï¿½fï¿½[ï¿½^ï¿½Ìì¬ */
+int loadoption(int *classnum, int *height, int *width, opt option[], char datname[]) ;  /* ï¿½Ý’ï¿½ï¿½Ì“Ç‚Ýï¿½ï¿½ï¿½ */ /* return = -1: ï¿½Ç‚Ýï¿½ï¿½ÝŽï¿½ï¿½s */
+void saveoption(int classnum, int height, int width, opt option[], char datname[]) ;  /* ï¿½Ý’ï¿½ï¿½Ì•Û‘ï¿½ */
+void view(int classnum, int board[][16], int turn, int height, int width) ;  /* ï¿½Õ–Ê‚Ì•\ï¿½ï¿½ */
+void setting(int classnum, int board[][16], int turn, int height, int width, opt option[]) ;  /* ï¿½zï¿½u */
+int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], int turn, int height, int width, opt option[]) ;  /* ï¿½Ú“ï¿½ï¿½Â”\ï¿½Ìˆï¿½ */ /* return = -1: ï¿½ï¿½ï¿½ï¿½ï¿½È‘Iï¿½ï¿½ */
+void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, int height, int width) ;  /* ï¿½Ú“ï¿½ï¿½Â”\ï¿½Ìˆï¿½ï¿½Ì•\ï¿½ï¿½ */
+int movement(int classnum, int pro[], int post[], int board[][16], int domain[][16], int height, int width, opt option[]) ;  /* ï¿½Ú“ï¿½ */ /* return = -1: ï¿½ï¿½ï¿½ï¿½ï¿½ÈˆÚ“ï¿½ */
+void fight(int classnum, int pro[], int post[], int board[][16], int height, int width, opt option[]) ;  /* ï¿½í“¬ */
+int victory(int classnum, int board[][16], int height, int width) ;  /* return = 1: ï¿½ï¿½ï¿½Uï¿½Ìï¿½ï¿½ï¿½, 2: ï¿½ï¿½ï¿½Uï¿½Ìï¿½ï¿½ï¿½, 3: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+void allview(int classnum, int board[][16], int turn, int height, int width) ;  /* ï¿½Sï¿½ï¿½ï¿½Ì•\ï¿½ï¿½ */
 
 
 
@@ -44,33 +44,33 @@ int main(void)
 	int pro[2], post[2] ;
 	int vic = 0 ;
 	int error ;
-	
-	printf("æU‚Ì–¼‘O‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n\n") ;
+
+	printf("ï¿½ï¿½ï¿½Uï¿½Ì–ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n\n") ;
 	scanf("%s", &firstname) ;
-	printf("ŒãU‚Ì–¼‘O‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n\n") ;
+	printf("ï¿½ï¿½ï¿½Uï¿½Ì–ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n\n") ;
 	scanf("%s", secondname) ;
-	
+
 	strcpy(datname, "initialoption.dat") ;
-	
+
 	loadoption(&classnum, &height, &width, option, datname) ;
-	
+
 	turn = 1 ;
-	printf("%s‚³‚ñ‚Í‹î‚ð”z’u‚µ‚Ä‚­‚¾‚³‚¢B\n\n", firstname) ;
+	printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Í‹ï¿½ï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n\n", firstname) ;
 	setting(classnum, board, turn, height, width, option) ;
 	turn = 2 ;
-	printf("%s‚³‚ñ‚Í‹î‚ð”z’u‚µ‚Ä‚­‚¾‚³‚¢B\n\n", secondname) ;
+	printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Í‹ï¿½ï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n\n", secondname) ;
 	setting(classnum, board, turn, height, width, option) ;
-	
-	printf("ƒQ[ƒ€‚ðŠJŽn‚µ‚Ü‚·B\n\n") ;
+
+	printf("ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B\n\n") ;
 	turn = 1 ;
 	do {
 		if (turn % 2 == 1){
-			printf("%s‚³‚ñ‚Ì”Ô‚Å‚·B\n\n", firstname) ;
+			printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Ì”Ô‚Å‚ï¿½ï¿½B\n\n", firstname) ;
 		} else {
-			printf("%s‚³‚ñ‚Ì”Ô‚Å‚·B\n\n", secondname) ;
-		}	
+			printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Ì”Ô‚Å‚ï¿½ï¿½B\n\n", secondname) ;
+		}
 		do {
-			view(classnum, board, turn, height, width) ;			
+			view(classnum, board, turn, height, width) ;
 			scanf("%d", pro[1]) ;
 			scanf("%d", pro[0]) ;
 			pro[0]-- ;
@@ -87,13 +87,13 @@ int main(void)
 		} while (error == -1) ;
 		vic = victory(classnum, board, height, width) ;
 	} while (vic == 0) ;
-	
+
 	if (vic == 1){
-		printf("%s‚³‚ñ‚ÌŸ—˜‚Å‚·B\n\n", firstname) ;
+		printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B\n\n", firstname) ;
 	} else if (vic == 2){
-		printf("%s‚³‚ñ‚ÌŸ—˜‚Å‚·B\n\n", secondname) ;
+		printf("%sï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B\n\n", secondname) ;
 	} else {
-		printf("ˆø‚«•ª‚¯‚Å‚·B\n\n") ;
+		printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B\n\n") ;
 	}
 	allview(classnum, board, turn, height, width) ;
 	return 0;
@@ -105,22 +105,22 @@ int victory(int classnum, int board[][16], int height, int width)
 	int first, second ;
 	int i, j ;
 	int vic = 0 ;
-	
+
 	if (board[0][width/2-1] >= 1 && board[0][width/2-1] <= 6){
 		vic = 1 ;
 	} else if (board[height-1][width/2] >= 1+classnum && board[height-1][width/2] <= 6+classnum){
 		vic = 2 ;
 	}
-	
+
 	first = 0 ;
 	second = 0 ;
 	for (i = 0 ; i < height ; i++){
 		for (j = 0 ; j < width ; j++){
 			if (board[i][j] > 0 && board[i][j] <= classnum){
 				first++ ;
-			} else if (board[i][j] > classnum){	
+			} else if (board[i][j] > classnum){
 				second++ ;
-			}	
+			}
 		}
 	}
 	if (first > 0 && second == 0){
@@ -137,7 +137,7 @@ int victory(int classnum, int board[][16], int height, int width)
 void allview(int classnum, int board[][16], int turn, int height, int width)
 {
 	int i, j ;
-	
+
 	if (turn % 2 == 1){
 		for (j = 0 ; j < width ; j++){
 			printf("  %2d  ", width-j) ;
@@ -154,7 +154,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 		for (j = width/2+1 ; j < width ; j++){
 			printf("|     ") ;
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			printf("| %2d  ", board[0][width-j-1]) ;
 		}
@@ -179,7 +179,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				printf("|     ") ;
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				printf("| %2d  ", board[i][width-j-1]) ;
 			}
@@ -206,7 +206,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				printf("|     ") ;
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				printf("| %2d  ", board[i][width-j-1]) ;
 			}
@@ -227,7 +227,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 		for (j = width/2+1 ; j < width ; j++){
 			printf("|     ") ;
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			printf("| %2d  ", board[height-1][width-j-1]) ;
 		}
@@ -336,7 +336,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 		for (j = 3 ; j < width-2 ; j++){
 			printf("      ") ;
 		}
-		printf("|     |     |\n") ;		
+		printf("|     |     |\n") ;
 		for (i = height/2 ; i < height-1 ; i++){
 			printf("    ") ;
 			for (j = 0 ; j < width ; j++){
@@ -363,7 +363,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				printf("|     ") ;
 			}
-			printf("|\n") ;			
+			printf("|\n") ;
 		}
 		printf("    ") ;
 		for (j = 0 ; j < width ; j++){
@@ -423,7 +423,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 		for (j = 0 ; j < width ; j++){
 			printf("  %2d  ", j+1) ;
 		}
-		printf("+\n\n") ;		
+		printf("+\n\n") ;
 	}
 	return ;
 }
@@ -432,7 +432,7 @@ void allview(int classnum, int board[][16], int turn, int height, int width)
 void view(int classnum, int board[][16], int turn, int height, int width)
 {
 	int i, j ;
-	
+
 	if (turn % 2 == 1){
 		for (j = 0 ; j < width ; j++){
 			printf("  %2d  ", width-j) ;
@@ -449,7 +449,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 		for (j = width/2+1 ; j < width ; j++){
 			printf("|     ") ;
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			if (board[0][width-j-1] <= classnum){
 				printf("| %2d  ", board[0][width-j-1]) ;
@@ -477,7 +477,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 		for (j = width/2+1 ; j < width ; j++){
 			printf("|     ") ;
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (i = 1 ; i < height/2 ; i++){
 			for (j = 0 ; j < width ; j++){
 				printf("+-----") ;
@@ -486,7 +486,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				printf("|     ") ;
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				if (board[i][width-j-1] <= classnum){
 					printf("| %2d  ", board[i][width-j-1]) ;
@@ -517,7 +517,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				printf("|     ") ;
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				if (board[i][width-j-1] <= classnum){
 					printf("| %2d  ", board[i][width-j-1]) ;
@@ -542,7 +542,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 		for (j = width/2+1 ; j < width ; j++){
 			printf("|     ") ;
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			if (board[height-1][width-j-1] <= classnum){
 				printf("| %2d  ", board[height-1][width-j-1]) ;
@@ -663,7 +663,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 		for (j = 3 ; j < width-2 ; j++){
 			printf("      ") ;
 		}
-		printf("|     |     |\n") ;		
+		printf("|     |     |\n") ;
 		for (i = height/2 ; i < height-1 ; i++){
 			printf("    ") ;
 			for (j = 0 ; j < width ; j++){
@@ -679,7 +679,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 			for (j = 0 ; j < width ; j++){
 				if (board[height-i-1][j] > classnum){
 					printf("| %2d  ", board[height-i-1][j]-classnum) ;
-				} else if (board[height-i-1][j] == 0){	
+				} else if (board[height-i-1][j] == 0){
 					printf("|  0  ") ;
 				} else {
 					printf("| ??? ") ;
@@ -750,7 +750,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 		for (j = 0 ; j < width ; j++){
 			printf("  %2d  ", j+1) ;
 		}
-		printf("+\n\n") ;		
+		printf("+\n\n") ;
 	}
 	return ;
 }
@@ -758,7 +758,7 @@ void view(int classnum, int board[][16], int turn, int height, int width)
 void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, int height, int width)
 {
 	int i, j ;
-	
+
 	if (turn % 2 == 1){
 		for (j = 0 ; j < width ; j++){
 			printf("  %2d  ", width-j) ;
@@ -787,7 +787,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 				printf("|     ") ;
 			}
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			if (domain[0][width-j-1] == 1){
 				if (board[0][width-j-1] <= classnum){
@@ -864,7 +864,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 					printf("|     ") ;
 				}
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				if (domain[i][width-j-1] == 1){
 					if (board[i][width-j-1] <= classnum){
@@ -911,7 +911,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 					printf("|     ") ;
 				}
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 			for (j = 0 ; j < width ; j++){
 				if (domain[i][width-j-1] == 1){
 					if (board[i][width-j-1] <= classnum){
@@ -924,7 +924,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 						printf("| %2d  ", board[i][width-j-1]) ;
 					} else {
 						printf("| ??? ") ;
-					}					
+					}
 				}
 			}
 			printf("| %2d\n", i+1) ;
@@ -935,7 +935,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 					printf("|     ") ;
 				}
 			}
-			printf("|\n") ;	
+			printf("|\n") ;
 		}
 		for (j = 0 ; j < width ; j++){
 			printf("+-----") ;
@@ -960,7 +960,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 				printf("|     ") ;
 			}
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width/2-1 ; j++){
 			if (domain[height-1][width-j-1] == 1){
 				if (board[height-1][width-j-1] <= classnum){
@@ -1024,7 +1024,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 				printf("|     ") ;
 			}
 		}
-		printf("|\n") ;	
+		printf("|\n") ;
 		for (j = 0 ; j < width ; j++){
 			printf("+-----") ;
 		}
@@ -1069,7 +1069,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 			} else {
 				if (board[height-1][j] > classnum){
 					printf("| %2d  ", board[height-1][j]-classnum) ;
-				} else if (board[height-1][j] == 0){	
+				} else if (board[height-1][j] == 0){
 					printf("|  0  ") ;
 				} else {
 					printf("| ??? ") ;
@@ -1087,7 +1087,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 		} else {
 			if (board[height-1][width/2] > classnum){
 				printf("| %2d  ", board[height-1][width/2]-classnum) ;
-			} else if (board[height-1][width/2] == 0){	
+			} else if (board[height-1][width/2] == 0){
 				printf("|  0  ") ;
 			} else {
 				printf("| ??? ") ;
@@ -1105,7 +1105,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 			} else {
 				if (board[height-1][j] > classnum){
 					printf("| %2d  ", board[height-1][j]-classnum) ;
-				} else if (board[height-1][j] == 0){	
+				} else if (board[height-1][j] == 0){
 					printf("|  0  ") ;
 				} else {
 					printf("| ??? ") ;
@@ -1162,7 +1162,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 				} else {
 					if (board[height-i-1][j] > classnum){
 						printf("| %2d  ", board[height-i-1][j]-classnum) ;
-					} else if (board[height-i-1][j] == 0){	
+					} else if (board[height-i-1][j] == 0){
 						printf("|  0  ") ;
 					} else {
 						printf("| ??? ") ;
@@ -1189,7 +1189,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 		for (j = 3 ; j < width-2 ; j++){
 			printf("      ") ;
 		}
-		printf("|     |     |\n") ;		
+		printf("|     |     |\n") ;
 		for (i = height/2 ; i < height-1 ; i++){
 			printf("    ") ;
 			for (j = 0 ; j < width ; j++){
@@ -1218,7 +1218,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 				} else {
 					if (board[height-i-1][j] > classnum){
 						printf("| %2d  ", board[height-i-1][j]-classnum) ;
-					} else if (board[height-i-1][j] == 0){	
+					} else if (board[height-i-1][j] == 0){
 						printf("|  0  ") ;
 					} else {
 						printf("| ??? ") ;
@@ -1275,7 +1275,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 			} else {
 				if (board[0][j] > classnum){
 					printf("| %2d  ", board[0][j]-classnum) ;
-				} else if (board[0][j] == 0){	
+				} else if (board[0][j] == 0){
 					printf("|  0  ") ;
 				} else {
 					printf("| ??? ") ;
@@ -1293,7 +1293,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 		} else {
 			if (board[0][width/2-1] > classnum){
 				printf("| %2d  ", board[0][width/2-1]-classnum) ;
-			} else if (board[0][width/2-1] == 0){	
+			} else if (board[0][width/2-1] == 0){
 				printf("|  0  ") ;
 			} else {
 				printf("| ??? ") ;
@@ -1311,7 +1311,7 @@ void emphasizedview(int classnum, int board[][16], int domain[][16], int turn, i
 			} else {
 				if (board[0][j] > classnum){
 					printf("| %2d  ", board[0][j]-classnum) ;
-				} else if (board[0][j] == 0){	
+				} else if (board[0][j] == 0){
 					printf("|  0  ") ;
 				} else {
 					printf("| ??? ") ;
@@ -1363,10 +1363,10 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 	int yes = 0 ;
 	int pro, post[2] ;
 	int num ;
-	
+
 	k = 1 ;
 	l = 0 ;
-	
+
 	while (k <= classnum){
 		m = 1 ;
 		while (m <= option[k].number){
@@ -1376,7 +1376,7 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 		}
 		k++ ;
 	}
-	
+
 	if (turn % 2 == 1){
 		for (i = 0 ; i < height/2 ; i++){
 			for (j = 0 ; j < width ; j++){
@@ -1420,7 +1420,7 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 					}
 				}
 				if (num == 0){
-					printf("‚±‚Ì”z’u‚Å‚æ‚ë‚µ‚¢‚Å‚·‚©H  yes: 1, no: 0\n\n") ;
+					printf("ï¿½ï¿½ï¿½Ì”zï¿½uï¿½Å‚ï¿½ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H  yes: 1, no: 0\n\n") ;
 					scanf("%d", &yes) ;
 				}
 			}
@@ -1453,11 +1453,11 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 			scanf("%d", &post[0]) ;
 			post[0]-- ;
 			post[1]-- ;
-			if (post[0] == 0 && post[1] == width/2){	
+			if (post[0] == 0 && post[1] == width/2){
 				post[1] = width/2-1 ;
 			} else if (post[0] == height-1 && post[1] == width/2-1) {
 				post[1] = width/2 ;
-			}			
+			}
 			if (((pro >= 0 && pro <= classnum) && ((post[0] >= 0 && post[0] < height/2) && (post[1] >= 0 && post[1] < width))) && !((pro == 15 || pro == 16) && (post[0] == height/2-1 && (post[1] == 1 || post[1] == width-2)))){
 				num = 0 ;
 				for (k = 0 ; k < l ; k++){
@@ -1473,7 +1473,7 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 					}
 				}
 				if (num == 0){
-					printf("‚±‚Ì”z’u‚Å‚æ‚ë‚µ‚¢‚Å‚·‚©H  yes: 1, no: 0\n\n") ;
+					printf("ï¿½ï¿½ï¿½Ì”zï¿½uï¿½Å‚ï¿½ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H  yes: 1, no: 0\n\n") ;
 					scanf("%d", &yes) ;
 				}
 			}
@@ -1482,7 +1482,7 @@ void setting(int classnum, int board[][16], int turn, int height, int width, opt
 			for (j = 0 ; j < width ; j++){
 				board[i][j] = preboard[i][j] ;
 			}
-		}		
+		}
 	}
 	return ;
 }
@@ -1494,20 +1494,20 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 	int i, j ;
 	int k, l ;
 	int error = -1 ;
-	
+
 	for (i = 0 ; i < height ; i++){
 		for (j = 0 ; j < width ; j++){
 			domain[i][j] = 0 ;
 		}
-	}	
-	
-	if ((pro[0] >= 0 && pro[0] < height) && (pro[1] >= 0 && pro[1] < width)){		
-		if (pro[0] == 0 && pro[1] == width/2){	
+	}
+
+	if ((pro[0] >= 0 && pro[0] < height) && (pro[1] >= 0 && pro[1] < width)){
+		if (pro[0] == 0 && pro[1] == width/2){
 			pro[1] = width/2-1 ;
 		} else if (pro[0] == height-1 && pro[1] == width/2-1) {
 			pro[1] = width/2 ;
 		}
-		
+
 		if (turn % 2 == 1 && (board[pro[0]][pro[1]] > 0 && board[pro[0]][pro[1]] <= classnum)){
 			error = 0 ;
 			k = 1 ;
@@ -1519,7 +1519,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else {
 						if (board[pro[0]][pro[1]-l] == 0){
 							domain[pro[0]][pro[1]-l] == 1 ;
-						} else if (board[pro[0]][pro[1]-l] > classnum){ 
+						} else if (board[pro[0]][pro[1]-l] > classnum){
 							domain[pro[0]][pro[1]-l] == 1 ;
 							break ;
 						} else {
@@ -1549,7 +1549,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else {
 						if (board[pro[0]][pro[1]+l] == 0){
 							domain[pro[0]][pro[1]+l] == 1 ;
-						} else if (board[pro[0]][pro[1]+l] > classnum){ 
+						} else if (board[pro[0]][pro[1]+l] > classnum){
 							domain[pro[0]][pro[1]+l] == 1 ;
 							break ;
 						} else {
@@ -1589,7 +1589,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else if (!(pro[0]-k == height/2-1 && (pro[1] != 1 && pro[1] != width-2))){
 						if (board[pro[0]-k][pro[1]] == 0){
 							domain[pro[0]-k][pro[1]] == 1 ;
-						} else if (board[pro[0]-k][pro[1]] > classnum){ 
+						} else if (board[pro[0]-k][pro[1]] > classnum){
 							domain[pro[0]-k][pro[1]] == 1 ;
 							break ;
 						} else {
@@ -1635,7 +1635,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else if (!(pro[0]+k == height/2 && (pro[1] != 1 && pro[1] != width-2))){
 						if (board[pro[0]+k][pro[1]] == 0){
 							domain[pro[0]+k][pro[1]] == 1 ;
-						} else if (board[pro[0]+k][pro[1]] > classnum){ 
+						} else if (board[pro[0]+k][pro[1]] > classnum){
 							domain[pro[0]+k][pro[1]] == 1 ;
 							break ;
 						} else {
@@ -1673,7 +1673,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else {
 						if (board[pro[0]][pro[1]-l] == 0){
 							domain[pro[0]][pro[1]-l] == 1 ;
-						} else if (board[pro[0]][pro[1]-l] > 0 && board[pro[0]][pro[1]-l] <= classnum){ 
+						} else if (board[pro[0]][pro[1]-l] > 0 && board[pro[0]][pro[1]-l] <= classnum){
 							domain[pro[0]][pro[1]-l] == 1 ;
 							break ;
 						} else {
@@ -1703,7 +1703,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else {
 						if (board[pro[0]][pro[1]+l] == 0){
 							domain[pro[0]][pro[1]+l] == 1 ;
-						} else if (board[pro[0]][pro[1]+l] > 0 && board[pro[0]][pro[1]+l] <= classnum){ 
+						} else if (board[pro[0]][pro[1]+l] > 0 && board[pro[0]][pro[1]+l] <= classnum){
 							domain[pro[0]][pro[1]+l] == 1 ;
 							break ;
 						} else {
@@ -1743,7 +1743,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else if (!(pro[0]-k == height/2-1 && (pro[1] != 1 && pro[1] != width-2))){
 						if (board[pro[0]-k][pro[1]] == 0){
 							domain[pro[0]-k][pro[1]] == 1 ;
-						} else if (board[pro[0]][pro[1]] > 0 && board[pro[0]-k][pro[1]] <= classnum){ 
+						} else if (board[pro[0]][pro[1]] > 0 && board[pro[0]-k][pro[1]] <= classnum){
 							domain[pro[0]-k][pro[1]] == 1 ;
 							break ;
 						} else {
@@ -1789,7 +1789,7 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 					} else if (!(pro[0]+k == height/2 && (pro[1] != 1 && pro[1] != width-2))){
 						if (board[pro[0]+k][pro[1]] == 0){
 							domain[pro[0]+k][pro[1]] == 1 ;
-						} else if (board[pro[0]+k][pro[1]] > 0 && board[pro[0]+k][pro[1]] <= classnum){ 
+						} else if (board[pro[0]+k][pro[1]] > 0 && board[pro[0]+k][pro[1]] <= classnum){
 							domain[pro[0]+k][pro[1]] == 1 ;
 							break ;
 						} else {
@@ -1827,13 +1827,13 @@ int movabledomain(int classnum, int pro[], int board[][16], int domain[][16], in
 int movement(int classnum, int pro[], int post[], int board[][16], int domain[][16], int height, int width,  opt option[])
 {
 	int error = -1 ;
-	
-	if (pro[0] == 0 && pro[1] == width/2){	
+
+	if (pro[0] == 0 && pro[1] == width/2){
 		pro[1] = width/2-1 ;
 	} else if (pro[0] == height-1 && pro[1] == width/2-1) {
 		pro[1] = width/2 ;
 	}
-	if (post[0] == 0 && post[1] == width/2){	
+	if (post[0] == 0 && post[1] == width/2){
 		post[1] = width/2-1 ;
 	} else if (post[0] == height-1 && post[1] == width/2-1) {
 		post[1] = width/2 ;
@@ -1851,44 +1851,44 @@ void fight(int classnum, int pro[], int post[], int board[][16], int height, int
 		if ((board[post[0]][post[1]] == 16+classnum && post[0] > 0) && board[post[0]-1][post[1]] > classnum){
 			if (option[board[pro[0]][pro[1]]].strength[board[post[0]-1][post[1]]-classnum] == 1){
 				board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
+
 			} else if (option[board[pro[0]][pro[1]]].strength[board[post[0]-1][post[1]]-classnum] == 0){
 				board[post[0]][post[1]] = 0 ;
-			
+
 			}
 		} else {
 			if (option[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-classnum] == 1){
 				board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
+
 			} else if (option[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-classnum] == 0){
 				board[post[0]][post[1]] = 0 ;
-			
+
 			}
 		}
 	} else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= classnum){
 		if ((board[post[0]][post[1]] == 16 && post[0] < height-1) && (board[post[0]+1][post[1]] > 0 && board[post[0]+1][post[1]] <= classnum)){
 			if (option[board[pro[0]][pro[1]]-classnum].strength[board[post[0]+1][post[1]]] == 1){
 				board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
+
 			} else if (option[board[pro[0]][pro[1]]-classnum].strength[board[post[0]+1][post[1]]] == 0){
 				board[post[0]][post[1]] = 0 ;
-				
+
 			}
 		} else {
 			if (option[board[pro[0]][pro[1]]-classnum].strength[board[post[0]][post[1]]] == 1){
 				board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
+
 			} else if (option[board[pro[0]][pro[1]]-classnum].strength[board[post[0]][post[1]]] == 0){
 				board[post[0]][post[1]] = 0 ;
-				
+
 			}
 		}
 	} else {
 		board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-		
+
 	}
 	board[pro[0]][pro[1]] = 0 ;
-	
+
 	return ;
 }
 
@@ -1901,9 +1901,9 @@ int loadoption(int *classnum, int *height, int *width, opt option[], char datnam
 	int preclassnum, preheight, prewidth ;
 	int error = -1 ;
 	int n, i ;
-	
+
 	dat = fopen(datname, "rb") ;
-	
+
 	if (dat != NULL){
 		error = 0 ;
 		READDAT(preclassnum) ;
@@ -1912,20 +1912,20 @@ int loadoption(int *classnum, int *height, int *width, opt option[], char datnam
 		*classnum = preclassnum ;
 		*height = preheight ;
 		*width = prewidth ;
-		
+
 		for (n = 0 ; n <= preclassnum ; n++){
 			READDAT(option[n].name) ;
-		
+
 			for (i = 0 ; i < 4 ; i++){
 				READDAT(option[n].direction[i]) ;
 			}
 			for (i = 0 ; i <= preclassnum ; i++){
 				READDAT(option[n].strength[i]) ;
 			}
-			
+
 			READDAT(option[n].number) ;
 		}
-	
+
 		fclose(dat) ;
 	}
 	return error ;
@@ -1934,18 +1934,18 @@ int loadoption(int *classnum, int *height, int *width, opt option[], char datnam
 void saveoption(int classnum, int height, int width, opt option[], char datname[])
 {
 	FILE *dat ;
-	
+
 	int n, i ;
-	
+
 	dat = fopen(datname, "wb") ;
-	
+
 	WRITEDAT(classnum) ;
 	WRITEDAT(height) ;
 	WRITEDAT(width) ;
-	
+
 	for (n = 0 ; n <= classnum ; n++){
 		WRITEDAT(option[n].name) ;
-		
+
 		for (i = 0 ; i < 4 ; i++){
 			WRITEDAT(option[n].direction[i]) ;
 		}
@@ -1955,9 +1955,9 @@ void saveoption(int classnum, int height, int width, opt option[], char datname[
 
 		WRITEDAT(option[n].number) ;
 	}
-	
+
 	fclose(dat) ;
-	
+
 	return ;
 }
 
@@ -1969,19 +1969,19 @@ void initialdata(void)
 	int width = 6 ;
 
 	opt iniopt[17] ; /* 16 + 1 */
-	
+
 	FILE *dat ;
-	
+
 	int n, i ;
-	
+
 	/* Null */
 	strcpy(iniopt[0].name, "Null") ;
-	
+
 	iniopt[0].direction[0] = 0 ;
 	iniopt[0].direction[1] = 0 ;
 	iniopt[0].direction[2] = 0 ;
 	iniopt[0].direction[3] = 0 ;
-	
+
 	iniopt[0].strength[0] = 0 ;
 	iniopt[0].strength[1] = -1 ;
 	iniopt[0].strength[2] = -1 ;
@@ -1999,17 +1999,17 @@ void initialdata(void)
 	iniopt[0].strength[14] = -1 ;
 	iniopt[0].strength[15] = -1 ;
 	iniopt[0].strength[16] = -1 ;
-	
+
 	iniopt[0].number = 0 ;
-	
-	/* ‘å« */
+
+	/* ï¿½å« */
 	strcpy(iniopt[1].name, "Gengeral") ;
-	
+
 	iniopt[1].direction[0] = 1 ;
 	iniopt[1].direction[1] = 1 ;
 	iniopt[1].direction[2] = 1 ;
 	iniopt[1].direction[3] = 1 ;
-	
+
 	iniopt[1].strength[0] = 1 ;
 	iniopt[1].strength[1] = 0 ;
 	iniopt[1].strength[2] = 1 ;
@@ -2028,17 +2028,17 @@ void initialdata(void)
 	iniopt[1].strength[15] = 0 ;
 	iniopt[1].strength[16] = 1 ;
 
-	iniopt[1].number = 1 ;	
+	iniopt[1].number = 1 ;
 
-	/* ’†« */
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[2].name, "Lieutenant Gengeral") ;
-	
+
 	iniopt[2].direction[0] = 1 ;
 	iniopt[2].direction[1] = 1 ;
 	iniopt[2].direction[2] = 1 ;
 	iniopt[2].direction[3] = 1 ;
 
-	iniopt[2].strength[0] = 1 ;	
+	iniopt[2].strength[0] = 1 ;
 	iniopt[2].strength[1] = -1 ;
 	iniopt[2].strength[2] = 0 ;
 	iniopt[2].strength[3] = 1 ;
@@ -2056,17 +2056,17 @@ void initialdata(void)
 	iniopt[2].strength[15] = 0 ;
 	iniopt[2].strength[16] = 1 ;
 
-	iniopt[2].number = 1 ;	
-	
-	/* ­« */
+	iniopt[2].number = 1 ;
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[3].name, "Major Gengeral") ;
-	
+
 	iniopt[3].direction[0] = 1 ;
 	iniopt[3].direction[1] = 1 ;
 	iniopt[3].direction[2] = 1 ;
 	iniopt[3].direction[3] = 1 ;
 
-	iniopt[3].strength[0] = 1 ;	
+	iniopt[3].strength[0] = 1 ;
 	iniopt[3].strength[1] = -1 ;
 	iniopt[3].strength[2] = -1 ;
 	iniopt[3].strength[3] = 0 ;
@@ -2084,17 +2084,17 @@ void initialdata(void)
 	iniopt[3].strength[15] = 0 ;
 	iniopt[3].strength[16] = 1 ;
 
-	iniopt[3].number = 1 ;	
-	
-	/* ‘å² */
+	iniopt[3].number = 1 ;
+
+	/* ï¿½å² */
 	strcpy(iniopt[4].name, "Colonel") ;
-	
+
 	iniopt[4].direction[0] = 1 ;
 	iniopt[4].direction[1] = 1 ;
 	iniopt[4].direction[2] = 1 ;
 	iniopt[4].direction[3] = 1 ;
 
-	iniopt[4].strength[0] = 1 ;	
+	iniopt[4].strength[0] = 1 ;
 	iniopt[4].strength[1] = -1 ;
 	iniopt[4].strength[2] = -1 ;
 	iniopt[4].strength[3] = -1 ;
@@ -2113,16 +2113,16 @@ void initialdata(void)
 	iniopt[4].strength[16] = 1 ;
 
 	iniopt[4].number = 1 ;
-	
-	/* ’†² */
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[5].name, "Lieutenant Colonel") ;
-	
+
 	iniopt[5].direction[0] = 1 ;
 	iniopt[5].direction[1] = 1 ;
 	iniopt[5].direction[2] = 1 ;
 	iniopt[5].direction[3] = 1 ;
 
-	iniopt[5].strength[0] = 1 ;	
+	iniopt[5].strength[0] = 1 ;
 	iniopt[5].strength[1] = -1 ;
 	iniopt[5].strength[2] = -1 ;
 	iniopt[5].strength[3] = -1 ;
@@ -2140,11 +2140,11 @@ void initialdata(void)
 	iniopt[5].strength[15] = 0 ;
 	iniopt[5].strength[16] = 1 ;
 
-	iniopt[5].number = 1 ;	
-	
-	/* ­² */
+	iniopt[5].number = 1 ;
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[6].name, "Major") ;
-	
+
 	iniopt[6].direction[0] = 1 ;
 	iniopt[6].direction[1] = 1 ;
 	iniopt[6].direction[2] = 1 ;
@@ -2168,17 +2168,17 @@ void initialdata(void)
 	iniopt[6].strength[15] = 0 ;
 	iniopt[6].strength[16] = 1 ;
 
-	iniopt[6].number = 1 ;	
-	
-	/* ‘åˆÑ */
+	iniopt[6].number = 1 ;
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[7].name, "Captain") ;
-	
+
 	iniopt[7].direction[0] = 1 ;
 	iniopt[7].direction[1] = 1 ;
 	iniopt[7].direction[2] = 1 ;
 	iniopt[7].direction[3] = 1 ;
 
-	iniopt[7].strength[0] = 1 ;	
+	iniopt[7].strength[0] = 1 ;
 	iniopt[7].strength[1] = -1 ;
 	iniopt[7].strength[2] = -1 ;
 	iniopt[7].strength[3] = -1 ;
@@ -2197,10 +2197,10 @@ void initialdata(void)
 	iniopt[7].strength[16] = 1 ;
 
 	iniopt[7].number = 2 ;
-	
-	/* ’†ˆÑ */
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[8].name, "Lieutenant") ;
-	
+
 	iniopt[8].direction[0] = 1 ;
 	iniopt[8].direction[1] = 1 ;
 	iniopt[8].direction[2] = 1 ;
@@ -2225,16 +2225,16 @@ void initialdata(void)
 	iniopt[8].strength[16] = 1 ;
 
 	iniopt[8].number = 2 ;
-	
-	/* ­ˆÑ */
+
+	/* ï¿½ï¿½ï¿½ï¿½ */
 	strcpy(iniopt[9].name, "Second Lieutenant") ;
-	
+
 	iniopt[9].direction[0] = 1 ;
 	iniopt[9].direction[1] = 1 ;
 	iniopt[9].direction[2] = 1 ;
 	iniopt[9].direction[3] = 1 ;
 
-	iniopt[9].strength[0] = 1 ;	
+	iniopt[9].strength[0] = 1 ;
 	iniopt[9].strength[1] = -1 ;
 	iniopt[9].strength[2] = -1 ;
 	iniopt[9].strength[3] = -1 ;
@@ -2253,16 +2253,16 @@ void initialdata(void)
 	iniopt[9].strength[16] = 1 ;
 
 	iniopt[9].number = 2 ;
-	
-	/* ‹R•º */
+
+	/* ï¿½Rï¿½ï¿½ */
 	strcpy(iniopt[10].name, "Cavalry") ;
-	
+
 	iniopt[10].direction[0] = 1 ;
 	iniopt[10].direction[1] = 2 ;
 	iniopt[10].direction[2] = 1 ;
 	iniopt[10].direction[3] = 1 ;
 
-	iniopt[10].strength[0] = 1 ;	
+	iniopt[10].strength[0] = 1 ;
 	iniopt[10].strength[1] = -1 ;
 	iniopt[10].strength[2] = -1 ;
 	iniopt[10].strength[3] = -1 ;
@@ -2279,18 +2279,18 @@ void initialdata(void)
 	iniopt[10].strength[14] = 1 ;
 	iniopt[10].strength[15] = 0 ;
 	iniopt[10].strength[16] = 1 ;
-	
-	iniopt[10].number = 1 ;	
-	
-	/* H•º */
+
+	iniopt[10].number = 1 ;
+
+	/* ï¿½Hï¿½ï¿½ */
 	strcpy(iniopt[11].name, "Sapper") ;
-	
+
 	iniopt[11].direction[0] = 15 ;
 	iniopt[11].direction[1] = 15 ;
 	iniopt[11].direction[2] = 15 ;
 	iniopt[11].direction[3] = 15 ;
 
-	iniopt[11].strength[0] = 1 ;	
+	iniopt[11].strength[0] = 1 ;
 	iniopt[11].strength[1] = -1 ;
 	iniopt[11].strength[2] = -1 ;
 	iniopt[11].strength[3] = -1 ;
@@ -2307,18 +2307,18 @@ void initialdata(void)
 	iniopt[11].strength[14] = 1 ;
 	iniopt[11].strength[15] = 1 ;
 	iniopt[11].strength[16] = 1 ;
-	
-	iniopt[11].number = 2 ;	
-	
-	/* ’n—‹ */
+
+	iniopt[11].number = 2 ;
+
+	/* ï¿½nï¿½ï¿½ */
 	strcpy(iniopt[12].name, "Lamdmine") ;
-	
+
 	iniopt[12].direction[0] = 0 ;
 	iniopt[12].direction[1] = 0 ;
 	iniopt[12].direction[2] = 0 ;
 	iniopt[12].direction[3] = 0 ;
 
-	iniopt[12].strength[0] = 1 ;	
+	iniopt[12].strength[0] = 1 ;
 	iniopt[12].strength[1] = 0 ;
 	iniopt[12].strength[2] = 0 ;
 	iniopt[12].strength[3] = 0 ;
@@ -2337,16 +2337,16 @@ void initialdata(void)
 	iniopt[12].strength[16] = 1 ;
 
 	iniopt[12].number = 2 ;
-	
-	/* ”òs‹@ */
+
+	/* ï¿½ï¿½ï¿½sï¿½@ */
 	strcpy(iniopt[13].name, "Airplane") ;
-	
+
 	iniopt[13].direction[0] = 15 ;
 	iniopt[13].direction[1] = 15 ;
 	iniopt[13].direction[2] = 15 ;
 	iniopt[13].direction[3] = 15 ;
 
-	iniopt[13].strength[0] = 1 ;	
+	iniopt[13].strength[0] = 1 ;
 	iniopt[13].strength[1] = -1 ;
 	iniopt[13].strength[2] = -1 ;
 	iniopt[13].strength[3] = -1 ;
@@ -2364,17 +2364,17 @@ void initialdata(void)
 	iniopt[13].strength[15] = 1 ;
 	iniopt[13].strength[16] = 1 ;
 
-	iniopt[13].number = 2 ;	
-	
-	/* ƒ^ƒ“ƒN */
+	iniopt[13].number = 2 ;
+
+	/* ï¿½^ï¿½ï¿½ï¿½N */
 	strcpy(iniopt[14].name, "Tank") ;
-	
+
 	iniopt[14].direction[0] = 1 ;
 	iniopt[14].direction[1] = 2 ;
 	iniopt[14].direction[2] = 1 ;
 	iniopt[14].direction[3] = 1 ;
 
-	iniopt[14].strength[0] = 1 ;	
+	iniopt[14].strength[0] = 1 ;
 	iniopt[14].strength[1] = -1 ;
 	iniopt[14].strength[2] = -1 ;
 	iniopt[14].strength[3] = -1 ;
@@ -2392,17 +2392,17 @@ void initialdata(void)
 	iniopt[14].strength[15] = 0 ;
 	iniopt[14].strength[16] = 1 ;
 
-	iniopt[14].number = 2 ;	
-	
-	/* ƒXƒpƒC */
+	iniopt[14].number = 2 ;
+
+	/* ï¿½Xï¿½pï¿½C */
 	strcpy(iniopt[15].name, "Agent") ;
-	
+
 	iniopt[15].direction[0] = 1 ;
 	iniopt[15].direction[1] = 1 ;
 	iniopt[15].direction[2] = 1 ;
 	iniopt[15].direction[3] = 1 ;
 
-	iniopt[15].strength[0] = 1 ;	
+	iniopt[15].strength[0] = 1 ;
 	iniopt[15].strength[1] = 1 ;
 	iniopt[15].strength[2] = -1 ;
 	iniopt[15].strength[3] = -1 ;
@@ -2421,16 +2421,16 @@ void initialdata(void)
 	iniopt[15].strength[16] = 1 ;
 
 	iniopt[15].number = 1 ;
-	
-	/* ŒRŠø */
+
+	/* ï¿½Rï¿½ï¿½ */
 	strcpy(iniopt[16].name, "War Flag") ;
-	
+
 	iniopt[16].direction[0] = 0 ;
 	iniopt[16].direction[1] = 0 ;
 	iniopt[16].direction[2] = 0 ;
 	iniopt[16].direction[3] = 0 ;
 
-	iniopt[16].strength[0] = 1 ;	
+	iniopt[16].strength[0] = 1 ;
 	iniopt[16].strength[1] = -1 ;
 	iniopt[16].strength[2] = -1 ;
 	iniopt[16].strength[3] = -1 ;
@@ -2449,43 +2449,27 @@ void initialdata(void)
 	iniopt[16].strength[16] = 0 ;
 
 	iniopt[16].number = 1 ;
-	
+
 	dat = fopen(datname, "wb") ;
-	
+
 	WRITEDAT(classnum) ;
 	WRITEDAT(height) ;
 	WRITEDAT(width) ;
-	
+
 	for (n = 0 ; n <= classnum ; n++){
 		WRITEDAT(iniopt[n].name) ;
-		
+
 		for (i = 0 ; i < 4 ; i++){
 			WRITEDAT(iniopt[n].direction[i]) ;
 		}
 		for (i = 0 ; i <= classnum ; i++){
 			WRITEDAT(iniopt[n].strength[i]) ;
 		}
-		
+
 		WRITEDAT(iniopt[n].number) ;
 	}
-	
+
 	fclose(dat) ;
-	
+
 	return ;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

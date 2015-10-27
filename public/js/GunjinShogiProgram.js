@@ -1443,48 +1443,64 @@
     function fight(pro, post, board, rule)
     {
         if (board[post[0]][post[1]] > rule.classnum){
-        if ((board[post[0]][post[1]] == 16+rule.classnum && post[1] > 0) && board[post[0]][post[1]-1] > rule.classnum){
-            if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 1){
-                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
-            } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 0){
-                board[post[0]][post[1]] = 0 ;
-			
-            }
-        } else {
-            if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 1){
-                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
-            } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 0){
-                board[post[0]][post[1]] = 0 ;
-			
-            }
-        }
-    } else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= rule.classnum){
-        if ((board[post[0]][post[1]] == 16 && post[1] < rule.height-1) && (board[post[0]][post[1]+1] > 0 && board[post[0]][post[1]+1] <= rule.classnum)){
-            if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 1){
-                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
-            } else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 0){
-                board[post[0]][post[1]] = 0 ;
+			if (board[post[0]][post[1]] == 16+rule.classnum && (post[0] == rule.width/2-1 || post[0] == rule.width/2) && post[1] == 1 && board[rule.width/2-1][0] > rule.classnum){
+				if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width/2-1][0]-rule.classnum] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
 				
-            }
-        } else {
-            if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 1){
-                board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
-            } else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 0){
-                board[post[0]][post[1]] = 0 ;
+				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width/2-1][0]-rule.classnum] == 0){
+					board[post[0]][post[1]] = 0 ;
 				
-            }
-        }
-    } else {
-		board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				}
+			} else if (board[post[0]][post[1]] == 16+rule.classnum && post[1] > 0 && board[post[0]][post[1]-1] > rule.classnum){
+				if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				
+				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 0){
+					board[post[0]][post[1]] = 0 ;
+				
+				}
+			} else {
+				if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				
+				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 0){
+					board[post[0]][post[1]] = 0 ;
+				
+				}
+			}
+		} else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= rule.classnum){
+			if(board[post[0]][post[1]] == 16 && (post[0] == rule.width/2-1 || post[0] == rule.width/2) && post[1] == rule.height-2 && board[rule.width/2][rule.height-1] > 0 && board[rule.width/2][rule.height-1] <= rule.classnum){
+				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[rule.width/2][rule.height-1]] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				
+				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[rule.width/2][rule.height-1]] == 0){
+					board[post[0]][post[1]] = 0 ;
+					
+				}
+			} else if(board[post[0]][post[1]] == 16 && post[1] < rule.height-1 && board[post[0]][post[1]+1] > 0 && board[post[0]][post[1]+1] <= rule.classnum){
+				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				
+				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 0){
+					board[post[0]][post[1]] = 0 ;
+					
+				}
+			} else {
+				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 1){
+					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+				
+				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 0){
+					board[post[0]][post[1]] = 0 ;
+					
+				}
+			}
+		} else {
+			board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
+			
+		}
+		board[pro[0]][pro[1]] = 0 ;
 		
-    }
-    board[pro[0]][pro[1]] = 0 ;
-	
-    return ;
+		return ;
     }
 
 
