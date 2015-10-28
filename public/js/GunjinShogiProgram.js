@@ -62,8 +62,8 @@
     }
 
 
-    var Kyokumen = (function () {        	
-    
+    var Kyokumen = (function () {
+
 
         //コンストラクタ
         var Kyokumen = function () {
@@ -112,7 +112,7 @@
 
                     break;
             }
-            
+
             //終局しているかチェックし、しているならばどちらが勝ったかを返す
             if (this.FinishCheck()) {
                 this.gameFinish = true;
@@ -336,7 +336,7 @@
             console.log(result);
             return result;
         }
-        
+
         p.CreateInitBoardFromPlayers = function (senteBoard, goteBoard) {
 
             for (var dan = 5; dan <= this.dan; dan++) {
@@ -380,7 +380,7 @@
                             resultBoard[dan][suji] = this.board[dan][suji];
                         }
                     }
-                    
+
                 }
             }
             return resultBoard;
@@ -392,17 +392,17 @@
             this.Hanten();
             return resultBoard;
         };
-        
-        p.GetGoteDeadKomas = function(){        	
+
+        p.GetGoteDeadKomas = function(){
         	var result = [[],[]];
-        	
+
     		for(var j=0;j<this.deadKomas[1].length;j++){
     			result[0][j] = this.deadKomas[1][j];
     		}
     		for(var j=0;j<this.deadKomas[0].length;j++){
     			result[1][j] = this.deadKomas[0][j];
     		}
-       
+
         	return result;
         }
 
@@ -423,8 +423,8 @@
             	{dan:te.From.dan,suji:te.From.suji},
             	{dan:te.To.dan,suji:te.To.suji},
             	te.komaInf);
-            	
-            	
+
+
             this.lastTe.komaInf = 0;
             var pro = [te.From.suji-1,te.From.dan-1];
             var post = [te.To.suji - 1, te.To.dan - 1];
@@ -432,10 +432,10 @@
             var b = this.BoardExpToC(this.board);
             fight(pro, post, b, this.rule);
             this.board = this.BoardExpFromC(b);
-            
+
             if(sakiKomaInf == KOMAINF.EMPTY)return;
-            
-            
+
+
             var beaten;
          	switch(this.board[te.To.dan][te.To.suji]){
         		case te.komaInf:
@@ -448,7 +448,7 @@
         			beaten = -1;
         			break;
         	}
-        	
+
         	if(beaten==-1){
         		if(isSelf(te.komaInf)){
         			this.deadKomas[0].push(te.komaInf);
@@ -458,14 +458,14 @@
         			this.deadKomas[0].push(sakiKomaInf);
         		}
         	}
-        	
+
         	if(isSelf(beaten)){
             	this.deadKomas[0].push(beaten);
         	}
         	if(isEnemy(beaten)){
             	this.deadKomas[1].push(beaten);
         	}
-            
+
         };
 
         //符号の表現
@@ -482,7 +482,7 @@
             var num = victory(b, this.rule);
             return num;
         };
-        
+
         p.DeadKomasToString = function(){
         	var result = [];
         	for(var i=0;i<=1;i++){
@@ -493,7 +493,7 @@
         	}
         	return result;
         }
-        
+
         p.GetStrengthList = function(komainf){
         	var strengthList = [];
         	strengthList[0] = komaStrFULL[komainf];
@@ -1407,22 +1407,22 @@
 	var first, second ;
     var i, j ;
     var vic = 0 ;
-	
+
     if (board[rule.width/2-1][0] >= 1 && board[rule.width/2-1][0] <= 6){
         vic = 1 ;
     } else if (board[rule.width/2][rule.height-1] >= 1+rule.classnum && board[rule.width/2][rule.height-1] <= 6+rule.classnum){
         vic = 2 ;
     }
-	
+
     first = 0 ;
     second = 0 ;
     for (i = 0 ; i < rule.width ; i++){
         for (j = 0 ; j < rule.height ; j++){
             if ((board[i][j] > 0 && board[i][j] <= rule.classnum) && !(board[i][j] == 12 || board[i][j] == 16)){
                 first++ ;
-            } else if (board[i][j] > rule.classnum && !(board[i][j]-rule.classnum == 12 || board[i][j]-rule.classnum == 16)){	
+            } else if (board[i][j] > rule.classnum && !(board[i][j]-rule.classnum == 12 || board[i][j]-rule.classnum == 16)){
                 second++ ;
-            }	
+            }
         }
     }
     if (first > 0 && second == 0){
@@ -1440,68 +1440,70 @@
 //board battlego henka
 //rul ok
 
-    function fight(pro, post, board, rule)
-    {
-        if (board[post[0]][post[1]] > rule.classnum){
-			if (board[post[0]][post[1]] == 16+rule.classnum && (post[0] == rule.width/2-1 || post[0] == rule.width/2) && post[1] == 1 && board[rule.width/2-1][0] > rule.classnum){
-				if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width/2-1][0]-rule.classnum] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width/2-1][0]-rule.classnum] == 0){
-					board[post[0]][post[1]] = 0 ;
-				
-				}
-			} else if (board[post[0]][post[1]] == 16+rule.classnum && post[1] > 0 && board[post[0]][post[1]-1] > rule.classnum){
-				if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]-1]-rule.classnum] == 0){
-					board[post[0]][post[1]] = 0 ;
-				
-				}
-			} else {
-				if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]]-rule.classnum] == 0){
-					board[post[0]][post[1]] = 0 ;
-				
-				}
-			}
-		} else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= rule.classnum){
-			if(board[post[0]][post[1]] == 16 && (post[0] == rule.width/2-1 || post[0] == rule.width/2) && post[1] == rule.height-2 && board[rule.width/2][rule.height-1] > 0 && board[rule.width/2][rule.height-1] <= rule.classnum){
-				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[rule.width/2][rule.height-1]] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[rule.width/2][rule.height-1]] == 0){
-					board[post[0]][post[1]] = 0 ;
-					
-				}
-			} else if(board[post[0]][post[1]] == 16 && post[1] < rule.height-1 && board[post[0]][post[1]+1] > 0 && board[post[0]][post[1]+1] <= rule.classnum){
-				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]+1]] == 0){
-					board[post[0]][post[1]] = 0 ;
-					
-				}
-			} else {
-				if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 1){
-					board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-				
-				} else if (rule.unit[board[pro[0]][pro[1]]-rule.classnum].strength[board[post[0]][post[1]]] == 0){
-					board[post[0]][post[1]] = 0 ;
-					
-				}
-			}
-		} else {
-			board[post[0]][post[1]] = board[pro[0]][pro[1]] ;
-			
-		}
-		board[pro[0]][pro[1]] = 0 ;
-		
-		return ;
+    function fight(pro, post, board, rule) {
+        if (board[post[0]][post[1]] > rule.classnum) {
+            if (board[post[0]][post[1]] == 16 + rule.classnum && (post[0] == rule.width / 2 - 1 || post[0] == rule.width / 2) && post[1] == 1 && board[rule.width / 2 - 1][0] > rule.classnum) {
+                if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width / 2 - 1][0] - rule.classnum] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[rule.width / 2 - 1][0] - rule.classnum] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            } else if (board[post[0]][post[1]] == 16 + rule.classnum && post[1] > 0 && board[post[0]][post[1] - 1] > rule.classnum) {
+                if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1] - 1] - rule.classnum] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1] - 1] - rule.classnum] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            } else {
+                if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]] - rule.classnum] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]]].strength[board[post[0]][post[1]] - rule.classnum] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            }
+        } else if (board[post[0]][post[1]] > 0 && board[post[0]][post[1]] <= rule.classnum) {
+            if (board[post[0]][post[1]] == 16 && (post[0] == rule.width / 2 - 1 || post[0] == rule.width / 2) && post[1] == rule.height - 2 && board[rule.width / 2][rule.height - 1] > 0 && board[rule.width / 2][rule.height - 1] <= rule.classnum) {
+                if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[rule.width / 2][rule.height - 1]] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[rule.width / 2][rule.height - 1]] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            } else if (board[post[0]][post[1]] == 16 && post[1] < rule.height - 1 && board[post[0]][post[1] + 1] > 0 && board[post[0]][post[1] + 1] <= rule.classnum) {
+                if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[post[0]][post[1] + 1]] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[post[0]][post[1] + 1]] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            } else {
+                if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[post[0]][post[1]]] == 1) {
+                    board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+                } else if (rule.unit[board[pro[0]][pro[1]] - rule.classnum].strength[board[post[0]][post[1]]] == 0) {
+                    board[post[0]][post[1]] = 0;
+
+                }
+            }
+        } else {
+            board[post[0]][post[1]] = board[pro[0]][pro[1]];
+
+        }
+        board[pro[0]][pro[1]] = 0;
+
+        return;
     }
 
 
     module.exports = Kyokumen;
+
+
+    

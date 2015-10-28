@@ -37,14 +37,16 @@ io.on("connection", function (socket) {
 
         //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
         if(n!=0){
-	    	mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
+	    	  mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
 	        io.to(mng.rooms[n].name).emit("clientchange", {roomstate:mng.rooms[n].state});
-	    	mng.rooms[n].Init();
+          if(mng.rooms[n].clientList.length==0){
+            mng.rooms[n].Init();
+          }
         }
     });
 
 	socket.on("givemerooms",function(){
-		mng.SendRoomState();
+		mng.SendRoomState(socket);
 	});
 
     //対戦申し込みの処理
@@ -322,6 +324,10 @@ var Room = (function () {
     p.Init = function(){
     	this.clientList = [];
     	this.StateChange(ROOMSTATE.EMPTY);
+      this.sente = {};
+      this.gote = {};
+      this.sente.name = "";
+      this.gote.name = "";
     };
 
     //指定されたソケットを部屋に追加
@@ -370,7 +376,12 @@ var Room = (function () {
 
 	p.StateChange = function(state){
 		this.state = state;
-		var room = {};
+    var room = this.GetSendableState();
+		io.emit("roomstatechange",room);
+	}
+
+  p.GetSendableState = function(){
+    var room = {};
 		room.N = this.roomN;
 		room.state = this.state;
 		room.sente = this.sente.name;
@@ -378,10 +389,8 @@ var Room = (function () {
 		if(room.state == ROOMSTATE.WAITING){
 			room.waitingname = this.clientList[0].name;
 		}
-		io.emit("roomstatechange",room);
-	}
-
-
+    return room;
+  }
 
     return Room;
 })();
@@ -412,7 +421,6 @@ var Manager = (function () {
     //指定されたソケットが存在すればその部屋からクライアントを削除する関数、戻り値に部屋番号、無ければ0を返す
     p.RemoveSocket = function(socket){
         var n = this.WhereSocket(socket);
-        console.log("debug " +  n);
         if(n==0){
             return 0;
         }else{
@@ -421,10 +429,12 @@ var Manager = (function () {
         }
     };
 
-    p.SendRoomState = function(){
+    p.SendRoomState = function(socket){
+      var rooms = [];
     	for(var i=1;i<=this.roomNum;i++){
-    		this.rooms[i].StateChange(this.rooms[i].state);
+        rooms[i] = this.rooms[i].GetSendableState();
     	}
+      socket.emit("allroomstate",rooms);
     }
     return Manager;
 })();
