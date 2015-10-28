@@ -27,22 +27,22 @@ app.get("/game", function (req, res) {
 io.on("connection", function (socket) {
 
     console.log("client connected");
-    
-    
+
+
     var room;
 
     //ソケットが切れたときの処理
     socket.on("disconnect", function () {
         var n = mng.RemoveSocket(socket);
-        
+
         //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
         if(n!=0){
 	    	mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
-	        io.to(mng.rooms[n].name).emit("clientchange", {});
+	        io.to(mng.rooms[n].name).emit("clientchange", {roomstate:mng.rooms[n].state});
 	    	mng.rooms[n].Init();
         }
     });
-    
+
 	socket.on("givemerooms",function(){
 		mng.SendRoomState();
 	});
@@ -52,20 +52,20 @@ io.on("connection", function (socket) {
         socket.roomN = data.roomNum;
         room = mng.rooms[data.roomNum];
 		room.MsgToServer(data.name + " が参加しました");
-		
+
 		//空室ならば対戦待ちに、対戦待ちがいればマッチング
         switch(room.state){
-        	
+
             case ROOMSTATE.EMPTY:
 	        	room.AddClient(socket,data);
 	        	room.StateChange(ROOMSTATE.WAITING);
 	            room.MsgToServer(data.name + " が対戦を待っています...");
         		break;
-        		
+
         	case ROOMSTATE.WAITING:
 	        	room.AddClient(socket,data);
                 room.MsgToServer("マッチング成功");
-                
+
         	    //先後をランダムで決定する
                 var gameData = {};
                 var sente = Math.floor(Math.random() * 2);
@@ -77,13 +77,14 @@ io.on("connection", function (socket) {
                 io.to(room.gote.id).emit("SENGO", 2);
 
                 io.to(room.name).emit("taisenKettei", room.game);
+                io.to(room.name).emit("haitichange",{sente:room.sente.haitiKanryo,gote:room.gote.haitiKanryo});
 	        	room.StateChange(ROOMSTATE.HAITIMODE);
         		break;
-        	
+
         	default:
                 //観戦処理...
                 socket.emit("err","対戦中なので入れません");
-        		break;        
+        		break;
         }
 
 
@@ -129,7 +130,7 @@ io.on("connection", function (socket) {
             socket.emit("haitikettei", "配置やり直し");
         }
     });
-    
+
     socket.on("haitichange",function(){
 		switch (socket.id) {
             case room.sente.socket.id:
@@ -144,7 +145,7 @@ io.on("connection", function (socket) {
                 break;
         }
     });
-    
+
     socket.on("sashite", function (te) {
         room.MsgToServer(room.game.kyokumen.TeHugou(te));
         room.game.Fight(te);
@@ -177,7 +178,7 @@ io.on("connection", function (socket) {
                 room.MsgToServer(vicMsg[v]);
 
                 gameData.kifu = room.game.kifu;
-                
+
                 gameData.board = room.game.GetSenteBoard(true);
                 io.to(room.sente.id).emit("gamefinish", gameData);
 
@@ -265,12 +266,12 @@ var Game = (function () {
 		}
     	this.kifu.push({board:temp,deadKomas:deadKomas});
     };
-    
+
     p.CreateGameData = function(){
-    	
-    
+
+
     };
-    
+
 
     return Game;
 })();
@@ -317,7 +318,7 @@ var Room = (function () {
     };
 
     var p = Room.prototype;
-    
+
     p.Init = function(){
     	this.clientList = [];
     	this.StateChange(ROOMSTATE.EMPTY);
@@ -366,7 +367,7 @@ var Room = (function () {
         this.gote = gameData.gote;
         this.MsgToServer("new game created!");
     };
-	
+
 	p.StateChange = function(state){
 		this.state = state;
 		var room = {};
@@ -379,15 +380,15 @@ var Room = (function () {
 		}
 		io.emit("roomstatechange",room);
 	}
-	
-	
+
+
 
     return Room;
 })();
 
 var Manager = (function () {
 	var roomAllNum = 100;
-    
+
     var Manager = function (num) {
         this.rooms = [];
         this.roomNum = num;
@@ -419,7 +420,7 @@ var Manager = (function () {
             return n;
         }
     };
-    
+
     p.SendRoomState = function(){
     	for(var i=1;i<=this.roomNum;i++){
     		this.rooms[i].StateChange(this.rooms[i].state);

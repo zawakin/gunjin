@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
     <script type="text/javascript" src="js/gunjin1_0.js"></script>
@@ -25,7 +25,7 @@
         	名前：<input id="name" type="text" />
         <button type="submit" class="btn btn-default" style="color:red;">対戦する</button>
         	</p>
-        	
+
         </form>
         <button class="btn btn-default" onClick="ToIndexPage();">部屋リストに戻る</button>
     </div>
@@ -50,7 +50,7 @@
         	<h1 id="mysengo"></h1>
             <h1 id="statemsg">初期配置を決めてください。</h1>
         </header>
-        
+
 
         <div>
             <div style="display:none;">
@@ -61,17 +61,17 @@
             <button id="change" class="haitimode btn btn-default">配置をやり直す</button>
             <button id="haitikettei" class="haitimode btn btn-default" style="color:red;">配置決定</button>
             <button class="haitiwaiting btn btn-default" id="haitichange">配置決定を取り消す</button>
-            <label id="haitistate" class="haitimode haitiwaiting">先手：配置中　後手：配置中</label>
+            <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
             <div>
 	            <div id="board">
 	                <canvas id="field" width="412" height="626"></canvas>
 	                <div id="komaushiro" class="battlemode"></div>
 	                <div id="infobox" class="battlemode">
-	                	<h6 id="sengodebug"></h6>       
+	                	<h6 id="sengodebug"></h6>
 	                	 <div class="gamefinish">
 					        <button id="modoru" class="btn btn-default">一手戻る</button>
-					        <label id="nanteme"></label>        
-					        <label>/</label>        
+					        <label id="nanteme"></label>
+					        <label>/</label>
 					        <label id="tesuu"></label>
 					        <button id="susumu" class="btn btn-default">一手進む</button>
 					        <br>
@@ -80,7 +80,7 @@
 						</div>
 	                </div>
 	                <div id="komatemae" class="battlemode"></div>
-	                
+
 	                <div id="komainfobox" class="battlemode"></div>
 
 	            </div>

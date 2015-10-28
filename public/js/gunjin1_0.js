@@ -50,6 +50,14 @@ var SENGO = {
     GOTE:2
 }
 
+var ROOMSTATE = {
+    EMPTY: 0,
+    WAITING: 1,
+    HAITIMODE: 2,
+    BATTLE: 3,
+    BATTLEFINISH: 4
+}
+
 var waiting = false;
 
 
@@ -66,16 +74,16 @@ function DrawKyokumen(){
 	}
     $("#komatemae").empty();
     $("#komaushiro").empty();
-    
+
     kyokumen.deadKomas = kyokumen.DeadKomasToString();
-    
+
     for(var i=0;i<kyokumen.deadKomas[0].length;i++){
     	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
     }
     for(var i=0;i<kyokumen.deadKomas[1].length;i++){
     	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
     }
-	
+
 };
 
 function ToIndexPage(){
@@ -196,7 +204,7 @@ function OnDrop(e, ui) {
                     DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
 
                 } else {
-                    //ないなら入れ替える                
+                    //ないなら入れ替える
                     board[saki.dan][saki.suji] = board[moto.dan][moto.suji];
                     DrawIndex(sakiCtx, piece[board[saki.dan][saki.suji]]);
                     board[moto.dan][moto.suji] = 0;
@@ -408,10 +416,10 @@ onload = function () {
                 }
             }
         }
-    });        
-	
+    });
+
 	$(".cell").mouseover(function(){
-		if(!gameChu) return;        
+		if(!gameChu) return;
 		$("#komainfobox").empty();
 		var pos = getIndexInContextList(this.getContext("2d"));
         if (pos != null) {
@@ -444,7 +452,7 @@ onload = function () {
     });
 
     socket.on("taisenKettei", function (game) {
-        
+
         if (waiting) {
 
             $("#waiting").hide();
@@ -476,15 +484,16 @@ onload = function () {
         $(".haitiwaiting").show();
         $("#statemsg").text("配置を送信中...");
     });
-    
+
     //送信した配置を取り消す
     $("#haitichange").click(function(){
     	socket.emit("haitichange",{});
     	$(".haitiwaiting").hide();
     	$(".haitimode").show();
+      $(".cell").draggable("enable");
         $("#statemsg").text("初期配置を決めてください。");
     });
-    
+
     socket.on("haitichange",function(haitistate){
     	var str = "先手："
     	if(haitistate.sente){
@@ -503,6 +512,8 @@ onload = function () {
 
     //配置についてサーバーから返事を受け取る
     socket.on("haitikettei", function (res) {
+        $(".cell").draggable("disable");
+        $("#haitistate").show();
         $("#statemsg").text("対局相手が配置し終わるのを待っています。。。");
     });
 
@@ -512,17 +523,18 @@ onload = function () {
         $(".haitimode").hide();
         $(".haitiwaiting").hide();
         $(".battlemode").show();
+        $(".cell").draggable("enable");
         kyokumen.board = board;
         kyokumen.teban = SENGO.SENTE;
         gameChu = true;
         mySengo = socket.mySengo;
         switch(mySengo){
-        	case SENGO.SENTE:    
-	        	$("#sengodebug").text("先手");		
+        	case SENGO.SENTE:
+	        	$("#sengodebug").text("先手");
         		break;
         	case SENGO.GOTE:
 	        	$("#sengodebug").text("後手");
-        	
+
         }
         clearAllEmpCanvas();
         for (var dan = 1; dan <= 8; dan++) {
@@ -532,6 +544,9 @@ onload = function () {
         }
         if (mySengo == kyokumen.teban) {
             alert("あなたの手番です");
+            $(".cell").draggable("enable");
+        }else{
+          $(".cell").draggable("disable");
         }
     });
 
@@ -542,13 +557,13 @@ onload = function () {
         kyokumen.deadKomas = gameData.deadKomas;
         $("#komatemae").empty();
         $("#komaushiro").empty();
-        
+
         kyokumen.deadKomas = kyokumen.DeadKomasToString();
-        
+
         var DEADKOMAMIERU = false;
-        
+
         if(DEADKOMAMIERU){
-        
+
 	        for(var i=0;i<kyokumen.deadKomas[0].length;i++){
 	        	$("#komatemae").append(kyokumen.deadKomas[0][i] + "<br>");
 	        }
@@ -556,9 +571,9 @@ onload = function () {
 	        	$("#komaushiro").append(kyokumen.deadKomas[1][i] + "<br>");
 	        }
 	    }
-        
+
         clearAllEmpCanvas();
-        
+
         $("#komaoto")[0].play();
 
         for (var dan = 1; dan <= 8; dan++) {
@@ -586,18 +601,20 @@ onload = function () {
         empCtxList[from.dan][from.suji].fillStyle = "rgba(255,255,0,0.4)";
         empCtxList[from.dan][from.suji].fillRect(0, 0, cnvsList[from.dan][from.suji].width, cnvsList[from.dan][from.suji].height);
         if (mySengo == kyokumen.teban) {
-            //alert("あなたの手番です");
+          $(".cell").draggable("enable");
+        }else{
+          $(".cell").draggable("disable");
         }
     });
 
     socket.on("gamefinish", function (gameData) {
         gameChu = false;
-        
+
         $(".gamefinish").show();
         $("#komaoto")[0].play();
-        
+
         kifu = gameData.kifu;
-        
+
         nanteme = kifu.length - 1;
         $("#nanteme").text(nanteme);
         $("#tesuu").text(nanteme);
@@ -605,10 +622,11 @@ onload = function () {
         kyokumen.deadKomas = kifu[nanteme].deadKomas;
         kyokumen.Print();
         DrawKyokumen();
+        $(".cell").draggable("disable");
         alert(gameData.vicMsg);
     });
-    
-    
+
+
     var nanteme;
     $("#modoru").click(function(){
     	if(nanteme>0) {
@@ -619,6 +637,7 @@ onload = function () {
 	    	DrawKyokumen();
     	}
     });
+
 	$("#saishomodoru").click(function(){
 		nanteme = 0;
     	$("#nanteme").text(nanteme);
@@ -626,7 +645,7 @@ onload = function () {
         kyokumen.deadKomas = kifu[nanteme].deadKomas;
     	DrawKyokumen();
     });
-    
+
     $("#susumu").click(function(){
     	if(nanteme < kifu.length - 1){
     		nanteme++;
@@ -648,7 +667,11 @@ onload = function () {
 
     //同じ部屋にいるクライアントが退出した時インデックスサイトに戻る
     socket.on("clientchange", function (d) {
+      if(d.roomstate==ROOMSTATE.BATTLEFINISH){
+
+      }else{
         window.location.href = "./index.html";
+      }
     });
 
     //エラーを受け取るとインデックスページに戻る
