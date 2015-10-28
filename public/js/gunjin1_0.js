@@ -685,7 +685,7 @@ onload = function () {
     //初期化ボタン
     $("#change").click(function () {
         clearAllEmpCanvas();
-        for (var i = 1; i <= komadaiBoard.length; i++) {
+        for (var i = 1; i <= komaZenbu; i++) {
             board[0][i] = komadaiBoard[i];
             DrawIndex(ctxList[0][i], piece[board[0][i]]);
         }
@@ -695,8 +695,9 @@ onload = function () {
                 DrawIndex(ctxList[i][j], piece[board[i][j]]);
             }
         }
-
     });
+
+
 
 
 };
