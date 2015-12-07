@@ -545,6 +545,9 @@ onload = function () {
         if (mySengo == kyokumen.teban) {
             alert("あなたの手番です");
             $(".cell").draggable("enable");
+	          $("#hikiwakebtn").show();
+	          $("#touryou").show();
+            
         }else{
           $(".cell").draggable("disable");
         }
@@ -602,14 +605,53 @@ onload = function () {
         empCtxList[from.dan][from.suji].fillRect(0, 0, cnvsList[from.dan][from.suji].width, cnvsList[from.dan][from.suji].height);
         if (mySengo == kyokumen.teban) {
           $(".cell").draggable("enable");
+          $("#hikiwakebtn").show();
+          $("#touryou").show();
         }else{
           $(".cell").draggable("disable");
+          $("#hikiwakebtn").hide();
+          $("#touryou").hide();
         }
+    });
+    
+    $("#touryou").click(function(){
+    	if(confirm("投了しますか？")){
+    		if(confirm("悔いはないですか？本当に投了しますか？")){
+    			socket.emit("touryou", {});
+    		}else{
+    			alert("じゃあもうちょっと頑張れ");
+    		}
+    	}
+    });
+    
+    $("#hikiwakebtn").click(function(){
+    	if(confirm("引き分け提案しますか？")){
+    		$("#hikiwakemsg").text("引き分け提案しています...");
+    		$(".cell").draggable("disable");
+    		$("#hikiwakebtn").hide();
+    		$("#touryou").hide();
+    		socket.emit("hikiwake", {});
+    	}
+    });
+    
+    socket.on("hikiwake", function(data){
+    	var hikiwake = confirm("相手から引き分けを提案されました\n受け入れますか？");
+    	socket.emit("hikiwakeres", hikiwake);
+    });
+    
+    socket.on("hikiwakeres", function(hikiwake){
+    	if(!hikiwake){
+    		alert("引き分け提案は拒否されました");
+    		$("#hikiwakemsg").hide();
+    		$("#touryou").show();
+    		$("#hikiwakebtn").show();
+    		$(".cell").draggable("enable");
+    	}
     });
 
     socket.on("gamefinish", function (gameData) {
         gameChu = false;
-
+		$("#hikiwakemsg").hide();
         $(".gamefinish").show();
         $("#komaoto")[0].play();
 

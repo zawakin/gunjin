@@ -35,7 +35,7 @@ io.on("connection", function (socket) {
     socket.on("disconnect", function () {
         var n = mng.RemoveSocket(socket);
 
-        //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
+        //部屋に参加している人がいなくなったときは部屋を初期化する
         if(n!=0){
 	    	mng.rooms[n].MsgToServer("部屋にいるのは現在 "+ mng.rooms[n].clientList.length+" 人です");
 	        io.to(mng.rooms[n].name).emit("clientchange", {roomstate:mng.rooms[n].state});
@@ -84,6 +84,9 @@ io.on("connection", function (socket) {
 	        	room.StateChange(ROOMSTATE.HAITIMODE);
         		break;
 
+			case ROOMSTATE.BATTLEFINISH:
+                socket.emit("err","感想戦中です。\n空室になるのを待つか、他の部屋に入室してください。");
+				break;
         	default:
                 //観戦処理...
                 socket.emit("err","対戦中なので入れません");
@@ -190,6 +193,73 @@ io.on("connection", function (socket) {
 
                 break;
         }
+
+    });
+    
+    socket.on("touryou",function(sengo){    	
+    	var v;
+  		switch(socket.id){
+    		case room.sente.id:
+    			v = 2;
+    			break;
+    		case room.gote.id:
+    			v = 1;
+    			break;
+    		default:
+    			room.MsgToServer("error");
+    			break;
+    	}
+    	var gameData = {};
+    	room.StateChange(ROOMSTATE.BATTLEFINISH);
+        var vicMsg = ["", "先手勝利", "後手勝利", "引き分け"];
+        gameData.vicMsg = vicMsg[v];
+        room.MsgToServer(vicMsg[v]);
+
+        gameData.kifu = room.game.kifu;
+
+        gameData.board = room.game.GetSenteBoard(true);
+        io.to(room.sente.id).emit("gamefinish", gameData);
+
+        gameData.board = room.game.GetGoteBoard(true);
+        io.to(room.gote.id).emit("gamefinish", gameData);
+    });
+    
+    socket.on("hikiwake",function(d){
+    	switch(socket.id){
+    		case room.sente.id:
+    			io.to(room.gote.id).emit("hikiwake",{});
+    			break;
+    		case room.gote.id:
+    			io.to(room.sente.id).emit("hikiwake",{});
+    			break;
+    	}
+    });
+    socket.on("hikiwakeres",function(hikiwake){
+    	if(hikiwake){
+	    	var v = 3;//引き分け
+	    	var gameData = {};
+	    	room.StateChange(ROOMSTATE.BATTLEFINISH);
+	        var vicMsg = ["", "先手勝利", "後手勝利", "引き分け"];
+	        gameData.vicMsg = vicMsg[v];
+	        room.MsgToServer(vicMsg[v]);
+
+	        gameData.kifu = room.game.kifu;
+
+	        gameData.board = room.game.GetSenteBoard(true);
+	        io.to(room.sente.id).emit("gamefinish", gameData);
+
+	        gameData.board = room.game.GetGoteBoard(true);
+	        io.to(room.gote.id).emit("gamefinish", gameData);
+    	}else{
+	    	switch(socket.id){
+	    		case room.sente.id:
+	    			io.to(room.gote.id).emit("hikiwakeres",hikiwake);
+	    			break;
+	    		case room.gote.id:
+	    			io.to(room.sente.id).emit("hikiwakeres",hikiwake);
+	    			break;
+	    	}    	
+    	}
 
     });
 
