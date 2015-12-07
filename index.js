@@ -37,9 +37,10 @@ io.on("connection", function (socket) {
 
         //部屋に参加している人がいなくなったときは部屋を初期化する（要変更）
         if(n!=0){
-	    	  mng.rooms[n].MsgToServer("誰かがいなくなりましたんで他のユーザーに伝えます");
+	    	mng.rooms[n].MsgToServer("部屋にいるのは現在 "+ mng.rooms[n].clientList.length+" 人です");
 	        io.to(mng.rooms[n].name).emit("clientchange", {roomstate:mng.rooms[n].state});
           if(mng.rooms[n].clientList.length==0){
+          
             mng.rooms[n].Init();
           }
         }
@@ -328,6 +329,7 @@ var Room = (function () {
       this.gote = {};
       this.sente.name = "";
       this.gote.name = "";
+      this.MsgToServer("初期化されました");
     };
 
     //指定されたソケットを部屋に追加
