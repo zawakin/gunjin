@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title><%=title %></title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -17,27 +17,32 @@
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
 	<h1 style="display:none;" id="roomNum"><%= roomNum%></h1>
-    <p id="roomNum">あなたが今いるのは　<%= roomNum%>号室です。</p>
-    <div id="nameinput">
-        <label>名前を入力して</label><label style="color:red;">対戦する</label><label>ボタンを押してください。対戦相手が決まると自動的に配置モードに切り替わります。</label>
-        <form id="nameform">
-        	<p>
-        	名前：<input id="name" type="text" />
-        <button type="submit" class="btn btn-default" style="color:red;">対戦する</button>
-        	</p>
+    <div id="nameinput" class="w3-container">
+		<h1 class="w3-teal">対局相手を待っています...</h1>
+		<p>過疎のため、友達などと事前に相談し、同じ部屋番号の部屋に入ってください。</p>
+		<h3 id="roomNum" class="">あなたが今いるのは　<%= roomNum%>号室です。</h3>
+        <label>名前を入力して「対戦する」ボタンを押してください。対戦相手が決まると自動的に配置モードに切り替わります。</label>
+        <form id="nameform" class="w3-container w3-border">
+        	<label>名前：</label>
+			<input id="name" type="text" class="w3-input w3-border">
+			<button type="submit" class="btn w3-btn w3-red">対戦する</button>
 
         </form>
-        <button class="btn btn-default" onClick="ToIndexPage();">部屋リストに戻る</button>
+		<div class="w3-container">
+        <button class="btn w3-button w3-teal" onClick="ToIndexPage();">部屋リストに戻る</button>
+		</div>
     </div>
 
     <div id="waiting" style="display:none;">
-        <h1>対戦者が来るのを待っています...</h1>
-        <button class="btn btn-default" onClick="ToIndexPage();">やめる</button>
+        <h1 class="w3-teal">対戦者が来るのを待っています...</h1>
+		<p>駒の強さや移動のルール</p>
+		<img class="w3-modal-content" src="img/strength.png" style="width:700px; display: block" onclick="document.getElementById('img_strength').style.display='block'">
+        <button class="btn w3-button w3-teal" onClick="ToIndexPage();">やめる</button>
     </div>
 
     <div id="battlestart" style="display:none;">
-        <h1>対戦者が決定しました</h1>
-        <div>
+        <h1 class="w3-teal">対戦者が決定しました</h1>
+        <div class="w3-container w3-xxlarge">
             <label>先手：</label>
             <label id="sente"></label><br />
             <label>後手：</label>
@@ -46,44 +51,42 @@
     </div>
 
     <div id="battlejunbi" style="display:none;">
-        <header>
-        	<h1 id="mysengo"></h1>
-            <h1 id="statemsg">初期配置を決めてください。</h1>
-        </header>
+        <div class="w3-container">
+        	<h1 class="" id="mysengo"></h1>
+            <h1 class="w3-teal" id="statemsg">初期配置を決めてください。</h1>
+        </div>
 
 
-        <div>
+        <div class="w3-container">
             <div style="display:none;">
                 <canvas class="cell" width="67" height="67"></canvas>
                 <canvas class="shireibu cell" width="135" height="67"></canvas>
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
-            <button id="change" class="haitimode btn btn-default">配置をやり直す</button>
-            <button id="haitikettei" class="haitimode btn btn-default" style="color:red;">配置決定</button>
-            <button class="haitiwaiting btn btn-default" id="haitichange">配置決定を取り消す</button>
+            <button id="change" class="haitimode btn w3-button w3-khaki">配置をやり直す</button>
+            <button id="haitikettei" class="haitimode btn w3-button w3-teal">配置決定</button>
+            <button class="haitiwaiting btn w3-button w3-teal" id="haitichange">配置を変更する</button>
             <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
-            <button id="haitihozon" class="haitimode btn btn-default" style="display:none">この配置を保存(.haiti)（未実装）</button>
-            <button id="haitihozon" class="haitimode btn btn-default" style="display:none">ファイルから配置をロードする(.haiti)（未実装）</button>
             <div>
 	            <div id="board">
 	                <canvas id="field" width="412" height="626"></canvas>
 	                <div id="komaushiro" class="battlemode"></div>
 	                <div id="infobox" class="battlemode">
 	                	<h6 id="sengodebug"></h6>
-	                	<button id="touryou" class="btn btn-default" style="display:none;">投了する</button>
+	                	<button id="touryou" class="btn w3-button w3-red" style="display:none;">投了する</button>
 	                	<div id="hikiwakebox">
-	                		<button id="hikiwakebtn" class="btn btn-default" style="display:none;">引き分け提案する</button>
+	                		<button id="hikiwakebtn" class="btn w3-button w3-yellow" style="display:none;">引き分け提案する</button>
 	                		<label id="hikiwakemsg"></label>
 	                	 </div>
 	                	 <div class="gamefinish">
-					        <button id="modoru" class="btn btn-default">一手戻る</button>
+					        <button id="modoru" class="btn w3-button w3-teal">一手戻る</button>
 					        <label id="nanteme"></label>
 					        <label>/</label>
 					        <label id="tesuu"></label>
-					        <button id="susumu" class="btn btn-default">一手進む</button>
+					        <button id="susumu" class="btn w3-button w3-teal">一手進む</button>
 					        <br>
-					        <button id="saishomodoru" class="btn btn-default">最初に戻る</button>
-					        <button id="saigosusumu" class="btn btn-default">最後に進む</button>
+					        <button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
+					        <button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
 						</div>
 	                </div>
 	                <div id="komatemae" class="battlemode"></div>
@@ -99,7 +102,7 @@
         </div>
 
         <footer>
-            ©hoge
+            ©zawawahoge
         </footer>
     </div>
 

@@ -244,6 +244,8 @@ function clearAllEmpCanvas() {
 onload = function () {
 
     kyokumen = new Kyokumen();
+	console.log("debug ++++");
+	kyokumen.PrintAllStrength();
     kyokumen.board = board;
 
     //駒の内部表現と画像のインデックスの変換配列 piece[内部表現] =画像のインデックス

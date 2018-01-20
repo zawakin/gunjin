@@ -516,6 +516,41 @@
         	return strengthList;
         };
 
+		p.PrintAllStrength = function(){
+			console.log(this);
+			console.log(this.rule.unit[1].strength);
+			var s = "";
+			s += "<tr>";
+			s += "<th></th>";
+			for(var i=1; i<=KOMAINF.GUNKI; i++){
+				s += "<th>" + komaStrFULL[i] + "</th>\n";
+			}
+			s += "</tr>\n";
+			
+			for(var i=1; i<= KOMAINF.GUNKI; i++){
+				s += "<tr>";
+				s += "<th>" + komaStrFULL[i] + "</th>/n";
+				for(var j=1; j<= KOMAINF.GUNKI; j++){
+					console.log("i = "+i + " j = " + j);
+					var _s = this.rule.unit[i].strength[j];
+					switch(_s){
+						case 1:
+							_s = "○";
+							break;
+						case 0:
+							_s = "△";
+							break;
+						case -1:
+							_s = "×";
+							break;
+					}
+					s += "<td>" + _s + "</td>\n";
+				}
+				s += "</tr>\n";
+			}
+			console.log(s);
+			
+		};
         return Kyokumen;
     })();
 

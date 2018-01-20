@@ -26,7 +26,7 @@ article,aside{
     /*background-color:aqua;*/
     
     left:450px;
-    top:400px;
+    top:200px;
     position:absolute;
 }
 button{
@@ -34,8 +34,8 @@ button{
 }
 #board {
     
-    width:1235px;
-    height:1877px;
+    width:700px;
+    height:700px;
     position:relative;
 
 }
