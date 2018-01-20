@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>軍人将棋のルール</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script>
+
+$(document).ready(function(){
+	var pageNum = 0;
+	$(".btn_page").click(function(){
+		$(window).scrollTop(0);
+	});
+	$("#next").click(function(){
+		if(pageNum < $(".tutorials").size() - 1) pageNum += 1;
+		show();
+	});
+	$("#back").click(function(){
+		if(pageNum > 0) pageNum -= 1;
+		show();
+	});
+	
+	function show(){
+		$(".tutorials").each(function(index){
+			$(this).hide();
+			if(index == pageNum){
+				$(this).show();
+			}
+			$("#percentage").width((pageNum+1) / $(".tutorials").size() * 100 + "%");
+			$("#percentage").text((pageNum+1) + " / " + $(".tutorials").size());
+		});
+	}
+	show();
+
+});
+</script>
+<style>
+
+</style>
+</head>
+<body>
+
+<div class="w3-top w3-bar w3-green">
+	<div class="w3-white">
+		<div class="w3-green w3-center w3-xlarge" id="percentage" style="width: 10%; height: 40px">10%</div>
+	</div>
+</div>
+
+	<button class="w3-button w3-light-gray btn_page w3-xxlarge w3-hover-opacity" id="back" style="position: fixed;width: 100px; height: 400px; top: 20%; left: 0%; z-index:0">前へ</button>
+	<button class="w3-button w3-light-gray btn_page w3-xxlarge w3-hover-opacity" id="next" style="position: fixed;width: 100px; height: 400px; top: 20%; left: 90%; z-index:0">次へ</button>
+
+<div class="">
+<div class="w3-container w3-large" style="margin-top: 65px; margin-left: 20%; margin-right: 20%; z-index:1">
+	<div class="w3-container tutorials" style="">
+		<p><strong>軍人将棋</strong>は、１体１の対人ボードゲームです。</p>
+		<p>将棋のように<strong>ターン制</strong>ですが、互いの駒は裏向きのままで戦うため、その点で異なります。</p>
+		<p>盤には46マスあり、下側が自陣です。</p>
+		<p>一番下には<strong>司令部</strong>があり、このマスには一つの駒しか置けません。</p>
+		<img class="w3-modal-content" src="img/field2.png" style="width:200px" onclick="document.getElementById('img_empty').style.display='block'">
+		<div class="w3-modal w3-center" id="img_empty" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/field2.png" style="width:300px">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>以下のような16種類の23駒を自陣に配置することからゲームが始まります。</p>
+		<img class="w3-modal-content" src="img/komas_all.png" style="width:200px" onclick="document.getElementById('img_komas_all').style.display='block'">
+		<div class="w3-modal w3-center" id="img_komas_all" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/komas_all.png" style="width:300px">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>このように23駒全てを自陣に配置し、相手も配置し終えると対局が始まります。</p>
+		<img class="w3-modal-content" src="img/haiti_example.png" style="width:200px" onclick="document.getElementById('img_haiti_example').style.display='block'">
+		<div class="w3-modal w3-center" id="img_haiti_example" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/haiti_example.png" style="width:300px">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>対局が始まると、相手の配置は裏向きでどれが何の駒か分からないようになっています。（もちろん相手から見てもそうです）</p>
+		<p></p>
+		<img class="w3-modal-content" src="img/game_start.png" style="width:400px" onclick="document.getElementById('img_game_start').style.display='block'">
+		<div class="w3-modal w3-center" id="img_game_start" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/game_start.png" style="">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>基本的な勝利条件は、<strong>「相手の総司令部に少佐以上の地位を持つ駒が到達する」</strong>ことです。</p>
+		<p>ゲームの進め方は、自分のターンのとき、空きマスもしくは相手の駒のあるマスに駒を動かします。</p>
+		<p>相手の駒とぶつかると戦闘が発生します。強い駒の方だけが生き残ります。</p>
+		<p><strong>例</strong>：タンクが生き残り、相手の駒が死んだ</p>
+		<p>したがって、相手の駒はタンクよりも弱かったことがわかります。</p>
+		<img class="w3-modal-content" src="img/ex_01.png" style="width:400px" onclick="document.getElementById('img_ex_01').style.display='block'">
+		<div class="w3-modal w3-center" id="img_ex_01" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/ex_01.png" style="">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>戦闘時の駒の強さの表がこちらです。</p>
+
+	</div>
+	<div class="w3-container tutorials">
+		<p>次は相手のターンです。自分のタンクが死んでしまいました。</p>
+		<p>これによって、相手の駒がタンクよりも強い駒であるということが分かります。</p>
+		<img class="w3-modal-content" src="img/ex_02.png" style="width:400px" onclick="document.getElementById('img_ex_02').style.display='block'">
+		<div class="w3-modal w3-center" id="img_ex_02" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/ex_02.png" style="">
+		</div>
+	</div>
+	<div class="w3-container tutorials">
+		<p>手数が進むと、このように駒が相手陣地に侵入する感じになります。</p>
+		<img class="w3-modal-content" src="img/ex_03.png" style="width:400px" onclick="document.getElementById('img_ex_03').style.display='block'">
+		<div class="w3-modal w3-center" id="img_ex_03" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/ex_03.png" style="">
+		</div>	
+	</div>
+	<div class="w3-container tutorials">
+		<p>どちらかの佐官以上の地位を持つ駒（大将、中将、少将、大佐、中佐、少佐）が敵司令部まで到達したほうが勝ちです。</p>
+		<p>対局終了すると、このように最初の陣形から、相手の駒も見えた状態で振り返ることが出来ます。</p>
+		<img class="w3-modal-content" src="img/ex_04.png" style="width:400px" onclick="document.getElementById('img_ex_04').style.display='block'">
+		<div class="w3-modal w3-center" id="img_ex_04" onclick="this.style.display='none'">
+			<img class="w3-modal-content" src="img/ex_04.png" style="">
+		</div>	
+	
+	</div>
+</div>
+</div>
+<div>
+
+</div>	
+</body>
+</html>
