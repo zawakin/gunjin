@@ -16,9 +16,27 @@ var piece = [];
 var img;
 var cnvsList = [];
 var ctxList = [];
-var komaSize = 67;
 var kifu;
 
+
+var ratio = window.innerHeight / 626 * 0.9;
+
+var canvas_width = 412 * ratio;
+var canvas_height = 626 * ratio;
+
+$("#field").attr("width", canvas_width);
+$("#field").attr("height", canvas_height);
+
+//var canvas_width = $("#field").width();
+//var canvas_height = $("#field").height();
+
+
+var komaSize = 67 / 412 * canvas_width;
+$(".cell, .emphasis").attr("width", komaSize);
+$(".cell, .emphasis").attr("height", komaSize);
+$(".shireibu").attr("width", komaSize * 2);
+$(".shireibu").attr("height", komaSize);
+console.log(komaSize);
 
 
 var board = [
@@ -261,14 +279,14 @@ onload = function () {
     var img_field = new Image();
     img_field.src = "img/field2.png";
     img_field.onload = function () {
-        ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, 412, 626);
+        ctx_field.drawImage(img_field, 0, 0, 1235, 1877, 0, 0, canvas_width, canvas_height);
     }
 
     var cnvs_base = document.getElementsByClassName("cell")[0];
 
     //盤面をcanvasで埋める
     var b = document.getElementById("board");
-    var bW = 1.67 //boarder width もともと5
+    var bW = 1.67*ratio; //boarder width もともと5
 
     //canvasを埋める
     //isCellはcell class か　emp classかを判定する
@@ -282,6 +300,7 @@ onload = function () {
 
                         if (isCell) {
                             cnvsList[i][j] = cnvs_base.cloneNode(true);
+                            //cnvsList[i][j] = document.getElementsByClassName("shireibu")[0].cloneNode(true);
 
                             cnvsList[i][j].style.left = (mathfloor((komaSize+bW)/2)+bW + (bW + komaSize) * (suji - j - 1)) + "px";
                         } else {
@@ -312,7 +331,7 @@ onload = function () {
                             cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j)) + "px";
                         }
 
-                        cnvsList[i][j].style.top = (352 + (bW + komaSize) * (i - 5)) + "px";
+                        cnvsList[i][j].style.top = (352/412*canvas_width + (bW + komaSize) * (i - 5)) + "px";
                     }
                 } else {
 
@@ -322,7 +341,7 @@ onload = function () {
                         cnvsList[i][j].style.top = (bW + (bW + komaSize) * (i - 1)) + "px";
                     } else {
                         cnvsList[i][j].style.left = (bW + (bW + komaSize) * (suji - j)) + "px";
-                        cnvsList[i][j].style.top = (352 + (bW + komaSize) * (i - 5)) + "px";
+                        cnvsList[i][j].style.top = (352/412*canvas_width + (bW + komaSize) * (i - 5)) + "px";
                     }
                 }
 
@@ -369,7 +388,7 @@ onload = function () {
     $(".cell").draggable({
         revert: true,
         snap: true,
-        revertDuration:1000
+        revertDuration:200
     });	
 	
 	$("#haiti_rand").click(function(){

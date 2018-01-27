@@ -16,6 +16,7 @@ var piece = [];
 var img;
 var cnvsList = [];
 var ctxList = [];
+var kifu;
 
 
 var nanteme;
@@ -35,7 +36,6 @@ $(".cell, .emphasis").attr("height", komaSize);
 $(".shireibu").attr("width", komaSize * 2);
 $(".shireibu").attr("height", komaSize);
 
-var kifu;
 
 
 
@@ -62,8 +62,6 @@ var empCtxList = [];
 var komaZenbu = 23;
 var komadaiBoard = [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15,16];
 
-var debug_kyokumen = new Kyokumen();
-debug_kyokumen.GetRandomBoard();
 var gameChu = false;
 var mySengo = 0;
 
@@ -114,7 +112,6 @@ function DrawKyokumen_Haiti(){
 	        DrawIndex(ctxList[dan][suji], piece[kyokumen.board[dan][suji]]);
 	    }
 	}
-
 };
 
 function ToIndexPage(){
@@ -552,7 +549,7 @@ onload = function () {
 
     //盤面をcanvasで埋める
     var b = document.getElementById("board");
-    var bW = 1.67*ratio //boarder width もともと5
+    var bW = 1.67*ratio; //boarder width もともと5
 
     //canvasを埋める
     //isCellはcell class か　emp classかを判定する
