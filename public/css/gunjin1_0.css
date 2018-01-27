@@ -24,10 +24,8 @@ article,aside{
 }
 #komadai {
     /*background-color:aqua;*/
-    
-    left:450px;
-    top:200px;
-    position:absolute;
+	left: 5vh; 
+    position: relative;
 }
 button{
     margin:2px;

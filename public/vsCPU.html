@@ -51,8 +51,8 @@
 			<button id="haiti_rand" class="w3-button w3-orange">配置をランダムに決める</button>
             <button class="haitiwaiting btn w3-button w3-teal" id="haitichange">配置を変更する</button>
             <label id="haitistate" class="haitimode" style="display: none">先手：配置中　後手：配置中</label>
-            <div>
-	            <div id="board" style=" overflow: hidden;">
+            <div class="w3-row">
+	            <div id="board" class="w3-cell" style=" overflow: hidden;">
 					<div style="">
 						<canvas id="field" width="412" height="626" style=""></canvas>
 					</div>
@@ -81,7 +81,7 @@
 
 	            </div>
 
-	            <div id="komadai" class="haitimode">
+	            <div id="komadai" class="w3-cell haitimode">
 	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
 	            </div>
 	       </div>
