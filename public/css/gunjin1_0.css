@@ -6,7 +6,7 @@
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
     color:black;
-    margin : 100px;
+    margin : 10px;
     position:relative;
 }
 header, nav,  section, footer {
@@ -30,12 +30,12 @@ article,aside{
     position:absolute;
 }
 button{
-    margin:10px;
+    margin:2px;
 }
 #board {
     
-    width:700px;
-    height:700px;
+    width:100%;
+    height:100%;
     position:relative;
 
 }

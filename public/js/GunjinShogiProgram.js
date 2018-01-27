@@ -309,13 +309,13 @@
                 }
             }
 
-            console.log("b:");
-            console.log(b);
+            //console.log("b:");
+            //console.log(b);
 
             movableDomain(pro, b, movdom, this.tesuu, this.rule);
 
-            console.log("movdom:");
-            console.log(movdom);
+            //console.log("movdom:");
+            //console.log(movdom);
             var result = [];
             result[0] = [];
             result[this.dan + 1] = [];
@@ -332,13 +332,14 @@
                     result[dan][suji] = movdom[suji - 1][dan - 1];
                 }
             }
-            console.log("result:");
-            console.log(result);
+            //console.log("result:");
+            //console.log(result);
             return result;
         }
 
         p.CreateInitBoardFromPlayers = function (senteBoard, goteBoard) {
-
+			console.log(senteBoard);
+			console.log(goteBoard);
             for (var dan = 5; dan <= this.dan; dan++) {
                 for (var suji = 1; suji <= this.suji; suji++) {
                     this.board[dan][suji] = goteBoard[dan][suji];
@@ -353,6 +354,100 @@
             }
 
         };
+		
+		p.set_board = function(board){
+			for(var i=0; i<board.length; i++){
+				for(var j=0; j<board[i].length; j++){
+					this.board[i][j] = board[i][j];
+				}
+			}
+		};
+		p.set_init_board = function(board){
+			for(var i=5; i<=8; i++){
+				for(var j=1; j<=6; j++){
+					this.board[i][j] = board[i][j];
+				}
+			}
+				
+		}
+		p.HideEnemies = function(){
+			//情報落ちる
+			for(var i=1; i<=8; i++){
+				for(var j=1; j<=6; j++){
+					if(isEnemy(this.board[i][j])){
+						this.board[i][j] = KOMAINF.E_HIDE;
+					}
+				}
+			}
+				
+			
+		}
+		p.SetRandomBoard = function(){
+			this.set_board(this.GetRandomBoard());
+		}
+		p.GetRandomBoard = function(){
+            var resultBoard = [
+                [17, 1, 2, 3, 4, 5, 6, 7, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 16],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 0, 0, 0, 0, 0, 0, 64],
+                [64, 64, 64, 64, 64, 64, 64, 64]
+            ];
+			
+			var perm = this.permutation_random(4*6-1);
+			var order_rand = [];
+			for(var i=0; i<4*6-1; i++){
+				resultBoard[5 + Math.floor(i / 6)][1 + (i % 6)] = resultBoard[0][perm[i] + 1];
+			}
+			resultBoard[8][6] = resultBoard[8][3];
+			resultBoard[8][3] = 0;
+			for(var i=1; i<resultBoard[0].length; i++){
+				resultBoard[0][i] = 0;
+			}
+			return resultBoard;
+			
+		};
+		p.permutation_random = function(n){
+			var res = [];
+			var ns = [];
+			for(var i=0; i<n; i++){
+				ns[i] = i;
+			}
+			console.log(ns);
+			for(var i=0; i<n; i++){
+				var n_rand = Math.floor(Math.random() * ns.length);
+				res[i] = ns[n_rand];
+				ns.splice(n_rand, 1);
+			}
+			return res;
+		};
+		
+		p.AllGouhou = function(){
+			var allte = [];
+			for(var i=1; i<=  8;i++){
+				for(var j=1; j<=6; j++){
+					if(isSelf(this.board[i][j])){
+						var moto = new Pos(j, i);
+						var md = this.GetMovableDomain(moto);
+						for(var ii=1; ii<=8; ii++){
+							for(var jj=1; jj<=6; jj++){
+								if(md[ii][jj] == 1){
+									allte.push(new Te(moto, new Pos(jj,ii), this.board[i][j]));
+								}
+							}
+						}
+					}
+				}
+			}
+			return allte;
+			
+		}
+		
         //flag:trueなら全て表向き
         p.GetSenteBoard = function (flag) {
             var resultBoard = [
@@ -517,8 +612,6 @@
         };
 
 		p.PrintAllStrength = function(){
-			console.log(this);
-			console.log(this.rule.unit[1].strength);
 			var s = "";
 			s += "<tr>";
 			s += "<th></th>";
@@ -531,7 +624,7 @@
 				s += "<tr>";
 				s += "<th>" + komaStrFULL[i] + "</th>/n";
 				for(var j=1; j<= KOMAINF.GUNKI; j++){
-					console.log("i = "+i + " j = " + j);
+					//console.log("i = "+i + " j = " + j);
 					var _s = this.rule.unit[i].strength[j];
 					switch(_s){
 						case 1:
@@ -548,7 +641,7 @@
 				}
 				s += "</tr>\n";
 			}
-			console.log(s);
+			//console.log(s);
 			
 		};
         return Kyokumen;

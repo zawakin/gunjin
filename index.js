@@ -17,7 +17,7 @@ app.get("/", function (req, res) {
 
 app.get("/game", function (req, res) {
     res.render(__dirname + "/public/taisen.ejs",
-        {title:"taitoru", roomNum:req.query.r});
+        {title:"対局部屋", roomNum:req.query.r});
 
 });
 

@@ -3,35 +3,26 @@
 <html lang="ja" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title><%=title %></title>
+    <title>CPUと軍人将棋</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
+	<style>
+		#board{
+			height: 100%;
+			width: 100%;
+			position: relative;
+		}
+	</style>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
-    <script type="text/javascript" src="js/gunjin1_0.js"></script>
+    <script type="text/javascript" src="js/gunjin1_0_CPU.js"></script>
 </head>
 <body>
     <audio id="komaoto" preload="auto">
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
-	<h1 style="display:none;" id="roomNum"><%= roomNum%></h1>
-    <div id="nameinput" class="w3-container">
-		<h1 class="w3-teal">名前を入力すると対戦待ちになります</h1>
-		<p>過疎のため、友達などと事前に相談し、同じ部屋番号の部屋に入ってください。</p>
-		<h3 id="roomNum" class="">あなたが今いるのは　<%= roomNum%>号室です。</h3>
-        <label>名前を入力して「対戦する」ボタンを押してください。対戦相手が決まると自動的に配置モードに切り替わります。</label>
-        <form id="nameform" class="w3-container w3-border">
-        	<label>名前：</label>
-			<input id="name" type="text" class="w3-input w3-border">
-			<button type="submit" class="btn w3-btn w3-red">対戦する</button>
-
-        </form>
-		<div class="w3-container">
-        <button class="btn w3-button w3-teal" onClick="ToIndexPage();">部屋リストに戻る</button>
-		</div>
-    </div>
 
     <div id="waiting" style="display:none;">
         <h1 class="w3-teal">対戦者が来るのを待っています...</h1>
@@ -40,17 +31,7 @@
         <button class="btn w3-button w3-teal" onClick="ToIndexPage();">やめる</button>
     </div>
 
-    <div id="battlestart" style="display:none;">
-        <h1 class="w3-teal">対戦者が決定しました</h1>
-        <div class="w3-container w3-xxlarge">
-            <label>先手：</label>
-            <label id="sente"></label><br />
-            <label>後手：</label>
-            <label id="gote"></label>
-        </div>
-    </div>
-
-    <div id="battlejunbi" style="display:none;">
+    <div id="battlejunbi" style="display:block;">
         <div class="w3-container">
         	<h1 class="" id="mysengo"></h1>
             <h1 class="w3-teal" id="statemsg">初期配置を決めてください。</h1>
@@ -64,12 +45,17 @@
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
             <button id="change" class="haitimode btn w3-button w3-khaki">配置をやり直す</button>
-            <button id="haitikettei" class="haitimode btn w3-button w3-teal">配置決定</button>
+            <button id="haitikettei" class="haitimode btn w3-button w3-teal" style="display: none">配置決定</button>
+			<button id="btn_cpu_hide" class="haitimode btn w3-button w3-teal">CPUの駒が見える状態で対局</button>
+			<button id="btn_cpu_open" class="haitimode btn w3-button w3-teal">CPUの駒が見えない状態で対局</button>
+			<button id="haiti_rand" class="w3-button w3-orange">配置をランダムに決める</button>
             <button class="haitiwaiting btn w3-button w3-teal" id="haitichange">配置を変更する</button>
-            <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
+            <label id="haitistate" class="haitimode" style="display: none">先手：配置中　後手：配置中</label>
             <div>
-	            <div id="board">
-	                <canvas id="field" width="412" height="626"></canvas>
+	            <div id="board" style=" overflow: hidden;">
+					<div style="">
+						<canvas id="field" width="412" height="626" style=""></canvas>
+					</div>
 	                <div id="komaushiro" class="battlemode"></div>
 	                <div id="infobox" class="battlemode">
 	                	<h6 id="sengodebug"></h6>
@@ -101,9 +87,6 @@
 	       </div>
         </div>
 
-        <footer>
-            ©zawawahoge
-        </footer>
     </div>
 
     <div id="battle" style="display:none;">
