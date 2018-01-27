@@ -57,45 +57,48 @@
         </div>
 
 
-        <div class="w3-container">
+        <div class="" style="">
             <div style="display:none;">
                 <canvas class="cell" width="67" height="67"></canvas>
                 <canvas class="shireibu cell" width="135" height="67"></canvas>
                 <canvas class="emphasis" width="67" height="67"></canvas>
             </div>
             <button id="change" class="haitimode btn w3-button w3-khaki">配置をやり直す</button>
-            <button id="haitikettei" class="haitimode btn w3-button w3-teal">配置決定</button>
+            <button id="haitikettei" class="haitimode btn w3-button w3-teal" style="display: none">配置決定</button>
+			<button id="haiti_rand" class="w3-button w3-orange">配置をランダムに決める</button>
             <button class="haitiwaiting btn w3-button w3-teal" id="haitichange">配置を変更する</button>
-            <label id="haitistate" class="haitimode">先手：配置中　後手：配置中</label>
-            <div>
-	            <div id="board">
-	                <canvas id="field" width="412" height="626"></canvas>
-	                <div id="komaushiro" class="battlemode"></div>
-	                <div id="infobox" class="battlemode">
-	                	<h6 id="sengodebug"></h6>
-	                	<button id="touryou" class="btn w3-button w3-red" style="display:none;">投了する</button>
-	                	<div id="hikiwakebox">
-	                		<button id="hikiwakebtn" class="btn w3-button w3-yellow" style="display:none;">引き分け提案する</button>
-	                		<label id="hikiwakemsg"></label>
-	                	 </div>
-	                	 <div class="gamefinish">
-					        <button id="modoru" class="btn w3-button w3-teal">一手戻る</button>
-					        <label id="nanteme"></label>
-					        <label>/</label>
-					        <label id="tesuu"></label>
-					        <button id="susumu" class="btn w3-button w3-teal">一手進む</button>
-					        <br>
-					        <button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
-					        <button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
-						</div>
-	                </div>
-	                <div id="komatemae" class="battlemode"></div>
-
-	                <div id="komainfobox" class="battlemode"></div>
-
+            <label id="haitistate" class="haitimode" style="">先手：配置中　後手：配置中</label>
+            <div class="w3-row relative w3-margin">
+	            <div id="board" class="w3-half" style=" overflow: hidden;">
+					<div style="">
+						<canvas id="field" width="412" height="626" style=" top:0px; left:0px;"></canvas>
+					</div>
 	            </div>
+				<div class="w3-half battlemode" style="top: 0vh; left: 65vh; width: 100vh; height: 100vh; position: absolute; display: none;">
+					<div id="komaushiro" class="w3-container battlemode absolute"></div>
+					<div id="infobox" class="w3-container battlemode absolute">
+						<h6 id="sengodebug"></h6>
+						<button id="touryou" class="btn w3-button w3-red" style="display:none;">投了する</button>
+						<div id="hikiwakebox">
+							<button id="hikiwakebtn" class="btn w3-button w3-yellow" style="display:none;">引き分け提案する</button>
+							<label id="hikiwakemsg"></label>
+						 </div>
+						 <div class="gamefinish">
+							<button id="modoru" class="btn w3-button w3-teal">一手戻る</button>
+							<label id="nanteme"></label>
+							<label>/</label>
+							<label id="tesuu"></label>
+							<button id="susumu" class="btn w3-button w3-teal">一手進む</button>
+							<br>
+							<button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
+							<button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
+						</div>
+					</div>
+					<div id="komatemae" class="w3-container battlemode absolute"></div>
 
-	            <div id="komadai" class="haitimode">
+					<div id="komainfobox" class="w3-container battlemode absolute"></div>
+				</div>
+	            <div id="komadai" class="w3-half haitimode">
 	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
 	            </div>
 	       </div>

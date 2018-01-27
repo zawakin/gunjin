@@ -370,7 +370,21 @@ onload = function () {
         revert: true,
         snap: true,
         revertDuration:1000
-    });
+    });	
+	
+	$("#haiti_rand").click(function(){
+	    kyokumen.set_board(kyokumen.GetRandomBoard());
+		board = kyokumen.board;
+        clearAllEmpCanvas();
+        for (var i = 1; i <= komaZenbu; i++) {
+            DrawIndex(ctxList[0][i], piece[board[0][i]]);
+        }
+        for (var i = 1; i <= dan; i++) {
+            for (var j = 1; j <= suji; j++) {
+                DrawIndex(ctxList[i][j], piece[board[i][j]]);
+            }
+        }
+	});
 
 
     $("#board .cell").droppable({
