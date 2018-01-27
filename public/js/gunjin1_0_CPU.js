@@ -334,6 +334,7 @@ class GameManager{
 				$("#touryou").hide();
 				//$("#komaoto")[0].play();
 				$(".battlemode").show();
+				$("#komainfobox").empty();
 
 				kifu = gameData.kifu;
 				console.log(kifu);
@@ -357,7 +358,7 @@ class GameManager{
         $(".haitimode").hide();
         $(".haitiwaiting").hide();
 		$("#haiti_rand").hide();
-        //$(".battlemode").show();
+        $(".battlemode").show();
 		$("#statemsg").hide();
 	}
 	

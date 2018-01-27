@@ -24,22 +24,18 @@ article,aside{
 }
 #komadai {
     /*background-color:aqua;*/
-	left: 5vh; 
-    position: relative;
+	left: 60vh; 
+    position: absolute;
 }
 button{
     margin:2px;
 }
 #board {
     
-    width:100%;
-    height:100%;
-    position:relative;
-
 }
 
 canvas {
-    position :relative;
+    position :absolute;
     /*width:200px;
     height:200px;*/
 }
@@ -53,11 +49,12 @@ canvas.emphasis{
 }
 
 #komaushiro{
-    width:300px;
-    height:233px;
-    background-color:aqua; 
-    top:0px;
-    left:417px;
+    width:30vh;
+    height:30%;
+	top: 0vh;
+	left: 0vh;
+    background-color:antiquewhite; 
+	position: absolute;
 
 }
 #infobox {
@@ -68,32 +65,38 @@ canvas.emphasis{
     left: 417px;
 }
 #komatemae {
-    width: 300px;
-    height: 233px;
-    background-color: aqua;
-    top: 393px;
-    left: 417px;
+    width:30vh;
+    height:30%;
+	top: 60%;
+	left: 0vh;
+    background-color: antiquewhite;
+	position: absolute;
 }
 
 #komainfobox{
-    width: 300px;
-    height: 388px;
-    top:0px;
-    left:722px;
+    width:30vh;
+    height:30%;
+	top: 30%;
+	left: 0vh;
     background-color:yellow; 
 }
-
+.absolute{
+	position: absolute;
+}
 .haitiwaiting{
 	display:none;
 }
 
 div.battlemode{
-    position:absolute;
+	position: absolute;
     display: none;
 }
 
 .gamefinish {
 	display:none;
+}
+.relative{
+	position: relative;
 }
 
 label.info{
