@@ -21,14 +21,30 @@ var kifu;
 
 var nanteme;
 
-var ratio = window.innerHeight / 626 * 0.9;
 
-$("#field").attr("width", 412 * ratio);
-$("#field").attr("height", 626 * ratio);
+var ratio = wh / 626 * 0.9;
+var w_per_h = 412 / 626;
+var h_per_w = 626 / 412;
+console.log(window.innerWidth, window.innerHeight);
+var canvas_width, canvas_height;
+if(wh * w_per_h > ww){
+	//横にはみ出すなら
+	console.log("debug");
+	canvas_width = ww;
+	canvas_height = ww * h_per_w;
+}else{
+	canvas_height = wh;
+	canvas_width = wh * w_per_h;	
+}
+canvas_height *= 0.9;
+canvas_width *= 0.9;
+$("#field").attr("width", canvas_width);
+$("#field").attr("height", canvas_height);
 
-var canvas_width = $("#field").width();
-var canvas_height = $("#field").height();
-
+// var canvas_width = $("#field").width();
+// var canvas_height = $("#field").height();
+console.log("canvas",canvas_width,canvas_height);
+console.log("w",ww,wh);
 
 var komaSize = 67 / 412 * canvas_width;
 $(".cell, .emphasis").attr("width", komaSize);
@@ -334,6 +350,7 @@ class GameManager{
 				$("#mybar").show();
 				$("#battlejunbi").css("margin-top", "80px");
 				$("#komainfobox").empty();
+				$(".kansou").show();
 
 				kifu = gameData.kifu;
 				console.log(kifu);
@@ -552,6 +569,9 @@ onload = function () {
     //盤面をcanvasで埋める
     var b = document.getElementById("board");
     var bW = 1.67*ratio; //boarder width もともと5
+	
+	
+console.log(window.innerWidth, window.innerHeight);
 
     //canvasを埋める
     //isCellはcell class か　emp classかを判定する
@@ -634,8 +654,8 @@ onload = function () {
         ctxList[0][i] = cnvsList[0][i].getContext("2d");
         komadai.appendChild(cnvsList[0][i]);
     }
-	$("#komadai").width(6 * komaSize*1.03);
-	$("#komadai").height(4 * komaSize*1.03);
+	$("#komadai").width(canvas_width);
+	$("#komadai").height(canvas_height*0.45);
 
     img = new Image();
     img.src = "img/gunjinkoma.png";

@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>軍人将棋のルール</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -89,34 +90,39 @@ $(document).ready(function(){
 
 <div class="w3-top w3-bar w3-green">
 	<div class="w3-white">
-		<div class="w3-green w3-center w3-xlarge" id="percentage" style="width: 10%; height: 40px">10%</div>
+		<div class="w3-green w3-center w3-xlarge" id="percentage" style="width: 10%; height: 40px"></div>
 	</div>
 </div>
 <div class="">
 	<button class="w3-button w3-collapse w3-light-gray btn_page w3-xxlarge w3-hide-small w3-hide-medium" id="back" style="position: fixed;width: 100px; height: 300px; top: 20%; left: 0px; z-index:0"><</button>
 	<button class="w3-button w3-light-gray btn_page w3-xxlarge w3-hide-small w3-hide-medium" id="next" style="position: fixed;width: 100px; height: 300px; top: 20%; right: 0px; z-index:0">></button>
 </div>
-<div class="w3-main" style="margin-top: 65px; margin-left: 150px; margin-right: 150px;">
-<div class="w3-content w3-large w3-border-right w3-border-left" style="max-width: 1000px; z-index:1">
+<div class="w3-main" style="margin-top: 65px; margin-left: auto; margin-right: auto;;">
+<div class="w3-content w3-large w3-border-right w3-border-left" style="z-index:1; max-width: 1000px;">
 	<div class="w3-container tutorials w3-animate-opacity" style="">
 		<p><strong>軍人将棋</strong>は、１体１の対人ボードゲームです。</p>
-		<p>将棋のように<strong>ターン制</strong>ですが、互いの駒は裏向きのままで戦うため、その点で異なります。</p>
-		<p>盤には46マスあり、下側が自陣です。</p>
-		<p>一番下には<strong>司令部</strong>があり、このマスには一つの駒しか置けません。</p>
-		<img class="w3-modal-content" src="img/field2.png" style="width:80%; max-width: 600px;">
+		<p>将棋のように<strong>ターン制</strong>ですが、互いの駒は裏向きのままで戦うため、その点で異なります。盤には46マスあり、下側が自陣です。一番下には<strong>司令部</strong>があり、このマスには一つの駒しか置けません。</p>
+		<div class="w3-container w3-center">
+		<img class="" src="img/field2.png" style="width:80%; max-width: 400px;">
+		</div>
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>以下のような16種類の23駒を自陣に配置することからゲームが始まります。</p>
-		<img class="" src="img/komas_all.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+		<img class="" src="img/komas_all.png" style="width:80%; max-width: 300px;">
+		</div>
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>このように23駒全てを自陣に配置し、相手も配置し終えると対局が始まります。</p>
-		<img class="" src="img/haiti_example.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/haiti_example.png" style="width:80%; max-width: 400px;">
+		</div>
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>対局が始まると、相手の配置は裏向きでどれが何の駒か分からないようになっています。（もちろん相手から見てもそうです）</p>
-		<p></p>
-		<img class="" src="img/game_start.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/game_start.png" style="width:80%; max-width: 400px;">
+		</div>
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>基本的な勝利条件は、<strong>「相手の総司令部に少佐以上の地位を持つ駒が到達する」</strong>ことです。</p>
@@ -124,10 +130,12 @@ $(document).ready(function(){
 		<p>相手の駒とぶつかると戦闘が発生します。強い駒の方だけが生き残ります。</p>
 		<p><strong>例</strong>：タンクが生き残り、相手の駒が死んだ</p>
 		<p>したがって、相手の駒はタンクよりも弱かったことがわかります。</p>
-		<img class="w3-modal-content" src="img/ex_01.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/ex_01.png" style="width:80%; max-width: 400px;">
+		</div>
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
-		<p>駒の強さと移動のルールをまとめた表がこちらです。（クリックで拡大）</p>
+		<p>駒の強さと移動のルールをまとめた表がこちらです。</p>
 		<p>一見するとややこしそうですが、まとめますと、</p>
 		<ul>
 			<li>基本的には「大将＞中将＞少将＞飛行機＞タンク＞大佐＞・・・＞少尉＞騎兵＞工兵＞スパイ＞軍旗」</li>
@@ -135,376 +143,40 @@ $(document).ready(function(){
 			<li>地雷と戦闘すると相討ちする（ただし、工兵と飛行機には負ける）</li>
 			<li>軍旗の後ろに駒があるとき、軍旗は後ろにある駒と同じ強さを持つ。それ以外は、表の通りの最弱。</li>
 			<li>軍旗と地雷は初期配置のまま動くことが出来ません。</li>
-			<li>飛行機は前後左右自由に飛ぶことが出来ます。</li>
+			<li>飛行機は前後全て、左右に一マスずつ飛ぶことが出来ます。</li>
 			<li>騎兵とタンクは、前に駒がなければ２マス進めます（１マスでも可）</li>
 			<li>工兵は駒にぶつからない限り前後左右どこまでも動けます。</li>
 		</ul>
-		<img class="w3-modal-content w3-hover-opacity" src="img/strength.png" style="width:80%; max-width: 600px;" onclick="document.getElementById('img_strength').style.display='block'">
-		<div class="w3-modal w3-center" id="img_strength" onclick="this.style.display='none'">
-			<img class="w3-modal-content" src="img/strength.png">
-		</div>
-		<table class="w3-center w3-table-all w3-border" style="width: 920px;　white-space:nowrap; display: none; margin-bottom: 10px;">
-			<tr>
-				<th></th>
-				<th>大<br/>将</th>
-				<th>中<br/>将</th>
-				<th>少<br/>将</th>
-				<th>大<br/>佐</th>
-				<th>中<br/>佐</th>
-				<th>少<br/>佐</th>
-				<th>大<br/>尉</th>
-				<th>中<br/>尉</th>
-				<th>少<br/>尉</th>
-				<th>騎<br/>兵</th>
-				<th>工<br/>兵</th>
-				<th>地<br/>雷</th>
-				<th>飛<br/>行<br/>機</th>
-				<th>タ<br/>ン<br/>ク</th>
-				<th>ス<br/>パ<br/>イ</th>
-				<th>軍<br/>旗</th>
-				<th>移動のルール</th>
-			</tr>
-			<tr>
-				<th>大将</th>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>×</td>
-				<td>○</td>
-				<td>前後左右１マスずつ</td>
-			</tr>
-			<tr>
-				<th>中将</th>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>少将</th>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>大佐</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>中佐</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>少佐</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>大尉</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>中尉</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>少尉</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>〃</td>
-			</tr>
-			<tr>
-				<th>騎兵</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>△</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>前に駒がないときは２マス行ける</td>
-			</tr>
-			<tr>
-				<th>工兵</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>駒がない限り前後左右動ける</td>
-			</tr>
-			<tr>
-				<th>地雷</th>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>△</td>
-				<td>×</td>
-				<td>△</td>
-				<td>×</td>
-				<td>△</td>
-				<td>△</td>
-				<td>○</td>
-				<td>初期配置のまま</td>
-			</tr>
-			<tr>
-				<th>飛行機</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>駒を飛び越えて前後左右行ける</td>
-			</tr>
-			<tr>
-				<th>タンク</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>○</td>
-				<td>×</td>
-				<td>△</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>○</td>
-				<td>前に駒がないときは２マス行ける</td>
-			</tr>
-			<tr>
-				<th>スパイ</th>
-				<td>○</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>○</td>
-				<td>前後左右１マスずつ</td>
-			</tr>
-			<tr>
-				<th>軍旗</th>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>×</td>
-				<td>△</td>
-				<td>初期配置のまま</td>
-			</tr>
-		</table>
-		
-		
+		<div class="w3-container w3-center">
+			<img class="" src="img/strength.png" style="width:100%; max-width: 600px;">
+		</div>		
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>次は相手のターンです。自分のタンクが死んでしまいました。</p>
 		<p>これによって、相手の駒がタンクよりも強い駒（将官、飛行機のいずれか）であるということが分かります。</p>
-		<img class="w3-modal-content" src="img/ex_02.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/ex_02.png" style="width:80%; max-width: 400px;">
+		</div>		
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>手数が進むと、このように駒が相手陣地に侵入する感じになります。</p>
-		<img class="w3-modal-content" src="img/ex_03.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/ex_03.png" style="width:80%; max-width: 400px;">
+		</div>		
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
 		<p>どちらかの佐官以上の地位を持つ駒（大将、中将、少将、大佐、中佐、少佐）が敵司令部まで到達したほうが勝ちです。</p>
 		<p>また、佐官以上の地位を持つ駒がなくなったとき、負けとなります。</p>
 		<p>対局終了すると、このように最初の陣形から、相手の駒も見えた状態で振り返ることが出来ます。</p>
-		<img class="w3-modal-content" src="img/ex_04.png" style="width:80%; max-width: 600px;">
+		<div class="w3-container w3-center">
+			<img class="" src="img/ex_04.png" style="width:80%; max-width: 400px;">
+		</div>		
 	</div>
 	<div class="w3-container tutorials w3-animate-opacity">
-		<a href="vsCPU.html"><h3>CPUと対戦してみる</h3></a>
+		<p>百聞は一見に如かず！CPUと対戦してみましょう。</p>
+		<div class="w3-container w3-center">
+			<a href="vsCPU.html"><h3>CPUと対戦してみる</h3></a>
+		</div>
 	</div>
 </div>
 </div>

@@ -3,6 +3,7 @@
 <html lang="ja" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CPUと軍人将棋</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
@@ -19,16 +20,25 @@
     <audio id="komaoto" preload="auto">
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
+
+<script>
+var ww = window.innerWidth;
+var wh = window.innerHeight;
+</script>
 	
-	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: none;">
-		<button class="w3-button w3-bar-item w3-left w3-xxlarge" id="modoru">戻る</button>
-		<button class="w3-button w3-bar-item w3-right w3-xxlarge" id="susumu">進む</button>
+	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: block;">
+		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="modoru" style="display: none;">一手戻る</button>
+		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="susumu" style="display: none;">一手進む</button>
+		<a class="w3-button w3-bar-item w3-right w3-large w3-black" id="home" href="index.html">HOME</a>
 	</div>
 
-    <div id="battlejunbi" style="display:block; margin-top: 0px;">
+    <div id="battlejunbi" class="w3-margin-bottom" style="display:block; margin-top: 50px;">
         <div class="">
         	<h1 class="" id="mysengo"></h1>
             <h1 class="w3-teal" id="statemsg">初期配置を決めてください。</h1>
+			<div class="haitimode">
+				<p>初めての人はランダムな配置でやってみてください。</p>
+			</div>
         </div>
 
 
@@ -50,9 +60,9 @@
 					<div style="">
 						<canvas id="field" width="412" height="626" style=" top:0px; left:0px;"></canvas>
 					</div>
-					
+					<!--ここに駒が追加されている -->
 	            </div>
-	            <div id="komadai" class="haitimode w3-border" style="padding: 5px; top: 0px; left: 0px; border-width: 10px; background-color: chocolate; ">
+	            <div id="komadai" class="haitimode w3-border" style="top: 0px; left: 0px; border-width: 10px; background-color: chocolate; ">
 	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
 	            </div>
 				<div class="w3-half battlemode" id="myside" style="top: 0vh; left: 50vh; width: 50vh; height: 100vh; position: absolute; display: none;">
