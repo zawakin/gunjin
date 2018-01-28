@@ -706,6 +706,8 @@ onload = function () {
 		$("#hikiwakemsg").hide();
         $(".gamefinish").show();
         //$("#komaoto")[0].play();
+		$(".kansou").show();
+		$("#mysengo").hide();
 
         kifu = gameData.kifu;
 

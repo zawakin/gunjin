@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%=title %></title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -23,9 +24,11 @@
 		var wh = window.innerHeight;
 	</script>
 	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: block;">
-		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="modoru" style="display: none;">一手戻る</button>
-		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="susumu" style="display: none;">一手進む</button>
-		<a class="w3-button w3-bar-item w3-right w3-large w3-black" id="home" href="index.html">HOME</a>
+		<button class="w3-button w3-bar-item w3-left kansou" id="saishomodoru" style="display: none;"><i class="material-icons">first_page</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="modoru" style="display: none;"><i class="material-icons">chevron_left</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="susumu" style="display: none;"><i class="material-icons">chevron_right</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="saigosusumu" style="display: none;"><i class="material-icons">last_page</i></button>
+		<a class="w3-button w3-bar-item w3-right w3-black" id="home" href="index.html"><i class="material-icons">home</i></a>
 	</div>
 	<div style="margin-top: 50px;">
 	<h1 style="display:none;" id="roomNum"><%= roomNum%></h1>
@@ -64,7 +67,7 @@
     </div>
     <div id="battlejunbi" style="display:none; margin-top: 50px;">
         <div class="w3-container">
-        	<h1 class="" id="mysengo"></h1>
+        	<h1 class="battlemode" id="mysengo"></h1>
             <h1 class="w3-teal" id="statemsg">初期配置を決めてください。</h1>
         </div>
 
@@ -84,7 +87,7 @@
 	            <div id="board" class="w3-half" style="margin: 60px 0px;">
 					<div style="">
 						<canvas id="field" width="412" height="626" style=" top:0px; left:0px;"></canvas>
-					</div>
+					</div>	
 					<!--ここに駒が追加されている -->
 	            </div>
 	            <div id="komadai" class="w3-half haitimode" style="top: 0px; left: 0px; border-width: 10px; background-color: chocolate; ">
@@ -109,8 +112,8 @@
 								<label id="tesuu"></label>
 								<button id="susumu_original" class="btn w3-button w3-teal">一手進む</button>
 								<br>
-								<button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
-								<button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
+								<button id="saishomodoru_original" class="btn w3-button w3-green">最初に戻る</button>
+								<button id="saigosusumu_original" class="btn w3-button w3-green">最後に進む</button>
 							</div>
 						</div>
 					</div>

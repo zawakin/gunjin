@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CPUと軍人将棋</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="css/gunjin1_0.css" rel="stylesheet" type="text/css" />
 	<style>
 	</style>
@@ -26,10 +27,12 @@ var ww = window.innerWidth;
 var wh = window.innerHeight;
 </script>
 	
-	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: block;">
-		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="modoru" style="display: none;">一手戻る</button>
-		<button class="w3-button w3-bar-item w3-left w3-large kansou" id="susumu" style="display: none;">一手進む</button>
-		<a class="w3-button w3-bar-item w3-right w3-large w3-black" id="home" href="index.html">HOME</a>
+	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: block; left: 0px;">
+		<button class="w3-button w3-bar-item w3-left kansou" id="saishomodoru" style="display: none;"><i class="material-icons">first_page</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="modoru" style="display: none;"><i class="material-icons">chevron_left</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="susumu" style="display: none;"><i class="material-icons">chevron_right</i></button>
+		<button class="w3-button w3-bar-item w3-left kansou" id="saigosusumu" style="display: none;"><i class="material-icons">last_page</i></button>
+		<a class="w3-button w3-bar-item w3-right w3-black" id="home" href="index.html"><i class="material-icons">home</i></a>
 	</div>
 
     <div id="battlejunbi" class="w3-margin-bottom" style="display:block; margin-top: 50px;">
@@ -85,8 +88,8 @@ var wh = window.innerHeight;
 							<label id="tesuu"></label>
 							<button id="susumu_original" class="btn w3-button w3-teal">一手進む</button>
 							<br>
-							<button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
-							<button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
+							<button id="saishomodoru_original" class="btn w3-button w3-green">最初に戻る</button>
+							<button id="saigosusumu_original" class="btn w3-button w3-green">最後に進む</button>
 						</div>
 					</div>
 					</div>
