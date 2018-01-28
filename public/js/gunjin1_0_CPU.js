@@ -17,10 +17,7 @@ var img;
 var cnvsList = [];
 var ctxList = [];
 var kifu;
-
-
 var nanteme;
-
 
 var ratio = wh / 626 * 0.9;
 var w_per_h = 412 / 626;
@@ -43,8 +40,6 @@ $("#field").attr("height", canvas_height);
 
 // var canvas_width = $("#field").width();
 // var canvas_height = $("#field").height();
-console.log("canvas",canvas_width,canvas_height);
-console.log("w",ww,wh);
 
 var komaSize = 67 / 412 * canvas_width;
 $(".cell, .emphasis").attr("width", komaSize);

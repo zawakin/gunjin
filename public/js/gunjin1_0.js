@@ -18,12 +18,22 @@ var cnvsList = [];
 var ctxList = [];
 var kifu;
 
-
-var ratio = window.innerHeight / 626 * 0.9;
-
-var canvas_width = 412 * ratio;
-var canvas_height = 626 * ratio;
-
+var ratio = wh / 626 * 0.9;
+var w_per_h = 412 / 626;
+var h_per_w = 626 / 412;
+console.log(window.innerWidth, window.innerHeight);
+var canvas_width, canvas_height;
+if(wh * w_per_h > ww){
+	//横にはみ出すなら
+	console.log("debug");
+	canvas_width = ww;
+	canvas_height = ww * h_per_w;
+}else{
+	canvas_height = wh;
+	canvas_width = wh * w_per_h;	
+}
+canvas_height *= 0.9;
+canvas_width *= 0.9;
 $("#field").attr("width", canvas_width);
 $("#field").attr("height", canvas_height);
 
@@ -361,12 +371,16 @@ onload = function () {
     ctxList[0] = [];
     for (var i = 1; i <= komaZenbu; i++) {
         cnvsList[0][i] = cnvs_base.cloneNode(true);
-        cnvsList[0][i].style.left = (mathfloor((i - 1) / 9) * komaSize * 2) + "px";
-        cnvsList[0][i].style.top = (komaSize * mathfloor((i - 1) % 9)) + "px";
+		cnvsList[0][i].style.left = (komaSize * mathfloor((i-1) % 6)) + "px";
+		cnvsList[0][i].style.top = (mathfloor((i - 1) / 6) * komaSize) + "px";
+        // cnvsList[0][i].style.left = (mathfloor((i - 1) / 9) * komaSize * 2) + "px";
+        // cnvsList[0][i].style.top = (komaSize * mathfloor((i - 1) % 9)) + "px";
         cnvsList[0][i].draggable = "true";
         ctxList[0][i] = cnvsList[0][i].getContext("2d");
         komadai.appendChild(cnvsList[0][i]);
     }
+	$("#komadai").width(canvas_width);
+	$("#komadai").height(canvas_height*0.45);
 
     img = new Image();
     img.src = "img/gunjinkoma.png";
@@ -559,8 +573,9 @@ onload = function () {
         $("#statemsg").text("対局開始");
         $(".haitimode").hide();
         $(".haitiwaiting").hide();
-        $(".battlemode").show();
-        $(".cell").draggable("enable");
+		$("#haiti_rand").hide();
+        //$(".battlemode").show();
+		$("#statemsg").hide();
         kyokumen.board = board;
         kyokumen.teban = SENGO.SENTE;
         gameChu = true;
@@ -690,7 +705,7 @@ onload = function () {
         gameChu = false;
 		$("#hikiwakemsg").hide();
         $(".gamefinish").show();
-        $("#komaoto")[0].play();
+        //$("#komaoto")[0].play();
 
         kifu = gameData.kifu;
 
