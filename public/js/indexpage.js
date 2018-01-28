@@ -8,13 +8,12 @@ var ROOMSTATE = {
     BATTLEFINISH: 4
 }
 
-var roomNum;
+var roomNum = 5;
 
 var roomElements = [];
 
 
 onload = function(){
-	roomNum = 100;
 	var List = document.getElementById("roomList");
 
 	for (var i = 1; i <= roomNum; i++) {
@@ -31,7 +30,7 @@ onload = function(){
 };
 
 socket.on("allroomstate",function(rooms){
-  for(var i=1;i<=100;i++){
+  for(var i=1;i<=roomNum;i++){
     var room = rooms[i];
     var txt;
   	var vstxt = room.sente + " vs " + room.gote;

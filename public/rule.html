@@ -68,10 +68,12 @@ $(document).ready(function(){
     if (direction == 'right'){
 		//前のページへ遷移
 		if(pageNum > 0) pageNum -= 1;
+		$(window).scrollTop(0);
 		show();
     } else if (direction == 'left'){
 		//次のページへ遷移
 		if(pageNum < $(".tutorials").size() - 1) pageNum += 1;
+		$(window).scrollTop(0);
 		show();
     }
   }
