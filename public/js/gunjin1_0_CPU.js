@@ -330,7 +330,9 @@ class GameManager{
 				$("#hikiwakebtn").hide();
 				$("#touryou").hide();
 				//$("#komaoto")[0].play();
-				$(".battlemode").show();
+				//$(".battlemode").show();
+				$("#mybar").show();
+				$("#battlejunbi").css("margin-top", "80px");
 				$("#komainfobox").empty();
 
 				kifu = gameData.kifu;
@@ -355,7 +357,7 @@ class GameManager{
         $(".haitimode").hide();
         $(".haitiwaiting").hide();
 		$("#haiti_rand").hide();
-        $(".battlemode").show();
+        //$(".battlemode").show();
 		$("#statemsg").hide();
 	}
 	
@@ -624,12 +626,16 @@ onload = function () {
     ctxList[0] = [];
     for (var i = 1; i <= komaZenbu; i++) {
         cnvsList[0][i] = cnvs_base.cloneNode(true);
-        cnvsList[0][i].style.left = (mathfloor((i - 1) / 9) * komaSize * 2) + "px";
-        cnvsList[0][i].style.top = (komaSize * mathfloor((i - 1) % 9)) + "px";
+		cnvsList[0][i].style.left = (komaSize * mathfloor((i-1) % 6)) + "px";
+		cnvsList[0][i].style.top = (mathfloor((i - 1) / 6) * komaSize) + "px";
+        // cnvsList[0][i].style.left = (mathfloor((i - 1) / 9) * komaSize * 2) + "px";
+        // cnvsList[0][i].style.top = (komaSize * mathfloor((i - 1) % 9)) + "px";
         cnvsList[0][i].draggable = "true";
         ctxList[0][i] = cnvsList[0][i].getContext("2d");
         komadai.appendChild(cnvsList[0][i]);
     }
+	$("#komadai").width(6 * komaSize*1.03);
+	$("#komadai").height(4 * komaSize*1.03);
 
     img = new Image();
     img.src = "img/gunjinkoma.png";

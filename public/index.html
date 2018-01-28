@@ -14,51 +14,52 @@
         }
 	</style>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>    
     <script src="js/indexpage.js"></script>
 </head>
 <body>
-	<div class="w3-container" style="margin-left: 10%">
-		<h1 class="w3-teal w3-card">軍人将棋をネット対戦できるようにした</h1>
-		<img class="w3-modal-content" src="img/ex_03.png" style="width:400px" onclick="document.getElementById('img_ex_03').style.display='block'">
-		<div class="w3-modal w3-center" id="img_ex_03" onclick="this.style.display='none'">
-			<img class="w3-modal-content" src="img/ex_03.png" style="width:700px">
-		</div>
-		<h2 class="w3-teal w3-card">このサイトについて</h2>
+<div class="w3-main">
+	<div class="w3-padding-64 w3-theme w3-margin-bottom w3-center w3-card-4" style="margin-top: 0px">
+		<h1 class="w3-jumbo"><span>オンライン軍人将棋</span></h1>
+	</div>
+	<div class="w3-content" style="max-width: 1000px;">
+		<img class="w3-modal-content" src="img/ex_03.png" style="margin: 0 auto; width: 60%; max-width:500px">
+		<h1 class="w3-theme w3-padding w3-card">このサイトについて</h1>
 		<div class="w3-container">
 			<p>軍人将棋をオンラインで対人対戦できるようにしたサイトです。オンライン対戦を実装するために、サーバはNodeJSを用いました。</p>
 			<p>また、リアルタイム通信を行うためにWebsocketを利用したモジュールのSocket.IOを使いました。</p>
 			<p>完全に過疎っているはずなので、友達とお誘い合わせの上、部屋に入室お願いします。</p>
 		</div>
 		
-		<h2 class="w3-teal w3-card">軍人将棋について</h2>
+		<h1 class="w3-theme w3-padding w3-card">軍人将棋について</h1>
 		<div class="w3-container">
 			<a target="_blank" href="rule.html"><h3>チュートリアルはこちら</h3></a>
 		</div>
 		
-		<h2 class="w3-teal w3-card">CPUと対戦</h2>
+		<h1 class="w3-theme w3-padding w3-card">CPUと対戦</h1>
 		<div class="w3-container">
 			<p>とても弱いCPUと対戦できます。相手の駒を見た状態で対局できるので、初めて軍人将棋をする方は、おすすめです。</p>
 			<a target="_blank" href="vsCPU.html"><h3>CPUとの対戦ページ（New!）</h3></a>
 			
 		</div>
 		
-		<h2 class="w3-teal w3-card">対戦のやり方</h2>
+		<h1 class="w3-theme w3-padding w3-card">対戦のやり方</h1>
 		<div class="w3-container">
 			<p>ほとんどの部屋が空室だと思うので、友達と部屋を合わせて入室してください。</p>
 			<p>名前を入力する画面が表示されますが、適当に書いて結構です。</p>
-			<h4 class="w3-teal w3-card">配置モードのやり方</h4>
+			<h4 class="w3-theme w3-card">配置モードのやり方</h4>
 			<p>右側にある駒をドラッグして、置きたい自陣のマスに配置してください。</p>
 			<p>配置し終わったら、「配置決定」を押してください。</p>
 			<p>両プレイヤーが配置を終えると自動的に対局が開始されます。</p>
 		</div>
 
 		<article>
-			<ul id="roomList" class="w3-ul">
+			<ul id="roomList" class="w3-ul w3-center">
 			</ul>
 		</article>
 	</div>
-
+</div>
 </body>
 </html>

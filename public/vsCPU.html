@@ -11,6 +11,7 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="js/GunjinShogiProgram.js"></script>
     <script type="text/javascript" src="js/gunjin1_0_CPU.js"></script>
 </head>
@@ -18,15 +19,13 @@
     <audio id="komaoto" preload="auto">
     	<source src="src/komaoto.mp3" type="audio/mp3">
     </audio>
+	
+	<div class="w3-bar w3-top w3-indigo" id="mybar" style="margin: 0px; display: none;">
+		<button class="w3-button w3-bar-item w3-left w3-xxlarge" id="modoru">戻る</button>
+		<button class="w3-button w3-bar-item w3-right w3-xxlarge" id="susumu">進む</button>
+	</div>
 
-    <div id="waiting" style="display:none;">
-        <h1 class="w3-teal">対戦者が来るのを待っています...</h1>
-		<p>駒の強さや移動のルール</p>
-		<img class="w3-modal-content" src="img/strength.png" style="width:700px; display: block" onclick="document.getElementById('img_strength').style.display='block'">
-        <button class="btn w3-button w3-teal" onClick="ToIndexPage();">やめる</button>
-    </div>
-
-    <div id="battlejunbi" style="display:block;">
+    <div id="battlejunbi" style="display:block; margin-top: 0px;">
         <div class="">
         	<h1 class="" id="mysengo"></h1>
             <h1 class="w3-teal" id="statemsg">初期配置を決めてください。</h1>
@@ -46,14 +45,22 @@
 			<button id="haiti_rand" class="w3-button w3-orange">配置をランダムに決める</button>
             <button class="haitiwaiting btn w3-button w3-teal" id="haitichange">配置を変更する</button>
             <label id="haitistate" class="haitimode" style="display: none">先手：配置中　後手：配置中</label>
-            <div class="w3-row relative w3-margin">
-	            <div id="board" class="w3-half" style=" overflow: hidden;">
+            <div class="w3-row relative">
+	            <div id="board" class="w3-half" style="margin: 60px 0px; ">
 					<div style="">
 						<canvas id="field" width="412" height="626" style=" top:0px; left:0px;"></canvas>
 					</div>
+					
 	            </div>
-				<div class="w3-half battlemode" style="top: 0vh; left: 65vh; width: 100vh; height: 100vh; position: absolute; display: none;">
+	            <div id="komadai" class="haitimode w3-border" style="padding: 5px; top: 0px; left: 0px; border-width: 10px; background-color: chocolate; ">
+	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
+	            </div>
+				<div class="w3-half battlemode" id="myside" style="top: 0vh; left: 50vh; width: 50vh; height: 100vh; position: absolute; display: none;">
 					<div id="komaushiro" class="w3-container battlemode absolute"></div>
+					<div id="komatemae" class="w3-container battlemode absolute"></div>
+
+					<div id="komainfobox" class="w3-container battlemode absolute">
+					
 					<div id="infobox" class="w3-container battlemode absolute">
 						<h6 id="sengodebug"></h6>
 						<button id="touryou" class="btn w3-button w3-red" style="display:none;">投了する</button>
@@ -62,23 +69,18 @@
 							<label id="hikiwakemsg"></label>
 						 </div>
 						 <div class="gamefinish">
-							<button id="modoru" class="btn w3-button w3-teal">一手戻る</button>
+							<button id="modoru_original" class="btn w3-button w3-teal">一手戻る</button>
 							<label id="nanteme"></label>
 							<label>/</label>
 							<label id="tesuu"></label>
-							<button id="susumu" class="btn w3-button w3-teal">一手進む</button>
+							<button id="susumu_original" class="btn w3-button w3-teal">一手進む</button>
 							<br>
 							<button id="saishomodoru" class="btn w3-button w3-green">最初に戻る</button>
 							<button id="saigosusumu" class="btn w3-button w3-green">最後に進む</button>
 						</div>
 					</div>
-					<div id="komatemae" class="w3-container battlemode absolute"></div>
-
-					<div id="komainfobox" class="w3-container battlemode absolute"></div>
+					</div>
 				</div>
-	            <div id="komadai" class="w3-half haitimode">
-	                <!-- ここに2x12のcanvasを配置して駒の画像を表示する -->
-	            </div>
 	       </div>
         </div>
 
