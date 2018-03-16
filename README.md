@@ -2,4 +2,4 @@
 
 ### herokuで一応動かせる: https://gunjin.herokuapp.com/
 
-![デモ画像](https://imgur.com/a/GymPS)
+![デモ画像]([Imgur](https://i.imgur.com/Lhm9soZ.pngS)
